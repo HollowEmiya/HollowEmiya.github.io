@@ -6,13 +6,17 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://example.com">
-  <title>Emiya Blog</title>
+  <title>C++之static,const,define | Emiya Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Emiya Blog">
-<meta property="og:url" content="http://example.com/index.html">
+  <meta name="description" content="在C++中有几个看上去不同，一想却有几分相同，但细究的确不同的修饰符，这里记述一下关于static,const,define这几个小伙子。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C++之static,const,define">
+<meta property="og:url" content="http://example.com/2022/05/02/C++-static-const-define/index.html">
 <meta property="og:site_name" content="Emiya Blog">
+<meta property="og:description" content="在C++中有几个看上去不同，一想却有几分相同，但细究的确不同的修饰符，这里记述一下关于static,const,define这几个小伙子。">
 <meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2022-05-02T05:11:42.000Z">
+<meta property="article:modified_time" content="2022-05-02T11:41:42.274Z">
 <meta property="article:author" content="Eimya">
 <meta name="twitter:card" content="summary">
   
@@ -150,16 +154,14 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-    <article id="post-C++-static-const-define" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+            <article id="post-C++-static-const-define" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2022/05/02/C++-static-const-define/">C++之static,const,define</a>
+    <h1 class="article-title" itemprop="name">
+      C++之static,const,define
     </h1>
   
 
@@ -173,9 +175,79 @@
     <div class="article-entry" itemprop="articleBody">
       
         <p>在C++中有几个看上去不同，一想却有几分相同，但细究的确不同的修饰符，这里记述一下关于static,const,define这几个小伙子。</p>
-        
-          <a class="article-more-a" href="/2022/05/02/C++-static-const-define/#more">more >></a>
-        
+<span id="more"></span>
+
+<h1 id="static"><a href="#static" class="headerlink" title="static"></a>static</h1><h2 id="静态数据的存储"><a href="#静态数据的存储" class="headerlink" title="静态数据的存储"></a>静态数据的存储</h2><blockquote>
+<p>全局(静态)存储区：(狗屎机翻说的都不是人话)</p>
+<p>分为DATA段与BSS段。<br>DATA段(全局初始化区): 存放初始化的全局变量和静态变量。<br>BSS段(全局未初始化区): 存放未初始化的全局变量和静态变量。<br>程序结束时全局存储器自动释放，BSS段会在程序执行前被系统自动清0，即未初始化的全局变量和静态变量在程序执行之前已经为0。<br>在<strong>静态数据区的变量会在程序开始时，就完成初始化，也是唯一的一次初始化</strong>。</p>
+</blockquote>
+<h3 id="static对于变量"><a href="#static对于变量" class="headerlink" title="static对于变量"></a>static对于变量</h3><p><strong>1.局部变量</strong></p>
+<p>在局部变量前加上关键字<code>static</code>，其将被定义为局部静态变量。</p>
+<p>内存位置: 静态存储区<br>初始化: 局部的静态变量只被初始化一次<br>作用域: 作用域仍为局部作用域，数据仍在局部可见，定义它的函数或者语句块结束的时候，作用域随之结束。</p>
+<blockquote>
+<p>当<code>static</code>作用于局部变量时，改变了其存储位置，从栈转存到静态存储区，也改变了生存周期，在离开作用域后变量没有被销毁，仍存储在内存中，只是保留了原有的可见性，即没改变作用域，在程序结束后释放其占用的内存。</p>
+</blockquote>
+<p><strong>2.全局变量</strong></p>
+<p>在全局变量上作用，其变为全局静态变量。</p>
+<p>内存位置: 静态存储区；<br>初始化: 未经初始化的全局变量自动初始化为0；<br>作用域: 全局静态变量作用于当前文件，即在声明他的文件外是不可见的，只能在本文件中使用。</p>
+<blockquote>
+<p> 全局变量本身就是静态存储方式，静态全局变量也是静态存储方式。但二者区别在于非静态全局变量作用域是整个源程序，当一个源程序由多个源文件组成时，非静态的全局变量在各个源文件中都是有效的 **(在其他源文件中使用时加上<code>extern</code>关键字重新声明即可)**。而静态全局变量反而限制了其作用域，即限定为定义该变量的源文件中有效，在同一源程序中的其他源文件中无法使用。</p>
+</blockquote>
+<h3 id="static对于函数"><a href="#static对于函数" class="headerlink" title="static对于函数"></a>static对于函数</h3><p>修饰普通函数，表明函数的作用范围，仅仅在定义该函数的文件内才能使用。在多人开发过程中可以使用这个技巧，把函数作用域同上述的全局变量一样，限制在该文件内，防止和他人函数重名。</p>
+<h3 id="static对于类"><a href="#static对于类" class="headerlink" title="static对于类"></a>static对于类</h3><p><strong>1.成员变量</strong></p>
+<p>用<code>static</code>修饰类的数据成员，使其成为<strong>类的全局变量</strong>，被所有类的对象共享，<strong>包括派生类的对象！</strong><br>因此<code>static</code>成员必须在类外进行初始化，而不能在构造函数内进行初始化，不过也可以使用<code>const</code>修饰<code>static</code>数据成员在类内初始化。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">MyClass</span></span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="type">static</span> <span class="type">int</span> staticNum;</span><br><span class="line">    <span class="built_in">MyClass</span>();</span><br><span class="line">    ~<span class="built_in">MyClass</span>();    </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> MyClass::staticNum = <span class="number">1</span>;</span><br></pre></td></tr></table></figure>
+
+<p><strong>2.成员函数</strong></p>
+<p>用<code>static</code>修饰成员函数，使整个类只存在一份这个函数，所有对象共享，<strong>不含<code>this</code>指针</strong>。<br>静态成员是可以独立访问的，无需创建任何实例就能调用。</p>
+<p><strong>不可以同时用<code>const</code>和<code>static</code>修饰<em>成员函数</em>。</strong></p>
+<h1 id="const"><a href="#const" class="headerlink" title="const"></a>const</h1><ul>
+<li><p>限定变量不可修改。</p>
+</li>
+<li><p>限定成员函数不能修改任何数据成员。</p>
+</li>
+</ul>
+<h2 id="const-和-指针"><a href="#const-和-指针" class="headerlink" title="const 和 指针"></a>const 和 指针</h2><ul>
+<li>指向常量的指针</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 第一种</span></span><br><span class="line"><span class="type">int</span> a = <span class="number">2</span>;</span><br><span class="line"><span class="type">int</span> b = <span class="number">4</span>;</span><br><span class="line"><span class="type">int</span> <span class="type">const</span> *p;</span><br><span class="line"><span class="type">const</span> <span class="type">int</span> *p = &amp;a;</span><br><span class="line">cout&lt;&lt;<span class="string">&quot;a:&quot;</span>&lt;&lt;*p&lt;&lt;endl;    <span class="comment">// 2</span></span><br><span class="line">a++;</span><br><span class="line">cout&lt;&lt;<span class="string">&quot;a:&quot;</span>&lt;&lt;**p&lt;&lt;endl;    <span class="comment">// 3</span></span><br><span class="line">p = &amp;b;</span><br><span class="line">cout&lt;&lt;<span class="string">&quot;b:&quot;</span>&lt;&lt;*p&lt;&lt;endl;</span><br></pre></td></tr></table></figure>
+
+<p><code>const int *p</code>和<code>int const *p</code>一样，<code>const</code>修饰<code>int</code>，在<code>p</code>看来<code>a</code>是常量，所以不能用<code>(*p)++</code>修改数据，但是可以<code>a++</code>修改，因为<code>a</code>实际就是普通变量，只是<code>cont int *p</code>一厢情愿罢了。</p>
+<ul>
+<li>指针常量</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> a = <span class="number">2</span>;</span><br><span class="line"><span class="type">int</span> b = <span class="number">4</span>;</span><br><span class="line"><span class="type">int</span>* <span class="type">const</span> p = &amp;a;</span><br><span class="line">cout &lt;&lt; <span class="string">&quot;a:&quot;</span> &lt;&lt; *p &lt;&lt; endl;    <span class="comment">// 2</span></span><br><span class="line">a++;                           <span class="comment">// 3</span></span><br><span class="line">(*p)++;                        <span class="comment">// 4</span></span><br><span class="line">cout &lt;&lt; <span class="string">&quot;a:&quot;</span> &lt;&lt; *p &lt;&lt; endl;    <span class="comment">// 4</span></span><br></pre></td></tr></table></figure>
+
+<p><code>int* const</code> 的 <code>const</code> 修饰 <code>int*</code>，表示<strong>该指针是常量，初始化后无法修改</strong>，但是<strong>其指向对象可以修改</strong>。<code>p</code> 指向的是 <code>int</code> 类型，不是<code>const int</code> 类型，<code>const int* const</code> 才是指向 <code>const int</code> 类型。</p>
+<h1 id="static和const可以同时修饰成员函数吗？"><a href="#static和const可以同时修饰成员函数吗？" class="headerlink" title="static和const可以同时修饰成员函数吗？"></a>static和const可以同时修饰成员函数吗？</h1><p>不可以，C++编译器在实现<code>const</code>的成员函数时，为了确保该函数不能修改类的实例状态，会在函数中添加一个隐式的参数<code>const this*</code>。但当一个成员为<code>static</code>时，该函数是没有<code>this</code>指针的，就是说<code>const</code>和<code>static</code>冲突了，相互矛盾。<br><code>static</code>是表示该函数只作用在类型的静态变量上，与类的实例没有关系；<br><code>const</code>是确保函数不能修改实例的状态，与类型的静态变量没有关系。<br>二者一个脱离实例，一个保护实例。</p>
+<h2 id="const-和-define-定义常量的区别"><a href="#const-和-define-定义常量的区别" class="headerlink" title="const 和 #define 定义常量的区别"></a>const 和 #define 定义常量的区别</h2><ul>
+<li><p>编译器处理方式不同:<br>define: 是“编译时”的概念，在预处理阶段进行替换。<br>const: 是“运行时”的概念，在编译阶段确定其值</p>
+</li>
+<li><p>类型检查:<br>define: 无类型，不进行类型安全检查，可能会产生<br>const:  有数据类型，编译时会检查</p>
+</li>
+<li><p>内存空间:<br>define: 不分配内存，给出立即数，使用几次就进行几次替换，内存中会有多个拷贝，消耗大。<br>const: 在静态存储区分配空间，程序运行中在内存中仅有一次拷贝。</p>
+</li>
+<li><p>函数参数:<br>宏定义不能作为参数传递给函数。<br>const常量可以在函数的参数列表中出现。</p>
+</li>
+<li><p>在编译时，编译器通常不为const分配空间而是保存在符号表中，使得成为编译期间的常量，没有存储和读内存的操作，效率高。</p>
+</li>
+<li><p>define宏替换只做替换，不做表达式计算。</p>
+</li>
+</ul>
+<h1 id="typedef-与-define-的区别"><a href="#typedef-与-define-的区别" class="headerlink" title="typedef 与 #define 的区别"></a>typedef 与 #define 的区别</h1><h2 id="typedef"><a href="#typedef" class="headerlink" title="typedef"></a>typedef</h2><p><code>typedef</code>即类型定义的意思，就是给已有类型起别名。可以简化那些繁琐的类型名；也可以一定程度忽视不同平台的差异，不同平台见只需要修改<code>typedef</code>即可。</p>
+<h2 id="define"><a href="#define" class="headerlink" title="#define"></a>#define</h2><p><code>#define</code>为宏定义语句，就是文本替换</p>
+<h2 id="区别"><a href="#区别" class="headerlink" title="区别"></a>区别</h2><ul>
+<li><p><code>typedef</code>关键字在编译阶段有效，由于是在编译阶段，因此<code>typedef</code>有类型检查的功能。<code>#define</code>是宏定义，发生在预处理阶段，即编译之前，只是简单的字符替换，没有进行任何检查。</p>
+</li>
+<li><p><code>#define</code>没有作用域的限制，只要是之前预定义过的宏，在以后的程序中都可以使用，而<code>typedef</code>有自己的定义域。</p>
+</li>
+<li><p>对指针操作不同:</p>
+</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="type">int</span> * pint</span><br><span class="line"><span class="meta">#<span class="keyword">define</span> PINT int *</span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> i1 = <span class="number">2</span>, i2 = <span class="number">3</span>, i3 = <span class="number">4</span>;</span><br><span class="line"></span><br><span class="line"><span class="type">const</span> pint p1 = &amp;i1;    <span class="comment">// p1不可更改，相当于 int* const</span></span><br><span class="line"><span class="type">const</span> PINT p2 = &amp;i2;    <span class="comment">// p2可以修改，因为就是 const int *</span></span><br><span class="line">PINT <span class="type">const</span> p3 = &amp;i3;    <span class="comment">// p3本身不可以修改，就是 int * const</span></span><br></pre></td></tr></table></figure>
+
+<p>相关链接：<br><a target="_blank" rel="noopener" href="https://www.cnblogs.com/lulipro/p/5976601.html">C++头文件，预处理详解 - lulipro - 博客园</a><br><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/152046509">C++中的static</a></p>
+
       
 
       
@@ -186,16 +258,75 @@
       
 
       
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2022/05/02/C++-static-const-define/">展开全文 >></a>
-        </p>
-      
 
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
+        </div>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://example.com/2022/05/02/C++-static-const-define/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
       
       <div class="clearfix"></div>
     </div>
   </div>
 </article>
+
+  
+<nav id="article-nav">
+  
+  
+    <a href="/2022/04/13/C++-Smart-pointers/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">C++智能指针、RAII、Block(To Be Continued)</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
 
 <aside class="wrap-side-operation">
     <div class="mod-side-operation">
@@ -215,279 +346,14 @@
 
 
 
-
   
-    <article id="post-C++-Smart-pointers" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2022/04/13/C++-Smart-pointers/">C++智能指针、RAII、Block(To Be Continued)</a>
-    </h1>
   
 
-        
-        <a href="/2022/04/13/C++-Smart-pointers/" class="archive-article-date">
-  	<time datetime="2022-04-13T03:14:05.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-04-13</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="C-智能指针-Smart-Pointers"><a href="#C-智能指针-Smart-Pointers" class="headerlink" title="C++ : 智能指针(Smart Pointers)"></a>C++ : 智能指针(Smart Pointers)</h1><p>现代c++编程中，标准库中包含了<strong>智能指针</strong>，这些指针用于确保程序不会出现内存和资源泄露，并切具有异常安全。</p>
-        
-          <a class="article-more-a" href="/2022/04/13/C++-Smart-pointers/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2022/04/13/C++-Smart-pointers/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-Dissolve-in-Unity" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2022/04/09/Dissolve-in-Unity/">Dissolve in Unity</a>
-    </h1>
   
 
-        
-        <a href="/2022/04/09/Dissolve-in-Unity/" class="archive-article-date">
-  	<time datetime="2022-04-09T04:35:18.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-04-09</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="Dissolve-in-Unity"><a href="#Dissolve-in-Unity" class="headerlink" title="Dissolve in Unity"></a>Dissolve in Unity</h1><p>参考冯乐乐所著《Unity Shader 入门精要》在unity里实现简单的消融(Dissolve)效果，主要思想是利用噪声纹理，进行透明度剔除。(图片在GitHub加载失败可能是网络问题)</p>
-<h2 id="结果预览"><a href="#结果预览" class="headerlink" title="结果预览"></a>结果预览</h2><p><img src="https://raw.githubusercontent.com/HollowEmiya/DissolveShader/main/DissolveResult.png" alt="Alt pic"></p>
-        
-          <a class="article-more-a" href="/2022/04/09/Dissolve-in-Unity/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2022/04/09/Dissolve-in-Unity/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-New-Start" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2022/04/08/New-Start/">New Start</a>
-    </h1>
   
 
-        
-        <a href="/2022/04/08/New-Start/" class="archive-article-date">
-  	<time datetime="2022-04-08T14:25:16.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-04-08</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="隔离期间"><a href="#隔离期间" class="headerlink" title="隔离期间"></a>隔离期间</h2><p>隔离期间搞一个自己的blog。</p>
-        
-          <a class="article-more-a" href="/2022/04/08/New-Start/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2022/04/08/New-Start/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-hello-world" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2022/04/08/hello-world/">Hello World</a>
-    </h1>
-  
-
-        
-        <a href="/2022/04/08/hello-world/" class="archive-article-date">
-  	<time datetime="2022-04-08T14:18:38.656Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-04-08</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2022/04/08/hello-world/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
 
 
@@ -510,8 +376,8 @@
     <script>
 	var yiliaConfig = {
 		mathjax: false,
-		isHome: true,
-		isPost: false,
+		isHome: false,
+		isPost: true,
 		isArchive: false,
 		isTag: false,
 		isCategory: false,
