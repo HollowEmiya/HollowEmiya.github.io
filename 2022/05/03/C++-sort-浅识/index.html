@@ -16,8 +16,9 @@
 <meta property="og:description" content="今天在做题时候发现自己对于C++自定义排序方法sort 和 stable_sort 的理解一直有问题。">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="http://example.com/imgs/C++-sort-浅识/题目-1677565078882-1.png">
+<meta property="og:image" content="http://example.com/imgs/C++-sort-浅识/sort.png">
 <meta property="article:published_time" content="2022-05-03T05:44:28.000Z">
-<meta property="article:modified_time" content="2023-02-28T06:29:30.470Z">
+<meta property="article:modified_time" content="2023-02-28T06:33:32.199Z">
 <meta property="article:author" content="Eimya">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http://example.com/imgs/C++-sort-浅识/题目-1677565078882-1.png">
@@ -188,7 +189,7 @@
 <p>我的问题就是出现在数字log的处理部分:</p>
 <p>先说说一开始的<strong>错误理解</strong>: <code>s1</code>和 <code>s2</code> 作为两个比较对象传入，<code>s1</code> 在 <code>s2</code> 前面，如果返回值为 <code>true</code>，不做修改；如果返回值为 <code>false</code>，二者交换位置。 </p>
 <p>嘿，这看上去完全就是很合理的嘛，因为依照我们的经验来看就是这样，<strong>然而</strong>实际却相去甚远。</p>
-<h2 id="我的反思"><a href="#我的反思" class="headerlink" title="我的反思"></a>我的反思</h2>
+<h2 id="我的反思"><a href="#我的反思" class="headerlink" title="我的反思"></a>我的反思</h2><img src="/imgs/C++-sort-浅识/sort.png">
 
 <p>这是在说什么呢？就是说我们自定义的 <code>sort</code> 其实实现的是 <code>&lt;</code> 比较。<br>关于返回值的理解就是，如果返回值为 <code>true</code> 就是 <code>s1 &lt; s2</code>，那么返回值为 <code>false</code>就很好解释了，利用一点离散知识, <code>!&lt;</code> 就是 <code>&gt;=</code> 。</p>
 <blockquote>

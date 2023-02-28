@@ -15,22 +15,22 @@
 <meta property="og:site_name" content="Emiya Blog">
 <meta property="og:description" content="记录一些有关PBR的知识，以免自己忘记了。网页居然不支持LATEX。回头再看自己这篇文章写的稀烂，入门学习PBR还是看[LearnOpenGL](LearnOpenGL - Theory)吧">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="http://example.com/2022/06/17/PBR/math1.png">
-<meta property="og:image" content="http://example.com/2022/06/17/PBR/BSDF.png">
-<meta property="og:image" content="http://example.com/2022/06/17/PBR/math2.png">
-<meta property="og:image" content="http://example.com/2022/06/17/PBR/phong.png">
-<meta property="og:image" content="http://example.com/2022/06/17/PBR/math3.png">
-<meta property="og:image" content="http://example.com/2022/06/17/PBR/math4.png">
-<meta property="og:image" content="http://example.com/2022/06/17/PBR/jihe.png">
-<meta property="og:image" content="http://example.com/2022/06/17/PBR/%E5%87%A0%E4%BD%95%E9%81%AE%E8%94%BD.png">
-<meta property="og:image" content="http://example.com/2022/06/17/PBR/math5.png">
-<meta property="og:image" content="http://example.com/2022/06/17/PBR/math7.png">
-<meta property="og:image" content="http://example.com/2022/06/17/PBR/math6.png">
+<meta property="og:image" content="http://example.com/2022/06/17/PBR/PBR/math1.png">
+<meta property="og:image" content="http://example.com/2022/06/17/PBR/PBR/BSDF.png">
+<meta property="og:image" content="http://example.com/2022/06/17/PBR/PBR/math2.png">
+<meta property="og:image" content="http://example.com/2022/06/17/PBR/PBR/phong.png">
+<meta property="og:image" content="http://example.com/2022/06/17/PBR/PBR/math3.png">
+<meta property="og:image" content="http://example.com/2022/06/17/PBR/PBR/math4.png">
+<meta property="og:image" content="http://example.com/2022/06/17/PBR/PBR/jihe.png">
+<meta property="og:image" content="http://example.com/2022/06/17/PBR/PBR/几何遮蔽.png">
+<meta property="og:image" content="http://example.com/2022/06/17/PBR/PBR/math5.png">
+<meta property="og:image" content="http://example.com/2022/06/17/PBR/PBR/math7.png">
+<meta property="og:image" content="http://example.com/2022/06/17/PBR/PBR/math6.png">
 <meta property="article:published_time" content="2022-06-17T12:05:13.000Z">
-<meta property="article:modified_time" content="2022-10-16T10:51:09.789Z">
+<meta property="article:modified_time" content="2023-02-28T06:58:06.708Z">
 <meta property="article:author" content="Eimya">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://example.com/2022/06/17/PBR/math1.png">
+<meta name="twitter:image" content="http://example.com/2022/06/17/PBR/PBR/math1.png">
   
     <link rel="alternative" href="/atom.xml" title="Emiya Blog" type="application/atom+xml">
   
@@ -212,14 +212,14 @@
 <h5 id="微平面理论"><a href="#微平面理论" class="headerlink" title="微平面理论"></a>微平面理论</h5><p>为了模拟现实世界的物体表面，我们认为物体表面都是由很小、随机朝向的镜面平面(发生镜面反射的小平面)。<br>光滑表面的小镜面分布更加规则。<br>而粗糙表面的小镜面十分混沌。</p>
 <h5 id="能量守恒"><a href="#能量守恒" class="headerlink" title="能量守恒"></a>能量守恒</h5><p>高中物理(<br>对于粗糙平面更多的光被转换为其他能量，反射强度低。<br>光滑平面，由于折射、散射更少，镜面反射会更强。</p>
 <h6 id="反射率方程"><a href="#反射率方程" class="headerlink" title="反射率方程"></a>反射率方程</h6><p>我们在模拟过程中，往往用反射率方程描述能量守恒</p>
-<div style="margin:left;width:100%"><img src="/2022/06/17/PBR/math1.png" class title="math1"></div>
+<div style="margin:left;width:100%"><img src="/2022/06/17/PBR/PBR/math1.png" alt="math1"></div>
 
 <p>而重点就在于反射比例，它规定了光在物体表面如何反射。</p>
 <p><strong>BRDF 双向反射分布函数</strong></p>
 <p>粗糙来讲BRDF就是描述光在物体表面如何反射。<br><em>双向</em>：是说相机方向和光源方向调换后，他们的反射规律是一致的，即一束光打到表面分配到各个方向这个过程是可逆的，可以变成“分配出去的那些光”再汇聚成原来打进来的光，有点类似光路可逆。</p>
 <p>当光打到物体表面，会发生散射和高光反射。散射是向各个角度射出强度相近的光，高光反射就是我们常常在物体表面看到光斑。</p>
 <p>而与BRDF对应的还有BTDF，BTDF是双向透射分布函数，从名字就可以大概知道这个函数描述的是物体投射后在表面向各方向如何发射光线。</p>
-<div style="margin:auto;width:30%"><img src="/2022/06/17/PBR/BSDF.png" class title="BSDF示意"></div>
+<div style="margin:auto;width:30%"><img src="/2022/06/17/PBR/PBR/BSDF.png" alt="BSDF示意"></div>
 
 <p>BRDF+BTDF就是BSDF，双向散射分布函数，感性来讲有了BSDF我们就知道，当一束光打到一块玻璃砖上表面时，上表面光如何发射(BRDF)，下表面如何透射(BTDF)。</p>
 <p>一般的BRDF：$f_{r}(p,w_{i},w_{o})$或者$f_{r}(w_{i},w_{r})$<br>即通过入射光反向和反射光方向，计算得到反射比例。</p>
@@ -227,7 +227,7 @@
 <p>我们可以把BRDF分为两个部分进行计算，即<strong>漫反射</strong>和<strong>高光反射</strong>。</p>
 <ul>
 <li><p>漫反射：可以采用经典的Lambert模型，这只是一种经验模型<br>我们根据光与平面法线的夹角计算光强，夹角越大光强越小，可以参照太阳对于地球夏冬温度的影响。</p>
-<div style="margin:left;width:100%"><img src="/2022/06/17/PBR/math2.png" class title="math2"></div>
+<div style="margin:left;width:100%"><img src="/2022/06/17/PBR/PBR/math2.png" alt="math2"></div>
 </li>
 <li><p>高光反射：</p>
 <ul>
@@ -238,27 +238,27 @@
 </ul>
 </li>
 </ul>
-<div style="margin:auto;width:100%"><img src="/2022/06/17/PBR/phong.png" class title="PhongAndBlinnPhong"></div>
+<div style="margin:auto;width:100%"><img src="/2022/06/17/PBR/PBR/phong.png" alt="PhongAndBlinnPhong"></div>
 
 <ul>
 <li><p>基于物理的高光：</p>
-<div style="margin:left;width:100%"><img src="/2022/06/17/PBR/math3.png" class title="math3"></div></li>
+<div style="margin:left;width:100%"><img src="/2022/06/17/PBR/PBR/math3.png" alt="math3"></div></li>
 </ul>
-<h6 id="法线分布函数-NDF"><a href="#法线分布函数-NDF" class="headerlink" title="法线分布函数(NDF)"></a>法线分布函数(NDF)</h6><div style="margin:left;width:100%"><img src="/2022/06/17/PBR/math4.png" class title="math4"></div>
+<h6 id="法线分布函数-NDF"><a href="#法线分布函数-NDF" class="headerlink" title="法线分布函数(NDF)"></a>法线分布函数(NDF)</h6><div style="margin:left;width:100%"><img src="/2022/06/17/PBR/PBR/math4.png" alt="math4"></div>
 
 <p><strong>与Blinn-Phong模型区别</strong>：二者虽然都是法线对于光的影响，但是Blinn-Phong终究是经验模型，NDF更贴切实际，尤其是在末端部分，GGX-NDF末端过度平滑更加具有真实感更贴近物理，而Blinn-Phong相比较为生硬。</p>
 <h6 id="几何遮蔽"><a href="#几何遮蔽" class="headerlink" title="几何遮蔽"></a>几何遮蔽</h6><p>我们先前讨论的微平面理论，把每个小平面单独计算互不干扰，但是在实际中面与面的遮挡关系是存在的，比如人的内眼角和鼻子交汇处(这里也常常运用AO贴图，这个例子不太恰当但是主要是说明这种遮挡现象)，真实物体的表面凹凸不平，微平面间势必存在相互遮挡的关系。</p>
-<div style="margin:auto;width:80%"><img src="/2022/06/17/PBR/jihe.png" class title="几何遮蔽"></div>
+<div style="margin:auto;width:80%"><img src="/2022/06/17/PBR/PBR/jihe.png" alt="几何遮蔽"></div>
 
 <p>左侧为几何遮蔽示意，右侧为几何阴影示意。<br>对于几何遮蔽我们通常运用统计学(概率论)的有关知识近似计算相互遮蔽，因为我们很难一个一个去算微平面间的遮挡。</p>
-<div style="margin:auto;width:80%"><img src="/2022/06/17/PBR/%E5%87%A0%E4%BD%95%E9%81%AE%E8%94%BD.png" class title="几何遮蔽公式"></div>
+<div style="margin:auto;width:80%"><img src="/2022/06/17/PBR/PBR/几何遮蔽.png" alt="几何遮蔽公式"></div>
 
-<div style="margin:left;width:100%"><img src="/2022/06/17/PBR/math5.png" class title="math5"></div>
+<div style="margin:left;width:100%"><img src="/2022/06/17/PBR/PBR/math5.png" alt="math5"></div>
 
 <h6 id="菲涅尔方程"><a href="#菲涅尔方程" class="headerlink" title="菲涅尔方程"></a>菲涅尔方程</h6><p>被反射的光线对比光线被折射部分所占的比率，描述了反射相对于折射的强度。比如我们垂直观察水面很容易看到水底，而我们远离水面水平观察时往往只能看到水面波光粼粼的样子这就是菲涅尔反射，ta描述了反射相对于折射的强度。<br>还有一个典型的物理例子就是在夏天时路远处的柏油会发生镜面反射。</p>
-<div style="margin:left;width:100%"><img src="/2022/06/17/PBR/math7.png" class title="math7"></div>
+<div style="margin:left;width:100%"><img src="/2022/06/17/PBR/PBR/math7.png" alt="math7"></div>
 
-<h2 id="Last"><a href="#Last" class="headerlink" title="Last"></a>Last</h2><div style="margin:left;width:100%"><img src="/2022/06/17/PBR/math6.png" class title="math6"></div>
+<h2 id="Last"><a href="#Last" class="headerlink" title="Last"></a>Last</h2><div style="margin:left;width:100%"><img src="/2022/06/17/PBR/PBR/math6.png" alt="math6"></div>
 
 <p>材质的效果关键就是FDG，但是BRDF不止于FDG，而PBR也不止于BRDF。</p>
 
