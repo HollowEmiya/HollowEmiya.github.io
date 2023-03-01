@@ -155,9 +155,26 @@
     <article id="post-包围盒与物体碰撞" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2023/02/27/%E5%8C%85%E5%9B%B4%E7%9B%92%E4%B8%8E%E7%89%A9%E4%BD%93%E7%A2%B0%E6%92%9E/">包围盒与物体碰撞(学习中)</a>
+    </h1>
+  
+
+        
+        <a href="/2023/02/27/%E5%8C%85%E5%9B%B4%E7%9B%92%E4%B8%8E%E7%89%A9%E4%BD%93%E7%A2%B0%E6%92%9E/" class="archive-article-date">
+  	<time datetime="2023-02-27T05:10:02.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2023-02-27</time>
+</a>
+        
+      </header>
+    
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="包围盒与物体碰撞"><a href="#包围盒与物体碰撞" class="headerlink" title="包围盒与物体碰撞"></a>包围盒与物体碰撞</h1><h2 id="什么是包围盒"><a href="#什么是包围盒" class="headerlink" title="什么是包围盒"></a>什么是包围盒</h2><p>包围盒是一个简单的集合体，盒内包含着复杂的物体。为物体添加包围盒是为了<strong>进行快速的碰撞检测</strong>或者<strong>在<u>更为精确的碰撞检测前</u>进行过滤</strong>。包围盒一般有几种类型，如<strong>球体</strong>、<strong>轴对齐包围盒(AABB——Axis-Aligned Bounding Box)<strong>、</strong>有向包围盒(OBB——Oriented Bounding Boxes)<strong>、</strong>8-DOP</strong>以及<strong>凸壳</strong>。<br>包围盒经常被用于<em>碰撞检测</em>，比如射击、点击、相撞等；每一个物体都有自己的包围盒，因为包围盒一般都是规则物体，因此用其来代替物体本身进行计算，比直接用物体本体计算更加高效简单。</p>
+        <span id="more"></span>
+
+<h1 id="包围盒与物体碰撞"><a href="#包围盒与物体碰撞" class="headerlink" title="包围盒与物体碰撞"></a>包围盒与物体碰撞</h1><h2 id="什么是包围盒"><a href="#什么是包围盒" class="headerlink" title="什么是包围盒"></a>什么是包围盒</h2><p>包围盒是一个简单的集合体，盒内包含着复杂的物体。为物体添加包围盒是为了<strong>进行快速的碰撞检测</strong>或者<strong>在<u>更为精确的碰撞检测前</u>进行过滤</strong>。包围盒一般有几种类型，如<strong>球体</strong>、<strong>轴对齐包围盒(AABB——Axis-Aligned Bounding Box)<strong>、</strong>有向包围盒(OBB——Oriented Bounding Boxes)<strong>、</strong>8-DOP</strong>以及<strong>凸壳</strong>。<br>包围盒经常被用于<em>碰撞检测</em>，比如射击、点击、相撞等；每一个物体都有自己的包围盒，因为包围盒一般都是规则物体，因此用其来代替物体本身进行计算，比直接用物体本体计算更加高效简单。</p>
 <img src="/imgs/包围盒与物体碰撞/AABB&OBB.jfif" alt="不同的包围盒">
 
 <p>目前最常见的为AABB和OBB两种包围盒，其中AABB因为简单的生成方式更加常见，但是<strong>AABB包围盒是与坐标轴平行对齐的，故而不会随着物体旋转</strong>。从上图可以看出AABB包围盒比OOBB包围盒多了很多空隙，<strong>对精确度有点要求的碰撞检测的效果不好</strong>。这时候就需要OBB包围盒，<strong>OBB包围盒始终沿着物体的主成分方向生成一个最小的矩形包围盒，可以随物体旋转，适用于较精确的碰撞检测</strong>。</p>
@@ -174,7 +191,7 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2023/02/28/%E5%8C%85%E5%9B%B4%E7%9B%92%E4%B8%8E%E7%89%A9%E4%BD%93%E7%A2%B0%E6%92%9E/">展开全文 >></a>
+          <a class="article-more-a" href="/2023/02/27/%E5%8C%85%E5%9B%B4%E7%9B%92%E4%B8%8E%E7%89%A9%E4%BD%93%E7%A2%B0%E6%92%9E/">展开全文 >></a>
         </p>
       
 
