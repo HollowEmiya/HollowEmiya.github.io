@@ -6,24 +6,15 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://example.com">
-  <title>透明和earlyZ | Emiya Blog</title>
+  <title>Archives: 2023/3 | Emiya Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="白天和群友吹水，发现自己对于透明测试和透明混合，包括earlyZ和PreZ理解不够，所以记录一下，方便自己复习巩固。">
-<meta property="og:type" content="article">
-<meta property="og:title" content="透明和earlyZ">
-<meta property="og:url" content="http://example.com/2022/05/31/%E9%80%8F%E6%98%8E%E5%92%8CEarly%20Z%E3%80%81Pre%20Z/index.html">
+  <meta property="og:type" content="website">
+<meta property="og:title" content="Emiya Blog">
+<meta property="og:url" content="http://example.com/archives/2023/03/index.html">
 <meta property="og:site_name" content="Emiya Blog">
-<meta property="og:description" content="白天和群友吹水，发现自己对于透明测试和透明混合，包括earlyZ和PreZ理解不够，所以记录一下，方便自己复习巩固。">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="http://example.com/2022/05/31/%E9%80%8F%E6%98%8E%E5%92%8CEarly%20Z%E3%80%81Pre%20Z/透明和Early%20Z、Pre%20Z/渲染流程.png">
-<meta property="og:image" content="http://example.com/2022/05/31/%E9%80%8F%E6%98%8E%E5%92%8CEarly%20Z%E3%80%81Pre%20Z/透明和Early%20Z、Pre%20Z/BT.jpg">
-<meta property="og:image" content="http://example.com/2022/05/31/%E9%80%8F%E6%98%8E%E5%92%8CEarly%20Z%E3%80%81Pre%20Z/透明和Early%20Z、Pre%20Z/TB.jpg">
-<meta property="og:image" content="http://example.com/2022/05/31/%E9%80%8F%E6%98%8E%E5%92%8CEarly%20Z%E3%80%81Pre%20Z/透明和Early%20Z、Pre%20Z/qh.jpg">
-<meta property="article:published_time" content="2022-05-31T12:52:39.000Z">
-<meta property="article:modified_time" content="2023-03-03T09:39:43.637Z">
 <meta property="article:author" content="Eimya">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://example.com/2022/05/31/%E9%80%8F%E6%98%8E%E5%92%8CEarly%20Z%E3%80%81Pre%20Z/透明和Early%20Z、Pre%20Z/渲染流程.png">
   
     <link rel="alternative" href="/atom.xml" title="Emiya Blog" type="application/atom+xml">
   
@@ -159,199 +150,43 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-透明和Early Z、Pre Z" class="article article-type-post " itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
+            
   
-    <h1 class="article-title" itemprop="name">
-      透明和earlyZ
-    </h1>
   
-
-        
-        <a href="/2022/05/31/%E9%80%8F%E6%98%8E%E5%92%8CEarly%20Z%E3%80%81Pre%20Z/" class="archive-article-date">
-  	<time datetime="2022-05-31T12:52:39.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-05-31</time>
-</a>
-        
-      </header>
     
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>白天和群友吹水，发现自己对于透明测试和透明混合，包括earlyZ和PreZ理解不够，所以记录一下，方便自己复习巩固。</p>
-<span id="more"></span>
-
-<h1 id="透明和Early-Z、Pre-Z"><a href="#透明和Early-Z、Pre-Z" class="headerlink" title="透明和Early Z、Pre Z"></a>透明和Early Z、Pre Z</h1><h2 id="Early-Z"><a href="#Early-Z" class="headerlink" title="Early Z"></a>Early Z</h2><p>提到Early Z就不得不提深度测试，深度测试简单来说就是解决物体前后遮挡的一直技术。<br>具体就不展开了，根据物体的深度信息与深度缓存区的深度信息进行对比，决定该像素是否绘制，如深度更小即该像素更靠前就覆写深度信息。</p>
-<p>深度测试有一个问题就是如果已经绘制的像素被遮挡了，那么我们只能舍弃，但是之前绘制被遮挡像素的工作就白做了，造成了资源的消耗，那么为了解决或者说减少这种问题，就有了提前深度测试Early Z，来解决过度不必要的片元着色计算。</p>
-<img src="/2022/05/31/%E9%80%8F%E6%98%8E%E5%92%8CEarly%20Z%E3%80%81Pre%20Z/透明和Early Z、Pre Z/渲染流程.png" alt="来源百人计划">
-
-<p>Early Z将在片元着色器前一个阶段进行，进行Early Z会直接进行深度判断，不进行计算直接进行舍弃(<em>在Early Z不仅判断深度通常也会写入深度</em>)，这样就节省了不必要计算量，通常Early Z由硬件进行，并且Early Z还可以添加模板测试。</p>
-<h3 id="Early-Z失效"><a href="#Early-Z失效" class="headerlink" title="Early Z失效"></a>Early Z失效</h3><ul>
-<li><p>开启Alpha Test 或者手动丢弃片元等操作，如clip<br>因为Early Z也会写入深度，如果深度较浅的像素在shader中被丢弃了，后续的像素如果深度大于该像素，就都被舍弃了，但是我们在alpha test中本应该仍对后续的片元进行透明度测试，所以由于Early Z我们没有得到预期的结果。</p>
-</li>
-<li><p>手动修改GPU插值得到的深度值<br>和上述情况类似。</p>
-</li>
-<li><p>开启透明混合(Alpha Blend)<br>这里是针对关闭深度写入(<code>ZWrite Off</code>)的Alpha Blend</p>
-</li>
-<li><p>关闭深度测试(Depth Test)<br>就是关闭了深度测试，因为Early Z也是一种深度测试，自然无法进行。</p>
-</li>
-</ul>
-<p><strong>如果从远向近渲染Early Z就白做了，因为所渲染的片元都可以通过测试，但是后续还是会被舍弃，并没有节省不必要的计算</strong></p>
-<h3 id="高效利用"><a href="#高效利用" class="headerlink" title="高效利用"></a>高效利用</h3><p>可以用CPU对物体从近到远排序就可最大利用，但是如果场景过于复杂性能消耗就很大而且严格的从近道远很难应用批处理这种优化手段。</p>
-<h2 id="Z-PrePass"><a href="#Z-PrePass" class="headerlink" title="Z PrePass"></a>Z PrePass</h2><h3 id="使用两个Pass："><a href="#使用两个Pass：" class="headerlink" title="使用两个Pass："></a>使用两个Pass：</h3><ul>
-<li><p>在第一个Pass(Prepass)仅仅只写入深度，关闭颜色写入，我们就可以得到场景的物体深度信息。</p>
-</li>
-<li><p>在第二个Pass中关闭深度写入，并且深度比较设置为相等，这样基于第一个Pass的深度信息我们就能得到想要的效果。</p>
-</li>
-</ul>
-<h4 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h4><p>动态批处理问题：因为运用多个pass所以无法运用动态批处理。<br>所以会进一步带来Draw Call问题，运用了Z-Prepass会导致Draw Call增加，会造成一定的性能损失。</p>
-<h3 id="提前分离PrePass"><a href="#提前分离PrePass" class="headerlink" title="提前分离PrePass"></a>提前分离PrePass</h3><p>仍然使用两个Pass，但是是两个Shader</p>
-<ul>
-<li><p>将原来用以深度信息的Pass(Z-Prepass)单独作为一个Shader，用此Shader对整个场景的Opaque物体进行一次渲染，得到深度信息。</p>
-</li>
-<li><p>而原本的材质只保留第二个Pass，但是依旧需要关闭深度写入，并且将深度比较函数设置为相等。</p>
-</li>
-</ul>
-<p>Z-Prepass也通常用于透明混合，解决了透明物体前后错误的问题，因为透明混合往往要关闭深度写入；但是这样看不到物体背面，如果想要背面，我们可以<strong>先渲染背面剔除正面，再渲染正面剔除背面</strong>，这样就可以正常混合。</p>
-<h3 id="谨慎使用Z-Prepass"><a href="#谨慎使用Z-Prepass" class="headerlink" title="谨慎使用Z-Prepass"></a>谨慎使用Z-Prepass</h3><p>是否使用Z-Prepass要视我们的场景而定，如果场景overdraw过多又不能很好的进行远近排序，那么Z-Prepass带来的优化效果会比overdraw的消耗小很多，所以使用与否也需要我们来权衡，也是很依赖经验的过程。</p>
-<h2 id="透明"><a href="#透明" class="headerlink" title="透明"></a>透明</h2><h3 id="两种透明方式"><a href="#两种透明方式" class="headerlink" title="两种透明方式"></a>两种透明方式</h3><ul>
-<li><p>透明度测试(alpha test): 一般会根据alpha通道的值即透明度进行片元的剔除，不满足条件便直接舍弃，通过则按正常片元处理，所以透明度测试**不需要关闭深度写入，由于直接舍弃所以展现出来的效果很极端。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">// 剔除片元</span><br><span class="line">fixed4 frag(v2f i) : SV_Target</span><br><span class="line">&#123;</span><br><span class="line">    fixed4 col = tex2D(_MainTex, i.uv);</span><br><span class="line">    clip(col.a - _CutOff)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>透明度混合(alpha blend): 这个是我们在现实世界看到的透明效果，一般会根据片元的透明度，透明度混合需要我们关闭深度写入，因为我们需要根据颜色缓存区中的颜色来进行混合，<strong>如果不关闭深度写入假如在一个透明物体背后有一个不透明物体，就会导致在后面的不透明物体被剔除</strong>，我们想要的本应该能透过透明物体观察到不透明物体。同时如果开启深度写入，透明物体如果有🍌的情况，会造成原本能被看见物体因为object level的排序被剔除的问题。</p>
-</li>
-</ul>
-<h4 id="关于透明混合渲染顺序"><a href="#关于透明混合渲染顺序" class="headerlink" title="关于透明混合渲染顺序"></a>关于透明混合渲染顺序</h4><p>因为我们在透明混合中关闭了深度写入，破坏了深度缓存工作机制，所以渲染顺序十分重要。在关闭深度写入后对于深度缓存区就是只读的状态，假设我们的场景中有一个透明物体在前、不透明物体之后。</p>
-<div style="margin:;width:30%"><img src="/2022/05/31/%E9%80%8F%E6%98%8E%E5%92%8CEarly%20Z%E3%80%81Pre%20Z/透明和Early Z、Pre Z/BT.jpg" alt="一个透明物体在前、不透明物体之后"></div>
-
-<p>如果先渲染不透明物体，再渲染透明物体，看起来效果很正常。</p>
-<div style="margin:right;width:30%"><img src="/2022/05/31/%E9%80%8F%E6%98%8E%E5%92%8CEarly%20Z%E3%80%81Pre%20Z/透明和Early Z、Pre Z/TB.jpg" alt="先渲染透明物体，再渲染不透明物体"></div>
-
-<p>但是如果先渲染透明物体，再渲染不透明物体我们就会看到场景中不透明物体部分被剔除了。</p>
-<p>所以在应用透明技术时，要格外注意渲染顺序。通常我们的渲染顺序是：<br>1、正常渲染所有不透明物体，保持深度测试和深度写入；<br>2、把透明物体按从远及近的顺序渲染，<strong>开启深度测试，但是要关闭深度写入</strong>。<br>      有个问题是我们怎样界定物体的先后，这个和深度测试需要做区分，深度测试是针对像素的，而我们渲染是一个物体一个物体这样进行绘制的，我们需要的绘制顺序是针对物体而言的。很多时候我们场景中的物体不是有着绝对明确的前后关系，而会有着交错的关系。我们很难确定一个点来明确物体合适的前后关系，解决问题的方法通常是使用分割网格，并且为了减少错误尽量保持模型为凸多边形，并进行合理的子模型划分。</p>
-<div style="margin:auto;width:30%"><img src="/2022/05/31/%E9%80%8F%E6%98%8E%E5%92%8CEarly%20Z%E3%80%81Pre%20Z/透明和Early Z、Pre Z/qh.jpg" alt="前后关系"></div>
-
-<h4 id="开启深度写入的半透明"><a href="#开启深度写入的半透明" class="headerlink" title="开启深度写入的半透明"></a>开启深度写入的半透明</h4><p>这种方法往往是针对一个半透明物体内部前后关系错误的问题，就会用到我们介绍的Z-prePass，注意我们现在在渲染透明物体其他不透明物体已经绘制过了，换句话说缓存中已经有颜色我们是做混合，在第一个pass中写入透明物体的深度值，在第二个根据深度信息进行透明混合的渲染，这样就可以得到前后关系正确的半透明效果。(但是看不到透明物体的背面)</p>
-<h4 id="双面透明"><a href="#双面透明" class="headerlink" title="双面透明"></a>双面透明</h4><p>对于透明物体只能观测到正面的问题，我们可以用一个Pass先渲染背面剔除正面，然后再用一个Pass渲染正面剔除背面，这种情况只需关闭深度写入的透明混合即可，不需要上面的Z-prepass，我之前老是有些分不清。</p>
-<p>透明和early z就先写到这吧，做一些复习用所以只概述了技术的大体思路，没有贴什么代码和具体细节，其实我GitHub上有，不过懒得贴了(</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
+    
       
       
-      
-
-      
-
-      
-        
-<div class="share-btn share-icons tooltip-left">
-  <div class="tooltip tooltip-east">
-    <span class="tooltip-item">
-      <a href="javascript:;" class="share-sns share-outer">
-        <i class="icon icon-share"></i>
-      </a>
-    </span>
-    <span class="tooltip-content">
-      <div class="share-wrap">
-        <div class="share-icons">
-          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
-            <i class="icon icon-weibo"></i>
-          </a>
-          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
-            <i class="icon icon-weixin"></i>
-          </a>
-          <a class="qq share-sns" href="javascript:;" data-type="qq">
-            <i class="icon icon-qq"></i>
-          </a>
-          <a class="douban share-sns" href="javascript:;" data-type="douban">
-            <i class="icon icon-douban"></i>
-          </a>
-          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
-            <i class="icon icon-qzone"></i>
-          </a>
-          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
-            <i class="icon icon-facebook"></i>
-          </a>
-          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
-            <i class="icon icon-twitter"></i>
-          </a>
-          <a class="google share-sns" href="javascript:;" data-type="google">
-            <i class="icon icon-google"></i>
-          </a>
+      <section class="archives-wrap">
+        <div class="archive-year-wrap">
+          <a href="/archives/2023" class="archive-year">2023</a>
         </div>
-      </div>
-    </span>
-  </div>
-</div>
+        <div class="archives">
+    
+    <article class="archive-article archive-type-post">
+  <div class="archive-article-inner">
+    <header class="archive-article-header">
+      	<div class="article-meta">
+	      	<a href="/2023/03/03/%E7%B4%A7%E6%80%A5%E8%AF%B4%E6%98%8E/" class="archive-article-date">
+  	<time datetime="2023-03-03T09:39:18.032Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2023-03-03</time>
+</a>
+        </div>
+    	 
+        <div class="article-info info-on-right">
+          
+          
 
-<div class="page-modal wx-share js-wx-box">
-    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
-    <p>扫一扫，分享到微信</p>
-    <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http://example.com/2022/05/31/%E9%80%8F%E6%98%8E%E5%92%8CEarly%20Z%E3%80%81Pre%20Z/" alt="微信分享二维码">
-    </div>
-</div>
-
-<div class="mask js-mask"></div>
-      
-      <div class="clearfix"></div>
-    </div>
+        </div>
+        <div class="clearfix"></div>
+    </header>
   </div>
 </article>
-
-  
-<nav id="article-nav">
-  
-    <a href="/2022/06/17/PBR/" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          PBR备忘笔记
-        
-      </div>
-    </a>
   
   
-    <a href="/2022/05/03/C++-sort-%E6%B5%85%E8%AF%86/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">C++-sort-浅识</div>
-      <i class="icon-circle-right"></i>
-    </a>
-  
-</nav>
-
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-  
-  
+    </div></section>
   
 
-  
-
-  
-
-  
+    
 
 
           </div>
@@ -374,8 +209,8 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: true,
-		isArchive: false,
+		isPost: false,
+		isArchive: true,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,
