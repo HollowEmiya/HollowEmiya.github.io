@@ -183,7 +183,7 @@
 
 <h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><p>我们先思考我们所需的消融效果是什么样的，需要物体被部分烧毁的痕迹，物体会被烧得镂空，燃烧的边缘有着颜色变化，大体而言就是这样。所以我们只需要利用噪声纹理，对物体表面进行依据透明度的剔除(Clip)来模拟镂空就好，再根据由噪声纹理得到的<strong>透明度</strong>和我们所定义<strong>消融系数</strong>对颜色进行插值就可以模拟边缘烧焦的效果(因为透明度更高的部分被clip了，所以我们这样简单的模拟就能得到很好的效果)。</p>
 <h2 id="Word-is-weak-show-me-your-code"><a href="#Word-is-weak-show-me-your-code" class="headerlink" title="Word is weak, show me your code"></a>Word is weak, show me your code</h2><div align="center">
-<img title src="https://raw.githubusercontent.com/HollowEmiya/DissolveShader/main/DissolveMat.png" alt></div>
+<img title="" src="https://raw.githubusercontent.com/HollowEmiya/DissolveShader/main/DissolveMat.png" alt=""></div>
 
 <center>Shader 面版</center>
 
