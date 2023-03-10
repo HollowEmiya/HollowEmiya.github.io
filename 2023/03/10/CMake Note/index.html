@@ -8,18 +8,18 @@
   <link rel="dns-prefetch" href="http://example.com">
   <title>我的CMake学习 | Emiya Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="CMake本文档为学习笔记，该部分内容来源b站Up刘贝斯的CMake教学。 What is CMake?CMake 是一种高级编译配置工具。 当多人使用一种或不同种语言、编译器开发一个项目时，最终需要输出一个可执行文件或者共享库(dll, so等等)，此时——CMake就可以帮助到我们，不必用G++或GCC逐个编译我们所写过的代码。所有操作都是通过编译CMakeLists.txt完成的。使用C">
+  <meta name="description" content="对 CMake 粗浅的学习，之前看一个up的讲的一般，后来看了小彭老师，的确不错，因为官方文档看起来有点吃力，所以就……学习过程中把知识点做了一点笔记方便后续复习">
 <meta property="og:type" content="article">
 <meta property="og:title" content="我的CMake学习">
 <meta property="og:url" content="http://example.com/2023/03/10/CMake%20Note/index.html">
 <meta property="og:site_name" content="Emiya Blog">
-<meta property="og:description" content="CMake本文档为学习笔记，该部分内容来源b站Up刘贝斯的CMake教学。 What is CMake?CMake 是一种高级编译配置工具。 当多人使用一种或不同种语言、编译器开发一个项目时，最终需要输出一个可执行文件或者共享库(dll, so等等)，此时——CMake就可以帮助到我们，不必用G++或GCC逐个编译我们所写过的代码。所有操作都是通过编译CMakeLists.txt完成的。使用C">
+<meta property="og:description" content="对 CMake 粗浅的学习，之前看一个up的讲的一般，后来看了小彭老师，的确不错，因为官方文档看起来有点吃力，所以就……学习过程中把知识点做了一点笔记方便后续复习">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="http://example.com/imgs/CMake%20Note/Qt5Error.png">
 <meta property="og:image" content="http://example.com/imgs/CMake%20Note/Qt5CannotFound.png">
 <meta property="og:image" content="d:/Book/C++/MyC++Note/CMake.png">
 <meta property="article:published_time" content="2023-03-10T05:15:23.000Z">
-<meta property="article:modified_time" content="2023-03-10T05:49:07.569Z">
+<meta property="article:modified_time" content="2023-03-10T06:10:09.649Z">
 <meta property="article:author" content="Eimya">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http://example.com/imgs/CMake%20Note/Qt5Error.png">
@@ -178,7 +178,8 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <span id="more"></span>
+        <p>对 CMake 粗浅的学习，之前看一个up的讲的一般，后来看了小彭老师，的确不错，因为官方文档看起来有点吃力，所以就……<br>学习过程中把知识点做了一点笔记方便后续复习</p>
+<span id="more"></span>
 
 <h1 id="CMake"><a href="#CMake" class="headerlink" title="CMake"></a>CMake</h1><p>本文档为学习笔记，该部分内容来源<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1vR4y1u77h/?p=2&spm_id_from=pageDriver&vd_source=1fa1b82383f6efb8a2632316da9afad0">b站Up刘贝斯的CMake教学</a>。</p>
 <h2 id="What-is-CMake"><a href="#What-is-CMake" class="headerlink" title="What is CMake?"></a>What is CMake?</h2><p>CMake 是一种高级编译配置工具。</p>
