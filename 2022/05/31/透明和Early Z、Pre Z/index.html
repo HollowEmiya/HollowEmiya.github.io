@@ -20,7 +20,7 @@
 <meta property="og:image" content="http://example.com/imgs/透明和Early%20Z、Pre%20Z/TB.jpg">
 <meta property="og:image" content="http://example.com/2022/05/31/%E9%80%8F%E6%98%8E%E5%92%8CEarly%20Z%E3%80%81Pre%20Z/imgs/透明和Early%20Z、Pre%20Z/qh.jpg">
 <meta property="article:published_time" content="2022-05-31T12:52:39.000Z">
-<meta property="article:modified_time" content="2023-03-03T11:35:40.630Z">
+<meta property="article:modified_time" content="2023-03-10T06:12:04.704Z">
 <meta property="article:author" content="Eimya">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http://example.com/imgs/透明和Early%20Z、Pre%20Z/渲染流程.png">
@@ -188,7 +188,7 @@
 
 <p>Early Z将在片元着色器前一个阶段进行，进行Early Z会直接进行深度判断，不进行计算直接进行舍弃(<em>在Early Z不仅判断深度通常也会写入深度</em>)，这样就节省了不必要计算量，通常Early Z由硬件进行，并且Early Z还可以添加模板测试。</p>
 <h3 id="Early-Z失效"><a href="#Early-Z失效" class="headerlink" title="Early Z失效"></a>Early Z失效</h3><ul>
-<li><p>开启Alpha Test 或者手动丢弃片元等操作，如clip<br>因为Early Z也会写入深度，如果深度较浅的像素在shader中被丢弃了，后续的像素如果深度大于该像素，就都被舍弃了，但是我们在alpha test中本应该仍对后续的片元进行透明度测试，所以由于Early Z我们没有得到预期的结果。</p>
+<li><p>开启Alpha Test 或者手动丢弃片元等操作，如clip<br>因为Early Z也会写入深度，如果深度较浅的像素在shader中被丢弃了，后续的像素如果深度大于该像素，就都被舍弃了，但是我们在alpha test中本应该仍对后续的片元进行透明度测试，所以由于Early Z我们没有得到预期的结果。( Alpha Test 中如果透明度 alpha 越低表示越透明，当达到我们要的阈值就舍弃该片元达到透明的效果 )</p>
 </li>
 <li><p>手动修改GPU插值得到的深度值<br>和上述情况类似。</p>
 </li>
