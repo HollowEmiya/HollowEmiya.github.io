@@ -48,7 +48,7 @@
 <meta property="og:image" content="http://example.com/imgs/SpringBoss/Mview.png">
 <meta property="og:image" content="http://example.com/imgs/SpringBoss/RayPointSpe.png">
 <meta property="article:published_time" content="2023-03-04T07:14:23.000Z">
-<meta property="article:modified_time" content="2023-03-15T13:26:26.451Z">
+<meta property="article:modified_time" content="2023-03-15T14:07:20.588Z">
 <meta property="article:author" content="Eimya">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http://example.com/imgs/SpringBoss/C_ambient.png">
@@ -479,9 +479,25 @@
 <li>但如果界面东西多了，要获取每个Graphic是挺麻烦了。其实还有一个很简便的方法，用起来跟NGUI差不多。就是CanvasGruop组件，把这个组件放到界面根节点上，对这个组件的alpha做改变就行了。看看官方文档的解释，</li>
 </ul>
 <h2 id="ESC-框架"><a href="#ESC-框架" class="headerlink" title="ESC 框架"></a>ESC 框架</h2><p><a target="_blank" rel="noopener" href="https://blog.codingnow.com/2017/06/overwatch_ecs.html">https://blog.codingnow.com/2017/06/overwatch_ecs.html</a></p>
+<h2 id="unity的委托是什么-event-关键字有什么用？"><a href="#unity的委托是什么-event-关键字有什么用？" class="headerlink" title="unity的委托是什么? event 关键字有什么用？"></a>unity的委托是什么? event 关键字有什么用？</h2><p>委托是一个容器，可以放函数对象，并且可以触发委托面的每个函数调用。委托主要用户回调函数。如果在外部给委托变量加函数进来，那么委托要定义成public, 这样做又有一个问题，public外部的人也可以触发这个委托，如果我希望设计成外部可以加回调，但是只能是模块内部触发委托，那么我可以加一个event来修饰，这样虽然是public,但是外部无法触发委托,只能类的内部触发。</p>
 <h1 id="Unity"><a href="#Unity" class="headerlink" title="Unity"></a>Unity</h1><h2 id="Unity-UGUI不规则区域点击问题"><a href="#Unity-UGUI不规则区域点击问题" class="headerlink" title="Unity UGUI不规则区域点击问题"></a>Unity UGUI不规则区域点击问题</h2><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/msxh/p/9283266.html">https://www.cnblogs.com/msxh/p/9283266.html</a></p>
 <h2 id="当一个细小的高速物体撞向另一个较大的物体时，会出现什么情况？如何避免？"><a href="#当一个细小的高速物体撞向另一个较大的物体时，会出现什么情况？如何避免？" class="headerlink" title="当一个细小的高速物体撞向另一个较大的物体时，会出现什么情况？如何避免？"></a>当一个细小的高速物体撞向另一个较大的物体时，会出现什么情况？如何避免？</h2><p>碰撞检测失败，会直接穿透</p>
 <p>避免方法：<br>（1）增大细小物体的碰撞体（不建议这样做）<br>（2）使用射线检测，检测他们之间的距离<br>（3）FixedUpdate频率修改，可以physics time减小（同样不建议）<br>（4）改变物体的速度（废话）<br>（5）将检测方式改为连续检测，rigifdbody.collisionDetectionMode &#x3D;CollisionDetectionMode.Continuous;<br>或者是动态连续检测（CollisionDetectionMode.ContinuousDynamic）<br>（6）代码限制，加大计算量 提前计算好下一个位置</p>
+<h2 id="Canvas-有几种模式，如何配置？"><a href="#Canvas-有几种模式，如何配置？" class="headerlink" title="Canvas 有几种模式，如何配置？"></a><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_42352178/article/details/109034679">Canvas 有几种模式，如何配置？</a></h2><p>Canvas的三种渲染模式：</p>
+<ul>
+<li>Screen Space-Overlay（屏幕空间-覆盖模式）UI元素的位置坐标是屏幕空间的坐标，Overlay模式下画布会填满整个屏幕空间，并将画布下面的所有的UI元素置于屏幕的最上层。如果屏幕尺寸被改变，画布将自动改变尺寸来匹配屏幕。</li>
+<li>Screen Space-Camera（屏幕空间-摄影机模式）UI元素的位置坐标是屏幕空间的坐标，画布也是填满整个屏幕空间，如果屏幕尺寸改变，画布也会自动改变尺寸来匹配屏幕。所不同的是，在该模式下，画布会被放置到摄影机前方。在这种渲染模式下，画布看起来绘制在一个与摄影机固定距离的平面上。所有的UI元素都由该摄影机渲染，因此摄影机的设置会影响到UI画面。<br>此时，画布上的UI组件会随视角移动。</li>
+<li>World Space即世界空间模式，此模式下UI元素的位置坐标是世界空间的坐标。画布作为场景中的一部分被固定显示在场景中，显示效果类似Plane组件。</li>
+</ul>
+<h2 id="unity中UGUI如何打包成图集"><a href="#unity中UGUI如何打包成图集" class="headerlink" title="unity中UGUI如何打包成图集?"></a>unity中UGUI如何打包成图集?</h2><p><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/472146051/answer/2011067756">unity中UGUI如何打包成图集? - 鲨鱼辣椒的回答 - 知乎 </a></p>
+<ul>
+<li><p>开启UGUI的图集模式, Editor-&gt;Project Settings 下面有sprite packer的模式。</p>
+</li>
+<li><p>为每个UI图片制定要打入的图集的tag名字。</p>
+</li>
+<li><p>打包生成图集Window ——&gt;Sprite Packer, 点击Pack即可打包生成图集。</p>
+</li>
+</ul>
 
       
 
