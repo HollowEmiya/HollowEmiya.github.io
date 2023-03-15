@@ -48,7 +48,7 @@
 <meta property="og:image" content="http://example.com/imgs/SpringBoss/Mview.png">
 <meta property="og:image" content="http://example.com/imgs/SpringBoss/RayPointSpe.png">
 <meta property="article:published_time" content="2023-03-04T07:14:23.000Z">
-<meta property="article:modified_time" content="2023-03-14T18:18:20.544Z">
+<meta property="article:modified_time" content="2023-03-15T13:26:26.451Z">
 <meta property="article:author" content="Eimya">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http://example.com/imgs/SpringBoss/C_ambient.png">
@@ -210,29 +210,29 @@
         <p>图形学全忘光了，技美笔试直接寄了。<br>把面试题整理一下吧……</p>
 <span id="more"></span>
 
-<h1 id="new-和-malloc-区别"><a href="#new-和-malloc-区别" class="headerlink" title="new 和 malloc 区别"></a><a target="_blank" rel="noopener" href="https://www.cnblogs.com/ywliao/articles/8116622.html">new 和 malloc 区别</a></h1><h2 id="1-申请内存所在位置"><a href="#1-申请内存所在位置" class="headerlink" title="1.申请内存所在位置"></a>1.申请内存所在位置</h2><ul>
+<h1 id="C-部分"><a href="#C-部分" class="headerlink" title="C++ 部分"></a>C++ 部分</h1><h2 id="new-和-malloc-区别"><a href="#new-和-malloc-区别" class="headerlink" title="new 和 malloc 区别"></a><a target="_blank" rel="noopener" href="https://www.cnblogs.com/ywliao/articles/8116622.html">new 和 malloc 区别</a></h2><h3 id="1-申请内存所在位置"><a href="#1-申请内存所在位置" class="headerlink" title="1.申请内存所在位置"></a>1.申请内存所在位置</h3><ul>
 <li><p>new 从 free store 动态分配内存空间，free store 能否是堆取决于 new 的实现其可以是堆，还可以是静态存储区。</p>
 </li>
 <li><p>malloc 从堆上分配内存</p>
 </li>
 </ul>
-<h2 id="2-返回类型安全性"><a href="#2-返回类型安全性" class="headerlink" title="2.返回类型安全性"></a>2.返回类型安全性</h2><ul>
+<h3 id="2-返回类型安全性"><a href="#2-返回类型安全性" class="headerlink" title="2.返回类型安全性"></a>2.返回类型安全性</h3><ul>
 <li><p>new 分配内存成功时，返回对象类型的指针，符合类型安全。</p>
 </li>
 <li><p>malloc 返回 void* ，需要强制类型转换。</p>
 </li>
 </ul>
-<h2 id="3-内存分配失败时返回值"><a href="#3-内存分配失败时返回值" class="headerlink" title="3.内存分配失败时返回值"></a>3.内存分配失败时返回值</h2><ul>
+<h3 id="3-内存分配失败时返回值"><a href="#3-内存分配失败时返回值" class="headerlink" title="3.内存分配失败时返回值"></a>3.内存分配失败时返回值</h3><ul>
 <li>new 失败返回 bac_alloc 异常，不会返回 NULL；</li>
 <li>malloc 失败返回 NULL；</li>
 </ul>
-<h2 id="4-是否需要指定内存大小"><a href="#4-是否需要指定内存大小" class="headerlink" title="4.是否需要指定内存大小"></a>4.是否需要指定内存大小</h2><ul>
+<h3 id="4-是否需要指定内存大小"><a href="#4-是否需要指定内存大小" class="headerlink" title="4.是否需要指定内存大小"></a>4.是否需要指定内存大小</h3><ul>
 <li><p>new 无需指定，编译器自己计算</p>
 </li>
 <li><p>malloc 需要自己显示指定。</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">A *ptr = (A*)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(A));</span><br></pre></td></tr></table></figure></li>
 </ul>
-<h2 id="5-是否调用构造函数-x2F-析构函数"><a href="#5-是否调用构造函数-x2F-析构函数" class="headerlink" title="5.是否调用构造函数&#x2F;析构函数"></a>5.是否调用构造函数&#x2F;析构函数</h2><ul>
+<h3 id="5-是否调用构造函数-x2F-析构函数"><a href="#5-是否调用构造函数-x2F-析构函数" class="headerlink" title="5.是否调用构造函数&#x2F;析构函数"></a>5.是否调用构造函数&#x2F;析构函数</h3><ul>
 <li>new 会经过三步分配内存<ul>
 <li>调用 operator new (数组是 operator new[] )，分配足够大、原始、未命名的空间。</li>
 <li>编译器运行对应构造函数，传入初值。</li>
@@ -245,180 +245,34 @@
 </ul>
 </li>
 </ul>
-<h2 id="6-对数组处理"><a href="#6-对数组处理" class="headerlink" title="6.对数组处理"></a>6.对数组处理</h2><ul>
+<h3 id="6-对数组处理"><a href="#6-对数组处理" class="headerlink" title="6.对数组处理"></a>6.对数组处理</h3><ul>
 <li><p>C++ 有 new[] 和 delete [] 处理数组</p>
 </li>
 <li><p>而 malloc 不知道你存放什么，只会给一块原始的内存，所以需要我们自己指定</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> *ptr = (<span class="type">int</span>*)<span class="built_in">malloc</span>(<span class="number">10</span>*<span class="keyword">sizeof</span>(<span class="type">int</span>)); <span class="comment">// 分配10个int，作为数组</span></span><br></pre></td></tr></table></figure></li>
 </ul>
-<h2 id="7-new-和-malloc-是否可以相互调用"><a href="#7-new-和-malloc-是否可以相互调用" class="headerlink" title="7. new 和 malloc 是否可以相互调用"></a>7. new 和 malloc 是否可以相互调用</h2><p>new delete可以基于 malloc 实现，但是 malloc 不能调用 new！！！</p>
-<h2 id="8-是否可以重载"><a href="#8-是否可以重载" class="headerlink" title="8.是否可以重载"></a>8.是否可以重载</h2><ul>
+<h3 id="7-new-和-malloc-是否可以相互调用"><a href="#7-new-和-malloc-是否可以相互调用" class="headerlink" title="7. new 和 malloc 是否可以相互调用"></a>7. new 和 malloc 是否可以相互调用</h3><p>new delete可以基于 malloc 实现，但是 malloc 不能调用 new！！！</p>
+<h3 id="8-是否可以重载"><a href="#8-是否可以重载" class="headerlink" title="8.是否可以重载"></a>8.是否可以重载</h3><ul>
 <li>operator new &#x2F; operator delete 可以重载</li>
 <li>malloc &#x2F; free 不能重载</li>
 </ul>
-<h2 id="9-能够直观地重新分配内存"><a href="#9-能够直观地重新分配内存" class="headerlink" title="9.能够直观地重新分配内存"></a>9.能够直观地重新分配内存</h2><p>malloc 分配的内存如果不够了可以 realloc</p>
+<h3 id="9-能够直观地重新分配内存"><a href="#9-能够直观地重新分配内存" class="headerlink" title="9.能够直观地重新分配内存"></a>9.能够直观地重新分配内存</h3><p>malloc 分配的内存如果不够了可以 realloc</p>
 <p>但是 new 不行！</p>
-<h2 id="10-客户处理内存分配不同"><a href="#10-客户处理内存分配不同" class="headerlink" title="10.客户处理内存分配不同"></a>10.客户处理内存分配不同</h2><p>operator new 抛出异常前会调用一个用户指定的错误处理函数 new-handler，指向一个错误处理函数。</p>
+<h3 id="10-客户处理内存分配不同"><a href="#10-客户处理内存分配不同" class="headerlink" title="10.客户处理内存分配不同"></a>10.客户处理内存分配不同</h3><p>operator new 抛出异常前会调用一个用户指定的错误处理函数 new-handler，指向一个错误处理函数。</p>
 <p>malloc 异常用户只能看着他 NULL</p>
-<h1 id="拷贝构造函数"><a href="#拷贝构造函数" class="headerlink" title="拷贝构造函数"></a>拷贝构造函数</h1><p><strong>只有这三种情况！！！！！</strong></p>
-<h2 id="1-用一个对象初始化另一个对象。"><a href="#1-用一个对象初始化另一个对象。" class="headerlink" title="1.用一个对象初始化另一个对象。"></a>1.用一个对象初始化另一个对象。</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">Point <span class="title">p2</span><span class="params">(p1)</span></span>;</span><br><span class="line">Point p3 = p1</span><br></pre></td></tr></table></figure>
+<h2 id="拷贝构造函数"><a href="#拷贝构造函数" class="headerlink" title="拷贝构造函数"></a>拷贝构造函数</h2><p><strong>只有这三种情况！！！！！</strong></p>
+<h3 id="1-用一个对象初始化另一个对象。"><a href="#1-用一个对象初始化另一个对象。" class="headerlink" title="1.用一个对象初始化另一个对象。"></a>1.用一个对象初始化另一个对象。</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">Point <span class="title">p2</span><span class="params">(p1)</span></span>;</span><br><span class="line">Point p3 = p1</span><br></pre></td></tr></table></figure>
 
 <p>这两种情况一样。</p>
-<h2 id="2-若一个函数的形参是一个-Class-对象，当-F-被调用时，Class-拷贝构造函数调用。"><a href="#2-若一个函数的形参是一个-Class-对象，当-F-被调用时，Class-拷贝构造函数调用。" class="headerlink" title="2.若一个函数的形参是一个 Class 对象，当 F 被调用时，Class 拷贝构造函数调用。"></a>2.若一个函数的形参是一个 Class 对象，当 F 被调用时，Class 拷贝构造函数调用。</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">Func</span><span class="params">(Point a)</span></span>&#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">mian</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    Point a;</span><br><span class="line">    <span class="built_in">Func</span>(a);    <span class="comment">// 调用拷贝构造函数</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="2-若一个函数的形参是一个-Class-对象，当-F-被调用时，Class-拷贝构造函数调用。"><a href="#2-若一个函数的形参是一个-Class-对象，当-F-被调用时，Class-拷贝构造函数调用。" class="headerlink" title="2.若一个函数的形参是一个 Class 对象，当 F 被调用时，Class 拷贝构造函数调用。"></a>2.若一个函数的形参是一个 Class 对象，当 F 被调用时，Class 拷贝构造函数调用。</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">Func</span><span class="params">(Point a)</span></span>&#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">mian</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    Point a;</span><br><span class="line">    <span class="built_in">Func</span>(a);    <span class="comment">// 调用拷贝构造函数</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<h2 id="3-如果函数的返回值是-Class-对象，函数返回时，调用-Class-拷贝构造函数"><a href="#3-如果函数的返回值是-Class-对象，函数返回时，调用-Class-拷贝构造函数" class="headerlink" title="3.如果函数的返回值是 Class 对象，函数返回时，调用 Class 拷贝构造函数"></a>3.如果函数的返回值是 Class 对象，函数返回时，调用 Class 拷贝构造函数</h2><p>即返回值对象由拷贝构造函数初始化。</p>
-<h1 id="光照模型"><a href="#光照模型" class="headerlink" title="光照模型"></a>光照模型</h1><ul>
-<li>emissive</li>
-<li>specular</li>
-<li>diffuse</li>
-<li>ambient</li>
-</ul>
-<h2 id="环境光"><a href="#环境光" class="headerlink" title="环境光"></a>环境光</h2><p>通常用系统定值，场景物体通用</p>
-<img src="/imgs/SpringBoss/C_ambient.png">
-
-<h2 id="自发光"><a href="#自发光" class="headerlink" title="自发光"></a>自发光</h2><p>材质决定</p>
-<img src="/imgs/SpringBoss/C_emissive.png">
-
-<h2 id="漫反射"><a href="#漫反射" class="headerlink" title="漫反射"></a>漫反射</h2><p>根据 Lambert‘s law</p>
-<img src="/imgs/SpringBoss/C_diffuse.png">
-
-<h2 id="高光反射"><a href="#高光反射" class="headerlink" title="高光反射"></a>高光反射</h2><p>我们有很多变量：normal，eyeDir，lightDir，refDir</p>
-<h3 id="已知-normal，lightDir-求-refDir"><a href="#已知-normal，lightDir-求-refDir" class="headerlink" title="已知 normal，lightDir 求 refDir"></a>已知 normal，lightDir 求 refDir</h3><img src="/imgs/SpringBoss/NormalLightEyeRef.png">
-
-<img src="/imgs/SpringBoss/RefEqu.png">
-
-<h4 id="Phong-模型"><a href="#Phong-模型" class="headerlink" title="Phong 模型"></a>Phong 模型</h4><img src="/imgs/SpringBoss/PhongSpecular.png">
-
-<h4 id="Blinn-Phong"><a href="#Blinn-Phong" class="headerlink" title="Blinn-Phong"></a>Blinn-Phong</h4><img src="/imgs/SpringBoss/BlinnPhong.png">
-
-<h1 id="复习下线性代数"><a href="#复习下线性代数" class="headerlink" title="复习下线性代数"></a>复习下线性代数</h1><h2 id="坐标系"><a href="#坐标系" class="headerlink" title="坐标系"></a>坐标系</h2><p>坐标系分为<em>左手坐标系</em>和<em>右手坐标系</em></p>
-<img src="/imgs/SpringBoss/LeftRight.png" style="zoom:60%;" >
-
-<p>二者在 z 轴方向上有所不同。<br>在 Unity 中<strong>模型空间</strong>和<strong>世界空间</strong>为左手系，<strong>观察空间</strong>为右手系。</p>
-<h2 id="矩阵"><a href="#矩阵" class="headerlink" title="矩阵"></a>矩阵</h2><p>矩阵又分为行矩阵和列矩阵。<br><em><strong><u>矩阵的左乘&#x2F;右乘，表示该矩阵在乘号的左侧&#x2F;右侧。</u></strong></em></p>
-<h3 id="行矩阵"><a href="#行矩阵" class="headerlink" title="行矩阵"></a>行矩阵</h3><img src="/imgs/SpringBoss/rowMatrix.png" >
-
-<p>表示 1xn 的矩阵，行矩阵<strong>左乘</strong>，变换矩阵乘在右侧-&gt; <code>1xn dot nxn = 1xn</code></p>
-<h4 id="齐次式"><a href="#齐次式" class="headerlink" title="齐次式"></a>齐次式</h4><ul>
-<li><p>矢量&#x2F;点</p>
-<img src="/imgs/SpringBoss/rowMatrixHC.png">
-</li>
-<li><p>变换矩阵</p>
-<img src="/imgs/SpringBoss/rowMatrixHCT.png" ></li>
-</ul>
-<h3 id="列矩阵"><a href="#列矩阵" class="headerlink" title="列矩阵"></a>列矩阵</h3><p><u><em><strong>Unity就是列矩阵！</strong></em></u></p>
-<img src="/imgs/SpringBoss/columnMatrix.png" >
-
-<p>表示 nx1 的矩阵，列矩阵<strong>右乘</strong>，变换矩阵乘在其左侧 <code>nxn dot nx1 = nx1</code></p>
-<h4 id="齐次式-1"><a href="#齐次式-1" class="headerlink" title="齐次式"></a>齐次式</h4><ul>
-<li><p>矢量&#x2F;点</p>
-<img src="/imgs/SpringBoss/colMHC.png">
-</li>
-<li><p>变换矩阵</p>
-</li>
-</ul>
-<img src="/imgs/SpringBoss/colMHCT.png">
-
-<h1 id="矩阵的几何意义变换"><a href="#矩阵的几何意义变换" class="headerlink" title="矩阵的几何意义变换"></a>矩阵的几何意义变换</h1><p>变换优先级为：缩放&gt;旋转&gt;位移</p>
-<h2 id="缩放"><a href="#缩放" class="headerlink" title="缩放"></a>缩放</h2><img src="/imgs/SpringBoss/scale.png">
-
-<h2 id="旋转"><a href="#旋转" class="headerlink" title="旋转"></a>旋转</h2><p>在<strong>左手系</strong>中，绕轴<strong>旋转遵从左手手旋转准则</strong>：大拇指为轴向，四指为旋转方向。<br>在<strong>右手系</strong>中，绕轴<strong>旋转遵从右手旋转准则</strong>：大拇指为轴向，四指为旋转方向。</p>
-<ul>
-<li>绕 x 轴</li>
-</ul>
-<img src="/imgs/SpringBoss/rotationX.png">
-
-<ul>
-<li>绕 y 轴</li>
-</ul>
-<img src="/imgs/SpringBoss/rotationY.png">
-
-<ul>
-<li>绕 z 轴</li>
-</ul>
-<img src="/imgs/SpringBoss/rotationZ.png">
-
-<h3 id="欧拉角旋转顺序"><a href="#欧拉角旋转顺序" class="headerlink" title="欧拉角旋转顺序"></a>欧拉角旋转顺序</h3><p>因为不同轴旋转相乘得到变换矩阵不同。</p>
-<ul>
-<li>外旋和内旋<br>假定一组旋转顺序 x-&gt;y-&gt;z 为内旋，则外旋为 z-&gt;x-&gt;y。<br>一组对应的外旋内旋结果是一样的。</li>
-</ul>
-<p><strong>Unity旋转顺序是ZXY</strong>。</p>
-<h2 id="位移"><a href="#位移" class="headerlink" title="位移"></a>位移</h2><img src="/imgs/SpringBoss/translate.png">
-
-<h2 id="变换顺序"><a href="#变换顺序" class="headerlink" title="变换顺序"></a>变换顺序</h2><img src="/imgs/SpringBoss/transform.png">
-
-<h1 id="给定-4x4-矩阵，求缩放，旋转、平移矩阵"><a href="#给定-4x4-矩阵，求缩放，旋转、平移矩阵" class="headerlink" title="给定 4x4 矩阵，求缩放，旋转、平移矩阵"></a><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_39300235/article/details/105790743">给定 4x4 矩阵，求缩放，旋转、平移矩阵</a></h1><p>就以列矩阵为例解吧，因为大多都是列矩阵运算。<br><strong>M&#x3D;TRS</strong></p>
-<img src="/imgs/SpringBoss/4x4Matrix.png">
-
-<h2 id="T矩阵"><a href="#T矩阵" class="headerlink" title="T矩阵"></a>T矩阵</h2><p>列矩阵最右侧就是 translate 变换</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">T[<span class="number">0</span>][<span class="number">3</span>]=M[<span class="number">0</span>][<span class="number">3</span>]/M[<span class="number">3</span>][<span class="number">3</span>];</span><br><span class="line">T[<span class="number">1</span>][<span class="number">3</span>]=M[<span class="number">1</span>][<span class="number">3</span>]/M[<span class="number">3</span>][<span class="number">3</span>];</span><br><span class="line">T[<span class="number">2</span>][<span class="number">3</span>]=M[<span class="number">1</span>][<span class="number">3</span>]/M[<span class="number">3</span>][<span class="number">3</span>];</span><br></pre></td></tr></table></figure>
-
-<h2 id="R矩阵"><a href="#R矩阵" class="headerlink" title="R矩阵"></a>R矩阵</h2><p>之后我们对 M 矩阵剔除平移变换，得到只有缩放和旋转的矩阵<em>M</em>。<br>此时 <em>M</em>&#x3D;RS；<br>我们只要算出旋转矩阵就行了，因为 R 可以用<strong>旋转矩阵的逆矩阵</strong>计算得到：</p>
-<img src="/imgs/SpringBoss/4x4Rn.png">
-
-<p>接下来要分解出 R 矩阵，我们利用 ”Polar decomposition(极分解)“，可以证明矩阵<em>M</em>的极分解为 <u>旋转R</u> 和 <u>缩放S</u> 。该方法通过对 <em>M</em> 的逆的转置进行连续平均来计算，直到<strong>收敛</strong>，此时 <em><strong>M</strong>i <strong>&#x3D; R</strong></em>。</p>
-<img src="/imgs/SpringBoss/Polar.png">
-
-<p>当矩阵只有旋转变换时，旋转R 的转置和R的逆相等，达到收敛状态。<br>因为旋转矩阵为<strong>正交矩阵</strong>。Shoemake和Duff（1992）讨论了该级数收敛的证明，所得矩阵是最接近M的正交矩阵，这是理想的特性。为了计算该序列，我们迭代应用公式，直到连续项之间的差很小或执行了固定的迭代次数为止。 实际上，该系列通常会很快收敛。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">Float norm;</span><br><span class="line"><span class="type">int</span> count = <span class="number">0</span>;</span><br><span class="line">Matrix4x4 R = M;</span><br><span class="line"><span class="keyword">do</span></span><br><span class="line">&#123;</span><br><span class="line">    Matrix4x4 Rnext;</span><br><span class="line">    Matrix4x4 Rit = <span class="built_in">Inverse</span>(<span class="built_in">Transpose</span>(R));    <span class="comment">// 转置的逆</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">0</span>; i &lt; <span class="number">4</span>; ++i)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> j = <span class="number">0</span>; j &lt; <span class="number">4</span>; ++j)</span><br><span class="line">        &#123;</span><br><span class="line">            Rnext.m[i][j] = <span class="number">0.5f</span> * (R.m[i][j]+Rit.m[i][j]);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// compute the sub between Mi and Mi+1</span></span><br><span class="line">    norm = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">0</span>; i &lt; <span class="number">3</span>; ++i)</span><br><span class="line">    &#123;</span><br><span class="line">        Float n = <span class="built_in">abs</span>(R.m[i][<span class="number">0</span>] - Rnext.m[i][<span class="number">0</span>]) +</span><br><span class="line">            <span class="built_in">abs</span>(R.m[i][<span class="number">1</span>] - Rnext.m[i][<span class="number">1</span>]) +</span><br><span class="line">            <span class="built_in">abs</span>(R.m[i][<span class="number">2</span>] - Rnext.m[i][<span class="number">2</span>]);</span><br><span class="line">        norm = <span class="built_in">max</span>(norm,n);</span><br><span class="line">    &#125;</span><br><span class="line">    R = Rnext;</span><br><span class="line">&#125;<span class="keyword">while</span>(++count &lt; <span class="number">100</span> &amp;&amp; norm &gt; <span class="number">0.0001</span>) <span class="comment">// 当迭代次数过多，或者连续项差距足够小，退出循环。</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="S矩阵"><a href="#S矩阵" class="headerlink" title="S矩阵"></a>S矩阵</h2><p>得到 R 矩阵后 S矩阵就很简单</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">S = Matrix4x4::<span class="built_in">Mul</span>(<span class="built_in">Inverse</span>(R),M);</span><br></pre></td></tr></table></figure>
-
-<h1 id="MVP矩阵"><a href="#MVP矩阵" class="headerlink" title="MVP矩阵"></a>MVP矩阵</h1><h2 id="Model"><a href="#Model" class="headerlink" title="Model"></a>Model</h2><p>把顶点坐标从局部空间变换到全局空间。</p>
-<ul>
-<li><p>行矩阵</p>
-<img src="/imgs/SpringBoss/ModelRow.png">
-</li>
-<li><p>列矩阵</p>
-<img src="/imgs/SpringBoss/ModelCol.png"></li>
-</ul>
-<h2 id="view-Matrix-推导"><a href="#view-Matrix-推导" class="headerlink" title="view-Matrix 推导"></a>view-Matrix 推导</h2><p>在图形渲染中我们要把3D的场景渲染成一张2D的图片，而这张图片是从 Camera 的视角出发，所以为了方便渲染我们做一个变换，把摄影机作为一个新的空间的原点，令摄影机观测方向为-z方向也就是我们常说的 视图变换(Viewing Transform)。<br>我们对场景中的物体都进行这样一个变换就可以得到，观察空间下的物体的坐标信息，即以 Camera 为原点，Camera 上方向为 y 轴，Camera 视线为 -z 轴，Camera 右侧为 x轴的坐标空间下物体信息。<br><strong>注意这里观察空间通常为右手系！而非和世界空间&#x2F;模型空间所采用的左手系！</strong><br><strong>接下来推导为列矩阵运算！</strong></p>
-<p>这个变换主要分为两步一步是平移，一步是旋转。<br>设 Camera 坐标为<img src="/imgs/SpringBoss/posE.png" style="zoom:50%;" ><br>则平移矩阵为<br><img src="/imgs/SpringBoss/viewT.png" style="zoom:50%"></p>
-<p>现在我们把摄影机放到了原点位置，现在我们只需要把轴向调整即可。<br><em>注意这里变换推导过程是先平移后旋转，和平时计算规定的 Transform 先 scale 再 rotation最后  translate 的顺序不同。</em><br>我们假设 Camera up 方向矢量为 <em>t</em>，观察方向为 <em>g</em>，则其 x 轴 <em>e</em> 为 <em>g</em>x<em>t</em>。<br><img src="/imgs/SpringBoss/cameraETG.png" style="zoom:50%"><br>我们要让其轴向与 xyz 轴对齐，因为现在只是把物体进行了移动，坐标信息的基础轴还是世界坐标系而非 camera坐标系的三轴。<br>我们只需把 <code>t-&gt;y</code>,<code>g-&gt; -z</code>,<code>e-&gt;x</code> 其中 <code>e = gxt</code>。<br>这样虽然可以进行计算，但是十分复杂。<br>我们观察到 既然TEG是坐标轴，就意味着他们三者垂直，点积为零，可以构成正交矩阵。<br>那么 <code>t-&gt;y</code>,<code>g-&gt; -z</code>,<code>e-&gt;x</code> 的逆变换 <code>y-&gt;t</code>,<code>-z -&gt;g</code>,<code>x-&gt;e</code> 是很好计算的。<br>而我们知道了逆矩阵，就可以知道正交矩阵的原矩阵。<br>正交矩阵性质：<br><img src="/imgs/SpringBoss/orthM.png" style="zoom:20"></p>
-<p> 所以<br><img src="/imgs/SpringBoss/Rview.png" style="zoom:80%"></p>
-<p>最后<br><img src="/imgs/SpringBoss/Mview.png" style="zoom:20"></p>
-<h2 id="Projection-Matrix"><a href="#Projection-Matrix" class="headerlink" title="Projection Matrix"></a>Projection Matrix</h2><p>我们现在已经放好了物体，也以 Camera 的角度出发了，现在我们要从 <strong>View space( 观察空间 )</strong> 到 <strong>Clip Space( 裁剪空间&#x2F;齐次裁剪空间 )</strong></p>
-<h1 id="TBN-矩阵"><a href="#TBN-矩阵" class="headerlink" title="TBN 矩阵"></a>TBN 矩阵</h1><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/412555049">TBN矩阵不错的Blog</a></p>
-<h1 id="2D平面三角形，给出算法，生成三角形内随机一点"><a href="#2D平面三角形，给出算法，生成三角形内随机一点" class="headerlink" title="2D平面三角形，给出算法，生成三角形内随机一点"></a>2D平面三角形，给出算法，生成三角形内随机一点</h1><h2 id="大端和小端模式"><a href="#大端和小端模式" class="headerlink" title="大端和小端模式"></a>大端和小端模式</h2><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/wei_cheng18/article/details/79856207">https://blog.csdn.net/wei_cheng18/article/details/79856207</a></p>
-<h2 id="Cache-命中率"><a href="#Cache-命中率" class="headerlink" title="Cache 命中率"></a>Cache 命中率</h2><h2 id="逆波兰式"><a href="#逆波兰式" class="headerlink" title="逆波兰式"></a><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_43919932/article/details/103327530">逆波兰式</a></h2><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/tangqs/archive/2012/05/18/2507708.html">https://www.cnblogs.com/tangqs/archive/2012/05/18/2507708.html</a><br> 如果是右单目运算符，直接入存储器栈；比如 阶乘！与百分号%</p>
-<h1 id="期望计算和带保底卡池期望计算"><a href="#期望计算和带保底卡池期望计算" class="headerlink" title="期望计算和带保底卡池期望计算"></a>期望计算和带保底卡池期望计算</h1><h1 id="ESC-框架"><a href="#ESC-框架" class="headerlink" title="ESC 框架"></a>ESC 框架</h1><p><a target="_blank" rel="noopener" href="https://blog.codingnow.com/2017/06/overwatch_ecs.html">https://blog.codingnow.com/2017/06/overwatch_ecs.html</a></p>
-<h1 id="前向渲染和延迟渲染"><a href="#前向渲染和延迟渲染" class="headerlink" title="前向渲染和延迟渲染"></a>前向渲染和延迟渲染</h1><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/28489928">https://zhuanlan.zhihu.com/p/28489928</a></p>
-<h1 id="LUT-表"><a href="#LUT-表" class="headerlink" title="LUT 表"></a>LUT 表</h1><p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/fdec2a5e889f">https://www.jianshu.com/p/fdec2a5e889f</a></p>
-<h1 id="Linux-进程通讯"><a href="#Linux-进程通讯" class="headerlink" title="Linux 进程通讯"></a>Linux 进程通讯</h1><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_44443986/article/details/115065540">https://blog.csdn.net/qq_44443986/article/details/115065540</a></p>
-<h1 id="C-运算符重载"><a href="#C-运算符重载" class="headerlink" title="C++运算符重载"></a>C++运算符重载</h1><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/liuchenxu123/p/12538623.html">https://www.cnblogs.com/liuchenxu123/p/12538623.html</a></p>
-<h1 id="死锁和银行家算法"><a href="#死锁和银行家算法" class="headerlink" title="死锁和银行家算法"></a>死锁和银行家算法</h1><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/wyf2017/article/details/80068608">https://blog.csdn.net/wyf2017/article/details/80068608</a></p>
-<h1 id="派生类的构造函数顺序"><a href="#派生类的构造函数顺序" class="headerlink" title="派生类的构造函数顺序"></a>派生类的构造函数顺序</h1><p><a target="_blank" rel="noopener" href="https://www.nowcoder.com/questionTerminal/6348a321452a4318a2da5f3757baf620?source=relative">https://www.nowcoder.com/questionTerminal/6348a321452a4318a2da5f3757baf620?source=relative</a></p>
-<h1 id="内存模型"><a href="#内存模型" class="headerlink" title="内存模型"></a>内存模型</h1><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/JUST__Tw/article/details/118551674">https://blog.csdn.net/JUST__Tw/article/details/118551674</a></p>
-<h1 id="岛屿问题"><a href="#岛屿问题" class="headerlink" title="岛屿问题"></a>岛屿问题</h1><p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/number-of-islands/solutions/13103/dao-yu-shu-liang-by-leetcode/">https://leetcode.cn/problems/number-of-islands/solutions/13103/dao-yu-shu-liang-by-leetcode/</a></p>
-<h1 id="描边效果"><a href="#描边效果" class="headerlink" title="描边效果"></a>描边效果</h1><p>边缘检测</p>
-<h1 id="为什么要有光线追踪"><a href="#为什么要有光线追踪" class="headerlink" title="为什么要有光线追踪"></a>为什么要有光线追踪</h1><ol>
-<li>传统光栅化做阴影效果不好，操作困难</li>
-<li>物体的模糊反射，比如毛玻璃一般的反射即 Glossy Reflection，光线打到Glossy物体在反射</li>
-<li>间接光照(Indirect illumination)，光线在进入人眼前弹射不止一次</li>
-</ol>
-<p>这种光线弹射，对于光栅化来说想要实现比较麻烦，而且也不能保证物理上的正确性。光栅化本质上是一种快速的近似质量较低。<br>光线追踪是一种比较准确的办法质量很高，但是最大的问题就是很慢。</p>
-<h1 id="包围盒BVH"><a href="#包围盒BVH" class="headerlink" title="包围盒BVH"></a>包围盒BVH</h1><p>如何划分？</p>
-<h1 id="渲染管线"><a href="#渲染管线" class="headerlink" title="渲染管线"></a>渲染管线</h1><h1 id="透明效果"><a href="#透明效果" class="headerlink" title="透明效果"></a>透明效果</h1><h1 id="阴影"><a href="#阴影" class="headerlink" title="阴影"></a>阴影</h1><p>LightMap</p>
-<p>ShadowMapping</p>
-<p>PCF</p>
-<p>PCSS</p>
-<p>VSSM</p>
-<h1 id="两个多边形如何判断相交"><a href="#两个多边形如何判断相交" class="headerlink" title="两个多边形如何判断相交"></a>两个多边形如何判断相交</h1><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/StevenKyleLee/article/details/88075814">https://blog.csdn.net/StevenKyleLee/article/details/88075814</a></p>
-<h2 id="一点是否在多边形内"><a href="#一点是否在多边形内" class="headerlink" title="一点是否在多边形内"></a>一点是否在多边形内</h2><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/StevenKyleLee/article/details/88044589">https://blog.csdn.net/StevenKyleLee/article/details/88044589</a></p>
-<p>一般用射线法这里说一下特殊情况：<br><img src="/imgs/SpringBoss/RayPointSpe.png" style="zoom:100%;" ><br>这里的(b)因为中间那个顶点左右两条边都在该顶点的上侧，所以该顶点不识为于射线相交。<br>具体的判定过程应该可以根据多边形绕向找相邻点进行判断。</p>
-<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/WilliamSun0122/article/details/77994526">除射线法外的其他方法</a></p>
-<h1 id="红黑树"><a href="#红黑树" class="headerlink" title="红黑树"></a>红黑树</h1><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/u014454538/article/details/120120216">https://blog.csdn.net/u014454538/article/details/120120216</a></p>
-<h1 id="点到三角形距离"><a href="#点到三角形距离" class="headerlink" title="点到三角形距离"></a>点到三角形距离</h1><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/148511581">https://zhuanlan.zhihu.com/p/148511581</a></p>
-<h1 id="LRU手撸"><a href="#LRU手撸" class="headerlink" title="LRU手撸"></a>LRU手撸</h1><p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/lru-cache-lcci/">https://leetcode.cn/problems/lru-cache-lcci/</a></p>
-<h1 id="统计子树中城市之间最大距离"><a href="#统计子树中城市之间最大距离" class="headerlink" title="统计子树中城市之间最大距离"></a>统计子树中城市之间最大距离</h1><p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/count-subtrees-with-max-distance-between-cities/submissions/412418189/">https://leetcode.cn/problems/count-subtrees-with-max-distance-between-cities/submissions/412418189/</a></p>
-<h1 id="点到三角形面距离"><a href="#点到三角形面距离" class="headerlink" title="点到三角形面距离"></a>点到三角形面距离</h1><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/148511581">https://zhuanlan.zhihu.com/p/148511581</a></p>
-<h1 id="A-算法"><a href="#A-算法" class="headerlink" title="A*算法"></a>A*算法</h1><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/54510444">https://zhuanlan.zhihu.com/p/54510444</a></p>
-<h1 id="进程和线程"><a href="#进程和线程" class="headerlink" title="进程和线程"></a>进程和线程</h1><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/ThinkWon/article/details/102021274">进程和线程</a><br><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_33182418/article/details/121135914">线程调度</a><br><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_41784433/article/details/122194695">进程&#x2F;作业调度</a></p>
-<h2 id="多线程比单线程慢"><a href="#多线程比单线程慢" class="headerlink" title="多线程比单线程慢"></a>多线程比单线程慢</h2><p>存在上下文切换和死锁问题。<br><a target="_blank" rel="noopener" href="https://www.cnblogs.com/xrq730/p/5186609.html">https://www.cnblogs.com/xrq730/p/5186609.html</a></p>
-<h1 id="迭代器"><a href="#迭代器" class="headerlink" title="迭代器"></a>迭代器</h1><h1 id="C-类型转换"><a href="#C-类型转换" class="headerlink" title="C++类型转换"></a>C++类型转换</h1><h1 id="Top-K-问题"><a href="#Top-K-问题" class="headerlink" title="Top K 问题"></a>Top K 问题</h1><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/64627590">https://zhuanlan.zhihu.com/p/64627590</a></p>
-<h1 id="C-11-特性"><a href="#C-11-特性" class="headerlink" title="C++ 11 特性"></a>C++ 11 特性</h1><h2 id="左值右值"><a href="#左值右值" class="headerlink" title="左值右值"></a>左值右值</h2><h2 id="智能指针"><a href="#智能指针" class="headerlink" title="智能指针"></a>智能指针</h2><h2 id="类型推断"><a href="#类型推断" class="headerlink" title="类型推断"></a>类型推断</h2><h2 id="lambda表达式"><a href="#lambda表达式" class="headerlink" title="lambda表达式"></a>lambda表达式</h2><h2 id="类型转换"><a href="#类型转换" class="headerlink" title="类型转换"></a>类型转换</h2><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/417640759">九阳神功！不会C++就看这个！</a></p>
-<h1 id="C-struct和class区别"><a href="#C-struct和class区别" class="headerlink" title="C++ struct和class区别"></a>C++ struct和class区别</h1><ul>
+<h3 id="3-如果函数的返回值是-Class-对象，函数返回时，调用-Class-拷贝构造函数"><a href="#3-如果函数的返回值是-Class-对象，函数返回时，调用-Class-拷贝构造函数" class="headerlink" title="3.如果函数的返回值是 Class 对象，函数返回时，调用 Class 拷贝构造函数"></a>3.如果函数的返回值是 Class 对象，函数返回时，调用 Class 拷贝构造函数</h3><p>即返回值对象由拷贝构造函数初始化。</p>
+<h2 id="C-11-特性"><a href="#C-11-特性" class="headerlink" title="C++ 11 特性"></a>C++ 11 特性</h2><h3 id="左值右值"><a href="#左值右值" class="headerlink" title="左值右值"></a>左值右值</h3><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/qicosmos/p/4283455.html">四行代码！看懂右值引用</a></p>
+<h3 id="智能指针"><a href="#智能指针" class="headerlink" title="智能指针"></a>智能指针</h3><h3 id="类型推断"><a href="#类型推断" class="headerlink" title="类型推断"></a>类型推断</h3><h3 id="lambda表达式"><a href="#lambda表达式" class="headerlink" title="lambda表达式"></a>lambda表达式</h3><h3 id="类型转换"><a href="#类型转换" class="headerlink" title="类型转换"></a>类型转换</h3><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/417640759">九阳神功！不会C++就看这个！</a>（1）const_cast: 把const属性去掉，即将const转换为非const（也可以反过来），const_cast只能用于指针或引用，并且只能改变对象的底层const（顶层const，本身是const，底层const，指向对象const）；</p>
+<p>（2）static_cast: 隐式类型转换，可以实现C++中内置基本数据类型之间的相互转换，enum、struct、 int、char、float等，能进行类层次间的向上类型转换和向下类型转换（向下不安全，因为没有进行动态类型检查）。它不能进行无关类型(如非基类和子类)指针之间的转换，也不能作用包含底层const的对象；</p>
+<p>（3）dynamic_cast：动态类型转换，用于将基类的指针或引用安全地转换成派生类的指针或引用（也可以向上转换），若指针转换失败返回NULL，若引用返回失败抛出bad_cast异常。dynamic_cast是在运行时进行安全性检查；使用dynamic_cast父类一定要有虚函数，否则编译不通过；</p>
+<p>（4）reinterpret_cast：reinterpret是重新解释的意思，此标识符的意思即为将数据的二进制形式重新解释，但是不改变其值，有着和C风格的强制转换同样的能力。它可以转化任何内置的数据类型为其他任何的数据类型，也可以转化任何指针类型为其他的类型。它甚至可以转化内置的数据类型为指针，无须考虑类型安全或者常量的情形。不到万不得已绝对不用（比较不安全）</p>
+<h2 id="C-struct和class区别"><a href="#C-struct和class区别" class="headerlink" title="C++ struct和class区别"></a>C++ struct和class区别</h2><ul>
 <li><p>在 <strong>C 语言</strong> 中，<strong>结构体</strong> 只能存放一些 <strong>变量</strong> 的集合，并不能有 <strong>函数</strong>，但 <strong>C++</strong> 中的结构体对 C 语言中的结构体做了扩充，可以有函数，因此 C++ 中的结构体跟 C++ 中的类很类似。C++ 中的 struct 可以包含成员函数，也能继承，也可以实现多态。</p>
 </li>
 <li><p>但在 C++ 中，使用 class 时，类中的成员默认都是 <strong>private</strong> 属性的，而使用 struct 时，结构体中的成员默认都是 public 属性的。</p>
@@ -428,13 +282,13 @@
 <li><p>C++ 中的 class 可以使用模板，而 struct 不能使用模板。</p>
 </li>
 </ul>
-<h1 id="C-vector"><a href="#C-vector" class="headerlink" title="C++ vector"></a>C++ vector</h1><p>vector.clear 不释放空间</p>
+<h2 id="C-vector"><a href="#C-vector" class="headerlink" title="C++ vector"></a>C++ vector</h2><p>vector.clear 不释放空间</p>
 <ul>
 <li>int size() const:返回向量中元素的个数</li>
 <li>int capacity() const:返回当前向量所能容纳的最大元素值</li>
 <li>int max_size() const:返回最大可允许的vector元素个数值</li>
 </ul>
-<h1 id="C-智能指针和安全性"><a href="#C-智能指针和安全性" class="headerlink" title="C++智能指针和安全性"></a>C++智能指针和安全性</h1><p>智能指针主要解决一个内存泄露的问题，它可以自动地释放内存空间。因为它本身是一个类，当函数结束的时候会调用析构函数，并由析构函数释放内存空间。智能指针分为共享指针(shared_ptr), 独占指针(unique_ptr)和弱指针(weak_ptr)：</p>
+<h2 id="C-智能指针和安全性"><a href="#C-智能指针和安全性" class="headerlink" title="C++智能指针和安全性"></a>C++智能指针和安全性</h2><p>智能指针主要解决一个内存泄露的问题，它可以自动地释放内存空间。因为它本身是一个类，当函数结束的时候会调用析构函数，并由析构函数释放内存空间。智能指针分为共享指针(shared_ptr), 独占指针(unique_ptr)和弱指针(weak_ptr)：</p>
 <p>（1）shared_ptr ，多个共享指针可以指向相同的对象，采用了引用计数的机制，当最后一个引用销毁时，释放内存空间；</p>
 <p>（2）unique_ptr，保证同一时间段内只有一个智能指针能指向该对象（可通过move操作来传递unique_ptr）；</p>
 <p>（3）weak_ptr，用来解决shared_ptr相互引用时的死锁问题，如果说两个shared_ptr相互引用,那么这两个指针的引用计数永远不可能下降为0,资源永远不会释放。它是对对象的一种弱引用，不会增加对象的引用计数，和shared_ptr之间可以相互转化，shared_ptr可以直接赋值给它，它可以通过调用lock函数来获得shared_ptr。</p>
@@ -451,19 +305,183 @@
 <li>weak_ptr是为了解决shared_ptr的循环引用问题，那为什么不用raw ptr来解决这个问题？</li>
 </ul>
 <p>答：一个weak_ptr绑定到shared_ptr之后不会增加引用计数，一旦最后一个指向对象的shared_ptr被销毁，对象就会被释放，即使weak_ptr指向对象，也还是会释放；raw指针，当对象销毁之后会变成悬浮指针。</p>
-<h1 id="C-野指针"><a href="#C-野指针" class="headerlink" title="C++野指针"></a>C++野指针</h1><h1 id="C-深拷贝浅拷贝"><a href="#C-深拷贝浅拷贝" class="headerlink" title="C++ 深拷贝浅拷贝"></a>C++ 深拷贝浅拷贝</h1><h1 id="C-内存模型"><a href="#C-内存模型" class="headerlink" title="C++ 内存模型"></a>C++ 内存模型</h1><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/yunlambert/p/9876491.html">https://www.cnblogs.com/yunlambert/p/9876491.html</a><br>空类大小是1，为了标识对象<br><a target="_blank" rel="noopener" href="https://blog.csdn.net/li975242487/article/details/121395693">不同类型占用的字节</a></p>
-<h1 id="TAA-temporal-anti-aliasing"><a href="#TAA-temporal-anti-aliasing" class="headerlink" title="TAA(temporal anti-aliasing)"></a>TAA(temporal anti-aliasing)</h1><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/425233743">TAA</a><br><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/147567747">快速理解Tone Mapping</a><br><a target="_blank" rel="noopener" href="http://www.ownself.org/blog/2011/tone-mapping.html">Tone Mapping</a><br><a target="_blank" rel="noopener" href="https://www.cnblogs.com/crazii/p/7244300.html">TAA GHOSTING 的相关问题</a><br>Tone Mapping 是HDR算法的一部分，是用来将渲染出的场景亮度域映射到一个合理的亮度域空间。</p>
+<h2 id="C-深拷贝浅拷贝"><a href="#C-深拷贝浅拷贝" class="headerlink" title="C++ 深拷贝浅拷贝"></a>C++ 深拷贝浅拷贝</h2><p>（1）拷贝构造函数的作用就是定义了当我们用同类型的另外一个对象初始化本对象的时候做了什么，在某些情况下，如果我们不自己定义拷贝构造函数，使用默认的拷贝构造函数，就会出错。比如一个类里面有一个指针，如果使用默认的拷贝构造函数，会将指针拷贝过去，即两个指针指向同个对象，那么其中一个类对象析构之后，这个指针也会被delete掉，那么另一个类里面的指针就会变成<strong>野指针（悬浮指针）</strong>；</p>
+<p>（2）这也正是深拷贝和浅拷贝的区别，浅拷贝只是简单直接地复制指向某个对象的指针，而不复制对象本身，新旧对象还是共享同一块内存。 但深拷贝会另外创造一个一模一样的对象，新对象跟原对象不共享内存，修改新对象不会改到原对象。</p>
+<h2 id="C-野指针"><a href="#C-野指针" class="headerlink" title="C++野指针"></a>C++野指针</h2><p>指针指向了一块非法内存区域(悬空或者说未知区域)。</p>
+<h2 id="C-内存模型"><a href="#C-内存模型" class="headerlink" title="C++ 内存模型"></a>C++ 内存模型</h2><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/yunlambert/p/9876491.html">https://www.cnblogs.com/yunlambert/p/9876491.html</a><br>空类大小是1，为了标识对象<br><a target="_blank" rel="noopener" href="https://blog.csdn.net/li975242487/article/details/121395693">不同类型占用的字节</a></p>
+<h2 id="C-运算符重载"><a href="#C-运算符重载" class="headerlink" title="C++运算符重载"></a>C++运算符重载</h2><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/liuchenxu123/p/12538623.html">https://www.cnblogs.com/liuchenxu123/p/12538623.html</a></p>
+<h2 id="派生类的构造函数顺序"><a href="#派生类的构造函数顺序" class="headerlink" title="派生类的构造函数顺序"></a>派生类的构造函数顺序</h2><p><a target="_blank" rel="noopener" href="https://www.nowcoder.com/questionTerminal/6348a321452a4318a2da5f3757baf620?source=relative">https://www.nowcoder.com/questionTerminal/6348a321452a4318a2da5f3757baf620?source=relative</a></p>
+<h2 id="内存模型"><a href="#内存模型" class="headerlink" title="内存模型"></a>内存模型</h2><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/JUST__Tw/article/details/118551674">https://blog.csdn.net/JUST__Tw/article/details/118551674</a></p>
+<h2 id="迭代器"><a href="#迭代器" class="headerlink" title="迭代器"></a>迭代器</h2><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/QIANGWEIYUAN/article/details/89184546">https://blog.csdn.net/QIANGWEIYUAN/article/details/89184546</a></p>
+<h2 id="红黑树"><a href="#红黑树" class="headerlink" title="红黑树"></a>红黑树</h2><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/u014454538/article/details/120120216">https://blog.csdn.net/u014454538/article/details/120120216</a></p>
+<h1 id="图形学部分"><a href="#图形学部分" class="headerlink" title="图形学部分"></a>图形学部分</h1><h2 id="光照模型"><a href="#光照模型" class="headerlink" title="光照模型"></a>光照模型</h2><ul>
+<li>emissive</li>
+<li>specular</li>
+<li>diffuse</li>
+<li>ambient</li>
+</ul>
+<h3 id="环境光"><a href="#环境光" class="headerlink" title="环境光"></a>环境光</h3><p>通常用系统定值，场景物体通用</p>
+<img src="/imgs/SpringBoss/C_ambient.png">
+
+<h3 id="自发光"><a href="#自发光" class="headerlink" title="自发光"></a>自发光</h3><p>材质决定</p>
+<img src="/imgs/SpringBoss/C_emissive.png">
+
+<h3 id="漫反射"><a href="#漫反射" class="headerlink" title="漫反射"></a>漫反射</h3><p>根据 Lambert‘s law</p>
+<img src="/imgs/SpringBoss/C_diffuse.png">
+
+<h3 id="高光反射"><a href="#高光反射" class="headerlink" title="高光反射"></a>高光反射</h3><p>我们有很多变量：normal，eyeDir，lightDir，refDir</p>
+<h4 id="已知-normal，lightDir-求-refDir"><a href="#已知-normal，lightDir-求-refDir" class="headerlink" title="已知 normal，lightDir 求 refDir"></a>已知 normal，lightDir 求 refDir</h4><img src="/imgs/SpringBoss/NormalLightEyeRef.png">
+
+<img src="/imgs/SpringBoss/RefEqu.png">
+
+<h5 id="Phong-模型"><a href="#Phong-模型" class="headerlink" title="Phong 模型"></a>Phong 模型</h5><img src="/imgs/SpringBoss/PhongSpecular.png">
+
+<h5 id="Blinn-Phong"><a href="#Blinn-Phong" class="headerlink" title="Blinn-Phong"></a>Blinn-Phong</h5><img src="/imgs/SpringBoss/BlinnPhong.png">
+
+<h2 id="复习下线性代数"><a href="#复习下线性代数" class="headerlink" title="复习下线性代数"></a>复习下线性代数</h2><h3 id="坐标系"><a href="#坐标系" class="headerlink" title="坐标系"></a>坐标系</h3><p>坐标系分为<em>左手坐标系</em>和<em>右手坐标系</em></p>
+<img src="/imgs/SpringBoss/LeftRight.png" style="zoom:60%;" >
+
+<p>二者在 z 轴方向上有所不同。<br>在 Unity 中<strong>模型空间</strong>和<strong>世界空间</strong>为左手系，<strong>观察空间</strong>为右手系。</p>
+<h3 id="矩阵"><a href="#矩阵" class="headerlink" title="矩阵"></a>矩阵</h3><p>矩阵又分为行矩阵和列矩阵。<br><em><strong><u>矩阵的左乘&#x2F;右乘，表示该矩阵在乘号的左侧&#x2F;右侧。</u></strong></em></p>
+<h4 id="行矩阵"><a href="#行矩阵" class="headerlink" title="行矩阵"></a>行矩阵</h4><img src="/imgs/SpringBoss/rowMatrix.png" >
+
+<p>表示 1xn 的矩阵，行矩阵<strong>左乘</strong>，变换矩阵乘在右侧-&gt; <code>1xn dot nxn = 1xn</code></p>
+<h5 id="齐次式"><a href="#齐次式" class="headerlink" title="齐次式"></a>齐次式</h5><ul>
+<li><p>矢量&#x2F;点</p>
+<img src="/imgs/SpringBoss/rowMatrixHC.png">
+</li>
+<li><p>变换矩阵</p>
+<img src="/imgs/SpringBoss/rowMatrixHCT.png" ></li>
+</ul>
+<h4 id="列矩阵"><a href="#列矩阵" class="headerlink" title="列矩阵"></a>列矩阵</h4><p><u><em><strong>Unity就是列矩阵！</strong></em></u></p>
+<img src="/imgs/SpringBoss/columnMatrix.png" >
+
+<p>表示 nx1 的矩阵，列矩阵<strong>右乘</strong>，变换矩阵乘在其左侧 <code>nxn dot nx1 = nx1</code></p>
+<h5 id="齐次式-1"><a href="#齐次式-1" class="headerlink" title="齐次式"></a>齐次式</h5><ul>
+<li><p>矢量&#x2F;点</p>
+<img src="/imgs/SpringBoss/colMHC.png">
+</li>
+<li><p>变换矩阵</p>
+</li>
+</ul>
+<img src="/imgs/SpringBoss/colMHCT.png">
+
+<h2 id="矩阵的几何意义变换"><a href="#矩阵的几何意义变换" class="headerlink" title="矩阵的几何意义变换"></a>矩阵的几何意义变换</h2><p>变换优先级为：缩放&gt;旋转&gt;位移</p>
+<h3 id="缩放"><a href="#缩放" class="headerlink" title="缩放"></a>缩放</h3><img src="/imgs/SpringBoss/scale.png">
+
+<h3 id="旋转"><a href="#旋转" class="headerlink" title="旋转"></a>旋转</h3><p>在<strong>左手系</strong>中，绕轴<strong>旋转遵从左手手旋转准则</strong>：大拇指为轴向，四指为旋转方向。<br>在<strong>右手系</strong>中，绕轴<strong>旋转遵从右手旋转准则</strong>：大拇指为轴向，四指为旋转方向。</p>
+<ul>
+<li>绕 x 轴</li>
+</ul>
+<img src="/imgs/SpringBoss/rotationX.png">
+
+<ul>
+<li>绕 y 轴</li>
+</ul>
+<img src="/imgs/SpringBoss/rotationY.png">
+
+<ul>
+<li>绕 z 轴</li>
+</ul>
+<img src="/imgs/SpringBoss/rotationZ.png">
+
+<h4 id="欧拉角旋转顺序"><a href="#欧拉角旋转顺序" class="headerlink" title="欧拉角旋转顺序"></a>欧拉角旋转顺序</h4><p>因为不同轴旋转相乘得到变换矩阵不同。</p>
+<ul>
+<li>外旋和内旋<br>假定一组旋转顺序 x-&gt;y-&gt;z 为内旋，则外旋为 z-&gt;x-&gt;y。<br>一组对应的外旋内旋结果是一样的。</li>
+</ul>
+<p><strong>Unity旋转顺序是ZXY</strong>。</p>
+<h3 id="位移"><a href="#位移" class="headerlink" title="位移"></a>位移</h3><img src="/imgs/SpringBoss/translate.png">
+
+<h3 id="变换顺序"><a href="#变换顺序" class="headerlink" title="变换顺序"></a>变换顺序</h3><img src="/imgs/SpringBoss/transform.png">
+
+<h2 id="给定-4x4-矩阵，求缩放，旋转、平移矩阵"><a href="#给定-4x4-矩阵，求缩放，旋转、平移矩阵" class="headerlink" title="给定 4x4 矩阵，求缩放，旋转、平移矩阵"></a><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_39300235/article/details/105790743">给定 4x4 矩阵，求缩放，旋转、平移矩阵</a></h2><p>就以列矩阵为例解吧，因为大多都是列矩阵运算。<br><strong>M&#x3D;TRS</strong></p>
+<img src="/imgs/SpringBoss/4x4Matrix.png">
+
+<h3 id="T矩阵"><a href="#T矩阵" class="headerlink" title="T矩阵"></a>T矩阵</h3><p>列矩阵最右侧就是 translate 变换</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">T[<span class="number">0</span>][<span class="number">3</span>]=M[<span class="number">0</span>][<span class="number">3</span>]/M[<span class="number">3</span>][<span class="number">3</span>];</span><br><span class="line">T[<span class="number">1</span>][<span class="number">3</span>]=M[<span class="number">1</span>][<span class="number">3</span>]/M[<span class="number">3</span>][<span class="number">3</span>];</span><br><span class="line">T[<span class="number">2</span>][<span class="number">3</span>]=M[<span class="number">1</span>][<span class="number">3</span>]/M[<span class="number">3</span>][<span class="number">3</span>];</span><br></pre></td></tr></table></figure>
+
+<h3 id="R矩阵"><a href="#R矩阵" class="headerlink" title="R矩阵"></a>R矩阵</h3><p>之后我们对 M 矩阵剔除平移变换，得到只有缩放和旋转的矩阵<em>M</em>。<br>此时 <em>M</em>&#x3D;RS；<br>我们只要算出旋转矩阵就行了，因为 R 可以用<strong>旋转矩阵的逆矩阵</strong>计算得到：</p>
+<img src="/imgs/SpringBoss/4x4Rn.png">
+
+<p>接下来要分解出 R 矩阵，我们利用 ”Polar decomposition(极分解)“，可以证明矩阵<em>M</em>的极分解为 <u>旋转R</u> 和 <u>缩放S</u> 。该方法通过对 <em>M</em> 的逆的转置进行连续平均来计算，直到<strong>收敛</strong>，此时 <em><strong>M</strong>i <strong>&#x3D; R</strong></em>。</p>
+<img src="/imgs/SpringBoss/Polar.png">
+
+<p>当矩阵只有旋转变换时，旋转R 的转置和R的逆相等，达到收敛状态。<br>因为旋转矩阵为<strong>正交矩阵</strong>。Shoemake和Duff（1992）讨论了该级数收敛的证明，所得矩阵是最接近M的正交矩阵，这是理想的特性。为了计算该序列，我们迭代应用公式，直到连续项之间的差很小或执行了固定的迭代次数为止。 实际上，该系列通常会很快收敛。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">Float norm;</span><br><span class="line"><span class="type">int</span> count = <span class="number">0</span>;</span><br><span class="line">Matrix4x4 R = M;</span><br><span class="line"><span class="keyword">do</span></span><br><span class="line">&#123;</span><br><span class="line">    Matrix4x4 Rnext;</span><br><span class="line">    Matrix4x4 Rit = <span class="built_in">Inverse</span>(<span class="built_in">Transpose</span>(R));    <span class="comment">// 转置的逆</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">0</span>; i &lt; <span class="number">4</span>; ++i)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> j = <span class="number">0</span>; j &lt; <span class="number">4</span>; ++j)</span><br><span class="line">        &#123;</span><br><span class="line">            Rnext.m[i][j] = <span class="number">0.5f</span> * (R.m[i][j]+Rit.m[i][j]);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// compute the sub between Mi and Mi+1</span></span><br><span class="line">    norm = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">0</span>; i &lt; <span class="number">3</span>; ++i)</span><br><span class="line">    &#123;</span><br><span class="line">        Float n = <span class="built_in">abs</span>(R.m[i][<span class="number">0</span>] - Rnext.m[i][<span class="number">0</span>]) +</span><br><span class="line">            <span class="built_in">abs</span>(R.m[i][<span class="number">1</span>] - Rnext.m[i][<span class="number">1</span>]) +</span><br><span class="line">            <span class="built_in">abs</span>(R.m[i][<span class="number">2</span>] - Rnext.m[i][<span class="number">2</span>]);</span><br><span class="line">        norm = <span class="built_in">max</span>(norm,n);</span><br><span class="line">    &#125;</span><br><span class="line">    R = Rnext;</span><br><span class="line">&#125;<span class="keyword">while</span>(++count &lt; <span class="number">100</span> &amp;&amp; norm &gt; <span class="number">0.0001</span>) <span class="comment">// 当迭代次数过多，或者连续项差距足够小，退出循环。</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="S矩阵"><a href="#S矩阵" class="headerlink" title="S矩阵"></a>S矩阵</h3><p>得到 R 矩阵后 S矩阵就很简单</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">S = Matrix4x4::<span class="built_in">Mul</span>(<span class="built_in">Inverse</span>(R),M);</span><br></pre></td></tr></table></figure>
+
+<h2 id="MVP矩阵"><a href="#MVP矩阵" class="headerlink" title="MVP矩阵"></a>MVP矩阵</h2><h3 id="Model"><a href="#Model" class="headerlink" title="Model"></a>Model</h3><p>把顶点坐标从局部空间变换到全局空间。</p>
+<ul>
+<li><p>行矩阵</p>
+<img src="/imgs/SpringBoss/ModelRow.png">
+</li>
+<li><p>列矩阵</p>
+<img src="/imgs/SpringBoss/ModelCol.png"></li>
+</ul>
+<h3 id="view-Matrix-推导"><a href="#view-Matrix-推导" class="headerlink" title="view-Matrix 推导"></a>view-Matrix 推导</h3><p>在图形渲染中我们要把3D的场景渲染成一张2D的图片，而这张图片是从 Camera 的视角出发，所以为了方便渲染我们做一个变换，把摄影机作为一个新的空间的原点，令摄影机观测方向为-z方向也就是我们常说的 视图变换(Viewing Transform)。<br>我们对场景中的物体都进行这样一个变换就可以得到，观察空间下的物体的坐标信息，即以 Camera 为原点，Camera 上方向为 y 轴，Camera 视线为 -z 轴，Camera 右侧为 x轴的坐标空间下物体信息。<br><strong>注意这里观察空间通常为右手系！而非和世界空间&#x2F;模型空间所采用的左手系！</strong><br><strong>接下来推导为列矩阵运算！</strong></p>
+<p>这个变换主要分为两步一步是平移，一步是旋转。<br>设 Camera 坐标为<img src="/imgs/SpringBoss/posE.png" style="zoom:50%;" ><br>则平移矩阵为<br><img src="/imgs/SpringBoss/viewT.png" style="zoom:50%"></p>
+<p>现在我们把摄影机放到了原点位置，现在我们只需要把轴向调整即可。<br><em>注意这里变换推导过程是先平移后旋转，和平时计算规定的 Transform 先 scale 再 rotation最后  translate 的顺序不同。</em><br>我们假设 Camera up 方向矢量为 <em>t</em>，观察方向为 <em>g</em>，则其 x 轴 <em>e</em> 为 <em>g</em>x<em>t</em>。<br><img src="/imgs/SpringBoss/cameraETG.png" style="zoom:50%"><br>我们要让其轴向与 xyz 轴对齐，因为现在只是把物体进行了移动，坐标信息的基础轴还是世界坐标系而非 camera坐标系的三轴。<br>我们只需把 <code>t-&gt;y</code>,<code>g-&gt; -z</code>,<code>e-&gt;x</code> 其中 <code>e = gxt</code>。<br>这样虽然可以进行计算，但是十分复杂。<br>我们观察到 既然TEG是坐标轴，就意味着他们三者垂直，点积为零，可以构成正交矩阵。<br>那么 <code>t-&gt;y</code>,<code>g-&gt; -z</code>,<code>e-&gt;x</code> 的逆变换 <code>y-&gt;t</code>,<code>-z -&gt;g</code>,<code>x-&gt;e</code> 是很好计算的。<br>而我们知道了逆矩阵，就可以知道正交矩阵的原矩阵。<br>正交矩阵性质：<br><img src="/imgs/SpringBoss/orthM.png" style="zoom:20"></p>
+<p> 所以<br><img src="/imgs/SpringBoss/Rview.png" style="zoom:80%"></p>
+<p>最后<br><img src="/imgs/SpringBoss/Mview.png" style="zoom:20"></p>
+<h3 id="Projection-Matrix"><a href="#Projection-Matrix" class="headerlink" title="Projection Matrix"></a>Projection Matrix</h3><p>我们现在已经放好了物体，也以 Camera 的角度出发了，现在我们要从 <strong>View space( 观察空间 )</strong> 到 <strong>Clip Space( 裁剪空间&#x2F;齐次裁剪空间 )</strong></p>
+<h2 id="TBN-矩阵"><a href="#TBN-矩阵" class="headerlink" title="TBN 矩阵"></a>TBN 矩阵</h2><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/412555049">TBN矩阵不错的Blog</a></p>
+<h2 id="2D平面三角形，给出算法，生成三角形内随机一点"><a href="#2D平面三角形，给出算法，生成三角形内随机一点" class="headerlink" title="2D平面三角形，给出算法，生成三角形内随机一点"></a>2D平面三角形，给出算法，生成三角形内随机一点</h2><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/TenosDoIt/p/4025221.html">https://www.cnblogs.com/TenosDoIt/p/4025221.html</a></p>
+<h2 id="前向渲染和延迟渲染"><a href="#前向渲染和延迟渲染" class="headerlink" title="前向渲染和延迟渲染"></a>前向渲染和延迟渲染</h2><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/28489928">https://zhuanlan.zhihu.com/p/28489928</a></p>
+<h2 id="LUT-表"><a href="#LUT-表" class="headerlink" title="LUT 表"></a>LUT 表</h2><p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/fdec2a5e889f">https://www.jianshu.com/p/fdec2a5e889f</a></p>
+<h2 id="描边效果"><a href="#描边效果" class="headerlink" title="描边效果"></a>描边效果</h2><p>边缘检测</p>
+<h2 id="为什么要有光线追踪"><a href="#为什么要有光线追踪" class="headerlink" title="为什么要有光线追踪"></a>为什么要有光线追踪</h2><ol>
+<li>传统光栅化做阴影效果不好，操作困难</li>
+<li>物体的模糊反射，比如毛玻璃一般的反射即 Glossy Reflection，光线打到Glossy物体在反射</li>
+<li>间接光照(Indirect illumination)，光线在进入人眼前弹射不止一次</li>
+</ol>
+<p>这种光线弹射，对于光栅化来说想要实现比较麻烦，而且也不能保证物理上的正确性。光栅化本质上是一种快速的近似质量较低。<br>光线追踪是一种比较准确的办法质量很高，但是最大的问题就是很慢。</p>
+<h2 id="包围盒BVH"><a href="#包围盒BVH" class="headerlink" title="包围盒BVH"></a>包围盒BVH</h2><p>如何划分？</p>
+<h2 id="渲染管线"><a href="#渲染管线" class="headerlink" title="渲染管线"></a>渲染管线</h2><h2 id="透明效果"><a href="#透明效果" class="headerlink" title="透明效果"></a>透明效果</h2><h2 id="阴影"><a href="#阴影" class="headerlink" title="阴影"></a>阴影</h2><p>LightMap</p>
+<p>ShadowMapping</p>
+<p>PCF</p>
+<p>PCSS</p>
+<p>VSSM</p>
+<h2 id="两个多边形如何判断相交"><a href="#两个多边形如何判断相交" class="headerlink" title="两个多边形如何判断相交"></a>两个多边形如何判断相交</h2><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/StevenKyleLee/article/details/88075814">https://blog.csdn.net/StevenKyleLee/article/details/88075814</a></p>
+<h3 id="一点是否在多边形内"><a href="#一点是否在多边形内" class="headerlink" title="一点是否在多边形内"></a>一点是否在多边形内</h3><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/StevenKyleLee/article/details/88044589">https://blog.csdn.net/StevenKyleLee/article/details/88044589</a></p>
+<p>一般用射线法这里说一下特殊情况：<br><img src="/imgs/SpringBoss/RayPointSpe.png" style="zoom:100%;" ><br>这里的(b)因为中间那个顶点左右两条边都在该顶点的上侧，所以该顶点不识为于射线相交。<br>具体的判定过程应该可以根据多边形绕向找相邻点进行判断。</p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/WilliamSun0122/article/details/77994526">除射线法外的其他方法</a></p>
+<h2 id="TAA-temporal-anti-aliasing"><a href="#TAA-temporal-anti-aliasing" class="headerlink" title="TAA(temporal anti-aliasing)"></a>TAA(temporal anti-aliasing)</h2><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/64993622">TAA in DX12</a><br><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/147567747">快速理解Tone Mapping</a><br><a target="_blank" rel="noopener" href="http://www.ownself.org/blog/2011/tone-mapping.html">Tone Mapping</a><br><a target="_blank" rel="noopener" href="https://www.cnblogs.com/crazii/p/7244300.html">TAA GHOSTING 的相关问题</a><br>Tone Mapping 是HDR算法的一部分，是用来将渲染出的场景亮度域映射到一个合理的亮度域空间。</p>
 <blockquote>
 <p>然后值得一提的是TAA在管线中的位置，虚幻的TAA是放在其它的后处理之前的，这么可以防止其它后处理出现的闪烁，但是因为高光很容易闪，我们又希望能在低动态范围处理，所以这里虚幻选择的是先tonemap，再算超采样，最后逆tonemap输出，去做其他的后处理。</p>
 </blockquote>
 <p>这里是说如果不做ToonMapping把HDR压倒LDR做TAA，因为HDR范围比LDR，然后TAA在混合在一起就会“亮的很花”，所以先Toon Mapping到LDR做一下TAA在 逆Toonmap输出，这样还得到了抗锯齿的输出，后处理做的更好了。这里的HDR和Toonmap我思考了很久，因为我没明白Toonmap，toonmap就是把hdr变成ldr，hdr虽然表示了更多的颜色，但是我们在屏幕空间显示还是0~1，所以要做映射，直接线性映射不行，因为人对暗部感知明显，而且自然界比LDR亮度大得多，所以我们做了很多调整。</p>
-<h2 id="颜色LDR和HDR"><a href="#颜色LDR和HDR" class="headerlink" title="颜色LDR和HDR"></a>颜色LDR和HDR</h2><p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/fdec2a5e889f">LUT简述</a><br><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/80253409">HDR和Tone Mapping</a></p>
-<h2 id="几何走样和着色走样"><a href="#几何走样和着色走样" class="headerlink" title="几何走样和着色走样"></a>几何走样和着色走样</h2><ul>
+<h3 id="颜色LDR和HDR"><a href="#颜色LDR和HDR" class="headerlink" title="颜色LDR和HDR"></a>颜色LDR和HDR</h3><p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/fdec2a5e889f">LUT简述</a><br><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/80253409">HDR和Tone Mapping</a></p>
+<h3 id="几何走样和着色走样"><a href="#几何走样和着色走样" class="headerlink" title="几何走样和着色走样"></a>几何走样和着色走样</h3><ul>
 <li><strong>几何走样：</strong>几何覆盖函数采样不足，即俗称的边缘锯齿，一般发生在<strong>光栅化阶段</strong>。</li>
 <li><strong>着色走样：</strong>渲染方程的采样不足，因为<em>渲染方程也是连续函数</em>，对某些部分在<em>空间变化较快（高频部分）采样不足也会造成走样</em>，反映在视觉上一般是图像闪烁或噪点，这类走样称之为着色走样，一般发生在<strong>各种着色阶段</strong>。</li>
 </ul>
-<h1 id="Z-fighting"><a href="#Z-fighting" class="headerlink" title="Z-fighting"></a>Z-fighting</h1><h1 id="景深"><a href="#景深" class="headerlink" title="景深"></a>景深</h1><p>所谓景深就是照片背景的虚化程度，规律是：光圈越大，景深越浅，背景越模糊；光圈越小，景深越深，背景越清晰。<br><a target="_blank" rel="noopener" href="http://www.ownself.org/blog/2010/jing-shen-depth-of-field.html">景深</a></p>
-<h1 id="Unity-UGUI不规则区域点击问题"><a href="#Unity-UGUI不规则区域点击问题" class="headerlink" title="Unity UGUI不规则区域点击问题"></a>Unity UGUI不规则区域点击问题</h1><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/msxh/p/9283266.html">https://www.cnblogs.com/msxh/p/9283266.html</a></p>
+<h2 id="Z-fighting"><a href="#Z-fighting" class="headerlink" title="Z-fighting"></a>Z-fighting</h2><h2 id="景深"><a href="#景深" class="headerlink" title="景深"></a>景深</h2><p>所谓景深就是照片背景的虚化程度，规律是：光圈越大，景深越浅，背景越模糊；光圈越小，景深越深，背景越清晰。<br><a target="_blank" rel="noopener" href="http://www.ownself.org/blog/2010/jing-shen-depth-of-field.html">景深</a></p>
+<h2 id="点到三角形距离"><a href="#点到三角形距离" class="headerlink" title="点到三角形距离"></a>点到三角形距离</h2><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/148511581">https://zhuanlan.zhihu.com/p/148511581</a><br><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/148511581">点到三角形面距离</a></p>
+<h1 id="计组部分"><a href="#计组部分" class="headerlink" title="计组部分"></a>计组部分</h1><h3 id="大端和小端模式"><a href="#大端和小端模式" class="headerlink" title="大端和小端模式"></a>大端和小端模式</h3><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/wei_cheng18/article/details/79856207">https://blog.csdn.net/wei_cheng18/article/details/79856207</a></p>
+<h3 id="Cache-命中率"><a href="#Cache-命中率" class="headerlink" title="Cache 命中率"></a>Cache 命中率</h3><h1 id="编译原理"><a href="#编译原理" class="headerlink" title="编译原理"></a>编译原理</h1><h2 id="逆波兰式"><a href="#逆波兰式" class="headerlink" title="逆波兰式"></a><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_43919932/article/details/103327530">逆波兰式</a></h2><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/tangqs/archive/2012/05/18/2507708.html">https://www.cnblogs.com/tangqs/archive/2012/05/18/2507708.html</a><br> 如果是右单目运算符，直接入存储器栈；比如 阶乘！与百分号%</p>
+<h1 id="OS"><a href="#OS" class="headerlink" title="OS"></a>OS</h1><h2 id="进程和线程"><a href="#进程和线程" class="headerlink" title="进程和线程"></a>进程和线程</h2><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/ThinkWon/article/details/102021274">进程和线程</a><br><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_33182418/article/details/121135914">线程调度</a><br><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_41784433/article/details/122194695">进程&#x2F;作业调度</a></p>
+<h3 id="多线程比单线程慢"><a href="#多线程比单线程慢" class="headerlink" title="多线程比单线程慢"></a>多线程比单线程慢</h3><p>存在上下文切换和死锁问题。<br><a target="_blank" rel="noopener" href="https://www.cnblogs.com/xrq730/p/5186609.html">https://www.cnblogs.com/xrq730/p/5186609.html</a></p>
+<h2 id="Linux-进程通讯"><a href="#Linux-进程通讯" class="headerlink" title="Linux 进程通讯"></a>Linux 进程通讯</h2><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_44443986/article/details/115065540">https://blog.csdn.net/qq_44443986/article/details/115065540</a></p>
+<h2 id="死锁和银行家算法"><a href="#死锁和银行家算法" class="headerlink" title="死锁和银行家算法"></a>死锁和银行家算法</h2><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/wyf2017/article/details/80068608">https://blog.csdn.net/wyf2017/article/details/80068608</a></p>
+<h1 id="概率论"><a href="#概率论" class="headerlink" title="概率论"></a>概率论</h1><h2 id="期望计算和带保底卡池期望计算"><a href="#期望计算和带保底卡池期望计算" class="headerlink" title="期望计算和带保底卡池期望计算"></a>期望计算和带保底卡池期望计算</h2><h1 id="算法"><a href="#算法" class="headerlink" title="算法"></a>算法</h1><h2 id="LRU手撸"><a href="#LRU手撸" class="headerlink" title="LRU手撸"></a>LRU手撸</h2><p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/lru-cache-lcci/">https://leetcode.cn/problems/lru-cache-lcci/</a></p>
+<h2 id="统计子树中城市之间最大距离"><a href="#统计子树中城市之间最大距离" class="headerlink" title="统计子树中城市之间最大距离"></a>统计子树中城市之间最大距离</h2><p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/count-subtrees-with-max-distance-between-cities/submissions/412418189/">https://leetcode.cn/problems/count-subtrees-with-max-distance-between-cities/submissions/412418189/</a></p>
+<h2 id="A-算法"><a href="#A-算法" class="headerlink" title="A*算法"></a>A*算法</h2><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/54510444">https://zhuanlan.zhihu.com/p/54510444</a></p>
+<h2 id="岛屿问题"><a href="#岛屿问题" class="headerlink" title="岛屿问题"></a>岛屿问题</h2><p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/number-of-islands/solutions/13103/dao-yu-shu-liang-by-leetcode/">https://leetcode.cn/problems/number-of-islands/solutions/13103/dao-yu-shu-liang-by-leetcode/</a></p>
+<h2 id="Top-K-问题"><a href="#Top-K-问题" class="headerlink" title="Top K 问题"></a>Top K 问题</h2><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/64627590">https://zhuanlan.zhihu.com/p/64627590</a></p>
+<h1 id="C-和-Unity"><a href="#C-和-Unity" class="headerlink" title="C# 和 Unity"></a>C# 和 Unity</h1><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_21407523/article/details/108814300">CSDN不错的面试总结</a><br><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/554529423">知乎上的Unity面试题</a></p>
+<h2 id="反射"><a href="#反射" class="headerlink" title="反射"></a>反射</h2><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/wangshenhe/p/3256657.html">https://www.cnblogs.com/wangshenhe/p/3256657.html</a></p>
+<h2 id="工厂模式"><a href="#工厂模式" class="headerlink" title="工厂模式"></a>工厂模式</h2><p><a target="_blank" rel="noopener" href="https://wittykyrie.github.io/posts/Factor-Pattern/">https://wittykyrie.github.io/posts/Factor-Pattern/</a><br><a target="_blank" rel="noopener" href="https://blog.csdn.net/cxy_zxl/article/details/116695023">简单工厂模式、工厂方法模式优缺点</a></p>
+<h3 id="抽象工厂模式"><a href="#抽象工厂模式" class="headerlink" title="抽象工厂模式"></a>抽象工厂模式</h3><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/m0_46502538/article/details/120343296">https://blog.csdn.net/m0_46502538/article/details/120343296</a></p>
+<h2 id="UGUI-如何实现UI物体淡入淡出"><a href="#UGUI-如何实现UI物体淡入淡出" class="headerlink" title="UGUI 如何实现UI物体淡入淡出?"></a>UGUI 如何实现UI物体淡入淡出?</h2><ul>
+<li>Text，Image这些组件都有继承Graphic类，这个类提供了CrossFadeAlpha()方法，可以做透明度渐变。</li>
+<li>但如果界面东西多了，要获取每个Graphic是挺麻烦了。其实还有一个很简便的方法，用起来跟NGUI差不多。就是CanvasGruop组件，把这个组件放到界面根节点上，对这个组件的alpha做改变就行了。看看官方文档的解释，</li>
+</ul>
+<h2 id="ESC-框架"><a href="#ESC-框架" class="headerlink" title="ESC 框架"></a>ESC 框架</h2><p><a target="_blank" rel="noopener" href="https://blog.codingnow.com/2017/06/overwatch_ecs.html">https://blog.codingnow.com/2017/06/overwatch_ecs.html</a></p>
+<h1 id="Unity"><a href="#Unity" class="headerlink" title="Unity"></a>Unity</h1><h2 id="Unity-UGUI不规则区域点击问题"><a href="#Unity-UGUI不规则区域点击问题" class="headerlink" title="Unity UGUI不规则区域点击问题"></a>Unity UGUI不规则区域点击问题</h2><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/msxh/p/9283266.html">https://www.cnblogs.com/msxh/p/9283266.html</a></p>
+<h2 id="当一个细小的高速物体撞向另一个较大的物体时，会出现什么情况？如何避免？"><a href="#当一个细小的高速物体撞向另一个较大的物体时，会出现什么情况？如何避免？" class="headerlink" title="当一个细小的高速物体撞向另一个较大的物体时，会出现什么情况？如何避免？"></a>当一个细小的高速物体撞向另一个较大的物体时，会出现什么情况？如何避免？</h2><p>碰撞检测失败，会直接穿透</p>
+<p>避免方法：<br>（1）增大细小物体的碰撞体（不建议这样做）<br>（2）使用射线检测，检测他们之间的距离<br>（3）FixedUpdate频率修改，可以physics time减小（同样不建议）<br>（4）改变物体的速度（废话）<br>（5）将检测方式改为连续检测，rigifdbody.collisionDetectionMode &#x3D;CollisionDetectionMode.Continuous;<br>或者是动态连续检测（CollisionDetectionMode.ContinuousDynamic）<br>（6）代码限制，加大计算量 提前计算好下一个位置</p>
 
       
 
