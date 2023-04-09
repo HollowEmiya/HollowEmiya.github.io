@@ -8,12 +8,12 @@
   <link rel="dns-prefetch" href="http://example.com">
   <title>春招寄语 | Emiya Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="图形学全忘光了，技美笔试直接寄了。把面试题整理一下吧……">
+  <meta name="description" content="图形学全忘光了，技美笔试直接寄了。把面试题整理一下吧……对于多线程和图形API了解不够需要继续学习">
 <meta property="og:type" content="article">
 <meta property="og:title" content="春招寄语">
 <meta property="og:url" content="http://example.com/2023/03/04/SpringBoss/index.html">
 <meta property="og:site_name" content="Emiya Blog">
-<meta property="og:description" content="图形学全忘光了，技美笔试直接寄了。把面试题整理一下吧……">
+<meta property="og:description" content="图形学全忘光了，技美笔试直接寄了。把面试题整理一下吧……对于多线程和图形API了解不够需要继续学习">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="http://example.com/imgs/SpringBoss/C_ambient.png">
 <meta property="og:image" content="http://example.com/imgs/SpringBoss/C_emissive.png">
@@ -47,8 +47,9 @@
 <meta property="og:image" content="http://example.com/imgs/SpringBoss/Rview.png">
 <meta property="og:image" content="http://example.com/imgs/SpringBoss/Mview.png">
 <meta property="og:image" content="http://example.com/imgs/SpringBoss/RayPointSpe.png">
+<meta property="og:image" content="http://example.com/imgs/SpringBoss/unityUpdate.jpg">
 <meta property="article:published_time" content="2023-03-04T07:14:23.000Z">
-<meta property="article:modified_time" content="2023-03-15T14:07:20.588Z">
+<meta property="article:modified_time" content="2023-04-03T05:13:54.622Z">
 <meta property="article:author" content="Eimya">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http://example.com/imgs/SpringBoss/C_ambient.png">
@@ -207,7 +208,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>图形学全忘光了，技美笔试直接寄了。<br>把面试题整理一下吧……</p>
+        <p>图形学全忘光了，技美笔试直接寄了。<br>把面试题整理一下吧……<br>对于<strong>多线程</strong>和<strong>图形API</strong>了解不够需要继续学习</p>
 <span id="more"></span>
 
 <h1 id="C-部分"><a href="#C-部分" class="headerlink" title="C++ 部分"></a>C++ 部分</h1><h2 id="new-和-malloc-区别"><a href="#new-和-malloc-区别" class="headerlink" title="new 和 malloc 区别"></a><a target="_blank" rel="noopener" href="https://www.cnblogs.com/ywliao/articles/8116622.html">new 和 malloc 区别</a></h2><h3 id="1-申请内存所在位置"><a href="#1-申请内存所在位置" class="headerlink" title="1.申请内存所在位置"></a>1.申请内存所在位置</h3><ul>
@@ -260,14 +261,33 @@
 <p>但是 new 不行！</p>
 <h3 id="10-客户处理内存分配不同"><a href="#10-客户处理内存分配不同" class="headerlink" title="10.客户处理内存分配不同"></a>10.客户处理内存分配不同</h3><p>operator new 抛出异常前会调用一个用户指定的错误处理函数 new-handler，指向一个错误处理函数。</p>
 <p>malloc 异常用户只能看着他 NULL</p>
-<h2 id="拷贝构造函数"><a href="#拷贝构造函数" class="headerlink" title="拷贝构造函数"></a>拷贝构造函数</h2><p><strong>只有这三种情况！！！！！</strong></p>
+<h2 id="static关键字"><a href="#static关键字" class="headerlink" title="static关键字"></a>static关键字</h2><h2 id="拷贝构造函数"><a href="#拷贝构造函数" class="headerlink" title="拷贝构造函数"></a>拷贝构造函数</h2><p><strong>只有这三种情况！！！！！</strong></p>
 <h3 id="1-用一个对象初始化另一个对象。"><a href="#1-用一个对象初始化另一个对象。" class="headerlink" title="1.用一个对象初始化另一个对象。"></a>1.用一个对象初始化另一个对象。</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">Point <span class="title">p2</span><span class="params">(p1)</span></span>;</span><br><span class="line">Point p3 = p1</span><br></pre></td></tr></table></figure>
 
 <p>这两种情况一样。</p>
 <h3 id="2-若一个函数的形参是一个-Class-对象，当-F-被调用时，Class-拷贝构造函数调用。"><a href="#2-若一个函数的形参是一个-Class-对象，当-F-被调用时，Class-拷贝构造函数调用。" class="headerlink" title="2.若一个函数的形参是一个 Class 对象，当 F 被调用时，Class 拷贝构造函数调用。"></a>2.若一个函数的形参是一个 Class 对象，当 F 被调用时，Class 拷贝构造函数调用。</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">Func</span><span class="params">(Point a)</span></span>&#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">mian</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    Point a;</span><br><span class="line">    <span class="built_in">Func</span>(a);    <span class="comment">// 调用拷贝构造函数</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <h3 id="3-如果函数的返回值是-Class-对象，函数返回时，调用-Class-拷贝构造函数"><a href="#3-如果函数的返回值是-Class-对象，函数返回时，调用-Class-拷贝构造函数" class="headerlink" title="3.如果函数的返回值是 Class 对象，函数返回时，调用 Class 拷贝构造函数"></a>3.如果函数的返回值是 Class 对象，函数返回时，调用 Class 拷贝构造函数</h3><p>即返回值对象由拷贝构造函数初始化。</p>
+<h2 id="模板函数"><a href="#模板函数" class="headerlink" title="模板函数"></a>模板函数</h2><h3 id="模板函数的声明实现为什么必须在一个文件内"><a href="#模板函数的声明实现为什么必须在一个文件内" class="headerlink" title="模板函数的声明实现为什么必须在一个文件内"></a>模板函数的声明实现为什么必须在一个文件内</h3><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/chigusakawada/article/details/78752668">CSDN : 模板函数的声明和定义为何不能分开放在两个文件中?</a></p>
 <h2 id="C-11-特性"><a href="#C-11-特性" class="headerlink" title="C++ 11 特性"></a>C++ 11 特性</h2><h3 id="左值右值"><a href="#左值右值" class="headerlink" title="左值右值"></a>左值右值</h3><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/qicosmos/p/4283455.html">四行代码！看懂右值引用</a></p>
+<h4 id="右值引用的特点："><a href="#右值引用的特点：" class="headerlink" title="右值引用的特点："></a>右值引用的特点：</h4><ol>
+<li><p>通过右值引用的声明，右值又“重获新生”，其生命周期与右值引用类型变量的生命周期一样长，只要该变量还活着，该右值临时量将会一直存活下去。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">A <span class="title">GetA</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">A</span>();</span><br><span class="line">&#125;</span><br><span class="line">A&amp;&amp; a = <span class="built_in">GetA</span>();	<span class="comment">// 这里只会调用一次拷贝构造函数，就是return A()，</span></span><br><span class="line"><span class="comment">// 因为A&amp;&amp; 延长了 GetA的生命周期无需拷贝函数</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>右值引用独立于左值和右值。意思是右值引用类型的变量可能是左值也可能是右值。</p>
+</li>
+<li><p>T&amp;&amp; t在发生自动类型推断的时候，它是未定的引用类型（universal references），如果被一个左值初始化，它就是一个左值；如果它被一个右值初始化，它就是一个右值，它是左值还是右值取决于它的初始化。<br>正是因为右值引用可能是左值也可能是右值，依赖于初始化，并不是一下子就确定的特点，我们可以利用这一点做很多文章，比如后面要介绍的移动语义和完美转发。</p>
+</li>
+<li></li>
+</ol>
+<p>移动语义的实现：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">A <span class="title">GetA</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> A;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">A</span>(A&amp;&amp; a):<span class="built_in">m_ptr</span>(a.m_ptr)&#123;&#125;</span><br><span class="line"></span><br><span class="line">A a = <span class="built_in">GetA</span>();</span><br></pre></td></tr></table></figure>
+
+<p>利用右值引用作为参数，因为<code>GetA</code>返回值是右值，而<code>A&amp;&amp;</code>类型确定不发生自动推断即确定的右值，拷贝函数会匹配到<code>A(A&amp;&amp; a)</code>，这样就省去了重新<code>new m_ptr</code>。</p>
+<h5 id="引用折叠"><a href="#引用折叠" class="headerlink" title="引用折叠"></a>引用折叠</h5><ul>
+<li>所有的右值引用叠加到右值引用上仍然还是一个右值引用；</li>
+<li>所有的其他引用类型之间的叠加都将变成左值引用。</li>
+</ul>
 <h3 id="智能指针"><a href="#智能指针" class="headerlink" title="智能指针"></a>智能指针</h3><h3 id="类型推断"><a href="#类型推断" class="headerlink" title="类型推断"></a>类型推断</h3><h3 id="lambda表达式"><a href="#lambda表达式" class="headerlink" title="lambda表达式"></a>lambda表达式</h3><h3 id="类型转换"><a href="#类型转换" class="headerlink" title="类型转换"></a>类型转换</h3><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/417640759">九阳神功！不会C++就看这个！</a>（1）const_cast: 把const属性去掉，即将const转换为非const（也可以反过来），const_cast只能用于指针或引用，并且只能改变对象的底层const（顶层const，本身是const，底层const，指向对象const）；</p>
 <p>（2）static_cast: 隐式类型转换，可以实现C++中内置基本数据类型之间的相互转换，enum、struct、 int、char、float等，能进行类层次间的向上类型转换和向下类型转换（向下不安全，因为没有进行动态类型检查）。它不能进行无关类型(如非基类和子类)指针之间的转换，也不能作用包含底层const的对象；</p>
 <p>（3）dynamic_cast：动态类型转换，用于将基类的指针或引用安全地转换成派生类的指针或引用（也可以向上转换），若指针转换失败返回NULL，若引用返回失败抛出bad_cast异常。dynamic_cast是在运行时进行安全性检查；使用dynamic_cast父类一定要有虚函数，否则编译不通过；</p>
@@ -305,15 +325,53 @@
 <li>weak_ptr是为了解决shared_ptr的循环引用问题，那为什么不用raw ptr来解决这个问题？</li>
 </ul>
 <p>答：一个weak_ptr绑定到shared_ptr之后不会增加引用计数，一旦最后一个指向对象的shared_ptr被销毁，对象就会被释放，即使weak_ptr指向对象，也还是会释放；raw指针，当对象销毁之后会变成悬浮指针。</p>
+<h2 id="Shared-ptr实现原理"><a href="#Shared-ptr实现原理" class="headerlink" title="Shared_ptr实现原理"></a>Shared_ptr实现原理</h2><h2 id="为什么析构函数一定要被设置为虚函数"><a href="#为什么析构函数一定要被设置为虚函数" class="headerlink" title="为什么析构函数一定要被设置为虚函数"></a>为什么析构函数一定要被设置为虚函数</h2><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/yuanch2019/p/11625460.html">为什么析构函数必须是虚函数？为什么C++默认的析构函数不是虚函数</a></p>
+<p>首先类的<strong>虚函数</strong>调用是靠<strong>虚函数指针</strong>调用的，而函数成员靠的是对象类型。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">A</span></span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">func1</span><span class="params">()</span></span>&#123;&#125;;</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="type">void</span> <span class="title">func2</span><span class="params">()</span></span>&#123;&#125;;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    A a;</span><br><span class="line">    a.<span class="built_in">func1</span>();</span><br><span class="line">    a.<span class="built_in">func2</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>对于<code>func1</code>是通过<code>a.this</code>调用，而<code>func2</code>是通过虚函数指针<code>a._vfptr-&gt;func2()</code>调用。(大概是这个意思，但应该是别的形式)</p>
+<blockquote>
+<p>“Note：定义在类内部的函数是隐式的inline函数（参见6.5.2节，第214页）。” —— 《C++ Primer》 中文第五版 P230</p>
+<p>“成员函数通过一个名为<strong>this</strong>的额外隐式参数来访问调用它的那个对象。” —— 《C++ Primer》 中文第五版 P231</p>
+</blockquote>
+<p><strong>成员函数本质上可以看做全局函数，不过第一个参数固定为this。</strong></p>
+<h3 id="菱形继承"><a href="#菱形继承" class="headerlink" title="菱形继承"></a>菱形继承</h3><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/tounaobun/article/details/8443228">https://blog.csdn.net/tounaobun/article/details/8443228</a></p>
+<p>问题：A-&gt;B;A-&gt;C;B,C-&gt;D; B,C继承了A，D继承了A。<br>在调用D的成员函数时候就不知道是调用B的，还是C的，所以在继承中使用</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Animal</span></span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">func</span><span class="params">()</span> </span>&#123; cout &lt;&lt; <span class="string">&quot;Animal&quot;</span>; &#125;;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Lion</span> : <span class="keyword">virtual</span> <span class="keyword">public</span> Animal</span><br><span class="line">&#123;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Wolf</span> : <span class="keyword">virtual</span> <span class="keyword">public</span> Animal</span><br><span class="line">&#123;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Cat</span> : <span class="keyword">public</span> Wolf, <span class="keyword">public</span> Lion</span><br><span class="line">&#123;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+
+
 <h2 id="C-深拷贝浅拷贝"><a href="#C-深拷贝浅拷贝" class="headerlink" title="C++ 深拷贝浅拷贝"></a>C++ 深拷贝浅拷贝</h2><p>（1）拷贝构造函数的作用就是定义了当我们用同类型的另外一个对象初始化本对象的时候做了什么，在某些情况下，如果我们不自己定义拷贝构造函数，使用默认的拷贝构造函数，就会出错。比如一个类里面有一个指针，如果使用默认的拷贝构造函数，会将指针拷贝过去，即两个指针指向同个对象，那么其中一个类对象析构之后，这个指针也会被delete掉，那么另一个类里面的指针就会变成<strong>野指针（悬浮指针）</strong>；</p>
 <p>（2）这也正是深拷贝和浅拷贝的区别，浅拷贝只是简单直接地复制指向某个对象的指针，而不复制对象本身，新旧对象还是共享同一块内存。 但深拷贝会另外创造一个一模一样的对象，新对象跟原对象不共享内存，修改新对象不会改到原对象。</p>
 <h2 id="C-野指针"><a href="#C-野指针" class="headerlink" title="C++野指针"></a>C++野指针</h2><p>指针指向了一块非法内存区域(悬空或者说未知区域)。</p>
-<h2 id="C-内存模型"><a href="#C-内存模型" class="headerlink" title="C++ 内存模型"></a>C++ 内存模型</h2><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/yunlambert/p/9876491.html">https://www.cnblogs.com/yunlambert/p/9876491.html</a><br>空类大小是1，为了标识对象<br><a target="_blank" rel="noopener" href="https://blog.csdn.net/li975242487/article/details/121395693">不同类型占用的字节</a></p>
+<h2 id="C-虚函数"><a href="#C-虚函数" class="headerlink" title="C++ 虚函数"></a>C++ 虚函数</h2><h3 id="哪些函数不能是虚函数"><a href="#哪些函数不能是虚函数" class="headerlink" title="哪些函数不能是虚函数"></a><a target="_blank" rel="noopener" href="https://www.cnblogs.com/NeilZhang/p/5427872.html">哪些函数不能是虚函数</a></h3><p>常见的不不能声明为虚函数的有：普通函数（非成员函数）；静态成员函数；内联成员函数；构造函数；友元函数。</p>
+<h2 id="C-内存模型"><a href="#C-内存模型" class="headerlink" title="C++ 内存模型"></a>C++ 内存模型</h2><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/yunlambert/p/9876491.html">https://www.cnblogs.com/yunlambert/p/9876491.html</a><br>空类(空 class)大小是1，为了标识对象<br><a target="_blank" rel="noopener" href="https://blog.csdn.net/li975242487/article/details/121395693">不同类型占用的字节</a></p>
 <h2 id="C-运算符重载"><a href="#C-运算符重载" class="headerlink" title="C++运算符重载"></a>C++运算符重载</h2><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/liuchenxu123/p/12538623.html">https://www.cnblogs.com/liuchenxu123/p/12538623.html</a></p>
 <h2 id="派生类的构造函数顺序"><a href="#派生类的构造函数顺序" class="headerlink" title="派生类的构造函数顺序"></a>派生类的构造函数顺序</h2><p><a target="_blank" rel="noopener" href="https://www.nowcoder.com/questionTerminal/6348a321452a4318a2da5f3757baf620?source=relative">https://www.nowcoder.com/questionTerminal/6348a321452a4318a2da5f3757baf620?source=relative</a></p>
 <h2 id="内存模型"><a href="#内存模型" class="headerlink" title="内存模型"></a>内存模型</h2><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/JUST__Tw/article/details/118551674">https://blog.csdn.net/JUST__Tw/article/details/118551674</a></p>
 <h2 id="迭代器"><a href="#迭代器" class="headerlink" title="迭代器"></a>迭代器</h2><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/QIANGWEIYUAN/article/details/89184546">https://blog.csdn.net/QIANGWEIYUAN/article/details/89184546</a></p>
 <h2 id="红黑树"><a href="#红黑树" class="headerlink" title="红黑树"></a>红黑树</h2><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/u014454538/article/details/120120216">https://blog.csdn.net/u014454538/article/details/120120216</a></p>
+<h2 id="小根堆，大根堆"><a href="#小根堆，大根堆" class="headerlink" title="小根堆，大根堆"></a>小根堆，大根堆</h2><h3 id="完全二叉堆"><a href="#完全二叉堆" class="headerlink" title="完全二叉堆"></a>完全二叉堆</h3><p>堆又可称之为完全二叉堆。这是一个逻辑上基于完全二叉树、物理上一般基于线性数据结构（如数组、向量、链表等）的一种数据结构。</p>
+<h4 id="完全二叉树"><a href="#完全二叉树" class="headerlink" title="完全二叉树"></a>完全二叉树</h4><p>完全二叉树是由满二叉树而引出来的，若设二叉树的<code>深度为h</code>，<code>除第 h 层外</code>，<code>其它各层 (1～h-1) 的结点数都达到最大个数(即1~h-1层为一个满二叉树)</code>，第 h 层所有的结点都连续集中在最左边，这就是完全二叉树。</p>
+<h3 id="小根堆"><a href="#小根堆" class="headerlink" title="小根堆"></a>小根堆</h3><p>根小于节点</p>
+<h3 id="大根堆"><a href="#大根堆" class="headerlink" title="大根堆"></a>大根堆</h3><p>根大于节点</p>
+<h2 id="多线程"><a href="#多线程" class="headerlink" title="多线程"></a>多线程</h2><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/430069448">进程间通信方式；线程间通信方式</a></p>
+<h3 id="进程间通讯的方式？"><a href="#进程间通讯的方式？" class="headerlink" title="进程间通讯的方式？"></a>进程间通讯的方式？</h3><p>管道通信，消息队列，共享内存，socket，串口都可以实现。</p>
+<h4 id="管道-pipe-："><a href="#管道-pipe-：" class="headerlink" title="管道( pipe )："></a>管道( pipe )：</h4><p>管道是一种半双工的通信方式，数据只能单向流动，而且只能在具有亲缘关系的进程间使用。进程的亲缘关系通常是指父子进程关系。</p>
+<h4 id="有名管道-namedpipe-："><a href="#有名管道-namedpipe-：" class="headerlink" title="有名管道 (namedpipe) ："></a>有名管道 (namedpipe) ：</h4><p>有名管道也是半双工的通信方式，但是它允许无亲缘关系进程间的通信。</p>
+<h4 id="信号量-semophore-："><a href="#信号量-semophore-：" class="headerlink" title="信号量(semophore ) ："></a>信号量(semophore ) ：</h4><p>信号量是一个计数器，可以用来控制多个进程对共享资源的访问。它常作为一种锁机制，防止某进程正在访问共享资源时，其他进程也访问该资源。因此，主要作为进程间以及同一进程内不同线程之间的同步手段。</p>
+<h4 id="消息队列-messagequeue-："><a href="#消息队列-messagequeue-：" class="headerlink" title="消息队列( messagequeue ) ："></a>消息队列( messagequeue ) ：</h4><p>消息队列是由消息的链表，存放在内核中并由消息队列标识符标识。消息队列克服了信号传递信息少、管道只能承载无格式字节流以及缓冲区大小受限等缺点。</p>
+<h4 id="信号-sinal-："><a href="#信号-sinal-：" class="headerlink" title="信号 (sinal ) ："></a>信号 (sinal ) ：</h4><p>信号是一种比较复杂的通信方式，用于通知接收进程某个事件已经发生。</p>
+<h4 id="共享内存-shared-memory-："><a href="#共享内存-shared-memory-：" class="headerlink" title="共享内存(shared memory ) ："></a>共享内存(shared memory ) ：</h4><p>共享内存就是映射一段能被其他进程所访问的内存，这段共享内存由一个进程创建，但多个进程都可以访问。共享内存是最快的 IPC 方式，它是针对其他进程间通信方式运行效率低而专门设计的。它往往与其他通信机制，如信号两，配合使用，来实现进程间的同步和通信。</p>
+<h4 id="套接字-socket-："><a href="#套接字-socket-：" class="headerlink" title="套接字(socket ) ："></a>套接字(socket ) ：</h4><p>套接口也是一种进程间通信机制，与其他通信机制不同的是，它可用于不同设备及其间的进程通信。</p>
+<h3 id="线程间通讯方式。"><a href="#线程间通讯方式。" class="headerlink" title="线程间通讯方式。"></a>线程间通讯方式。</h3><p><strong>锁机制：包括互斥锁、条件变量、读写锁</strong></p>
+<ul>
+<li>互斥锁提供了以排他方式防止数据结构被并发修改的方法。</li>
+<li>读写锁允许多个线程同时读共享数据，而对写操作是互斥的。</li>
+<li>条件变量可以以原子的方式阻塞进程，直到某个特定条件为真为止。对条件的测试是在互斥锁的保护下进行的。条件变量始终与互斥锁一起使用。</li>
+</ul>
+<p><strong>信号量机制(Semaphore)：包括无名线程信号量和命名线程信号量</strong></p>
+<p><strong>信号机制(Signal)：类似进程间的信号处理</strong></p>
 <h1 id="图形学部分"><a href="#图形学部分" class="headerlink" title="图形学部分"></a>图形学部分</h1><h2 id="光照模型"><a href="#光照模型" class="headerlink" title="光照模型"></a>光照模型</h2><ul>
 <li>emissive</li>
 <li>specular</li>
@@ -354,6 +412,9 @@
 <img src="/imgs/SpringBoss/rowMatrixHCT.png" ></li>
 </ul>
 <h4 id="列矩阵"><a href="#列矩阵" class="headerlink" title="列矩阵"></a>列矩阵</h4><p><u><em><strong>Unity就是列矩阵！</strong></em></u></p>
+<blockquote>
+<p>问题1<br>shader中会看到法线的变换矩阵：<br>float3x3 transform &#x3D; float3x3(v.tangent.xyz, binormal, v.normal);<br>即，<strong>float3x3类型的变量</strong>在创建时，如果传入3个float3类型的变量。整个矩阵是按行优先填充还是按列优先填充呢？<br>答：填入的是三个列，即unity shader是<strong>列优先</strong>（column-major）的。<br>问题2<br><strong>matrix</strong>.m12是什么意思？<br>答：m12是第一行第二列，但是构造矩阵时是<strong>按列的</strong>。</p>
+</blockquote>
 <img src="/imgs/SpringBoss/columnMatrix.png" >
 
 <p>表示 nx1 的矩阵，列矩阵<strong>右乘</strong>，变换矩阵乘在其左侧 <code>nxn dot nx1 = nx1</code></p>
@@ -437,12 +498,20 @@
 <li>间接光照(Indirect illumination)，光线在进入人眼前弹射不止一次</li>
 </ol>
 <p>这种光线弹射，对于光栅化来说想要实现比较麻烦，而且也不能保证物理上的正确性。光栅化本质上是一种快速的近似质量较低。<br>光线追踪是一种比较准确的办法质量很高，但是最大的问题就是很慢。</p>
-<h2 id="包围盒BVH"><a href="#包围盒BVH" class="headerlink" title="包围盒BVH"></a>包围盒BVH</h2><p>如何划分？</p>
-<h2 id="渲染管线"><a href="#渲染管线" class="headerlink" title="渲染管线"></a>渲染管线</h2><h2 id="透明效果"><a href="#透明效果" class="headerlink" title="透明效果"></a>透明效果</h2><h2 id="阴影"><a href="#阴影" class="headerlink" title="阴影"></a>阴影</h2><p>LightMap</p>
+<h2 id="包围盒BVH"><a href="#包围盒BVH" class="headerlink" title="包围盒BVH"></a>包围盒BVH</h2><h3 id="如何划分BVH"><a href="#如何划分BVH" class="headerlink" title="如何划分BVH"></a>如何划分BVH</h3><p>1.随机选取一个维度</p>
+<p>2.选Bounding box中最长的轴进行进一步划分 </p>
+<p>3.选取中间的三角形处进行划分（以保证两边三角形数量接近）。</p>
+<p>5.基于表面积的启发式评估划分方法（Surface Area Heuristic，SAH），这种方法通过对求交代价和遍历代价进行评估，给出了每一种划分的代价（Cost），寻找代价最小方式进行划分。</p>
+<p>6.基于莫顿码（Morton code）的并行化BVH构建。</p>
+<h4 id="参考学习！记得学啊！"><a href="#参考学习！记得学啊！" class="headerlink" title="参考学习！记得学啊！"></a>参考学习！记得学啊！</h4><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/50720158">PBRT-E4.3-层次包围体(BVH)（一） - 玉米的文章 - 知乎</a><br><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/54620381">PBRT-E4.3-层次包围体(BVH)（二） - 玉米的文章 - 知乎</a><br><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/54694041">PBRT-E4.3-层次包围体(BVH)（三） - 玉米的文章 - 知乎</a></p>
+<h2 id="渲染管线"><a href="#渲染管线" class="headerlink" title="渲染管线"></a>渲染管线</h2><p>一般就说说大概的流程 IA-&gt;VS-&gt;Hull-&gt;TS-&gt;Domain-&gt;GS-&gt;OS-&gt;RS-&gt;PS-&gt;OM</p>
+<h3 id="什么是曲面细分着色器"><a href="#什么是曲面细分着色器" class="headerlink" title="什么是曲面细分着色器"></a>什么是曲面细分着色器</h3><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/chenglixue/p/17227713.html">大体介绍了一下曲面细分</a></p>
+<h2 id="透明效果"><a href="#透明效果" class="headerlink" title="透明效果"></a>透明效果</h2><h2 id="阴影"><a href="#阴影" class="headerlink" title="阴影"></a>阴影</h2><p>LightMap</p>
 <p>ShadowMapping</p>
 <p>PCF</p>
 <p>PCSS</p>
 <p>VSSM</p>
+<h3 id="CSM如何做的？"><a href="#CSM如何做的？" class="headerlink" title="CSM如何做的？"></a>CSM如何做的？</h3><p>Cascaded Shadow Maps(CSM)方法根据对象到观察者的距离提供不同分辨率的深度纹理来解决上述问题。它将相机的视锥体分割成若干部分，然后为分割的每一部分生成独立的深度贴图。对于近处的场景使用较高分辨率的阴影贴图，对于远处的场景使用粗糙的阴影贴图，在两张阴影贴图过渡的地方选择其中一张使用。</p>
 <h2 id="两个多边形如何判断相交"><a href="#两个多边形如何判断相交" class="headerlink" title="两个多边形如何判断相交"></a>两个多边形如何判断相交</h2><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/StevenKyleLee/article/details/88075814">https://blog.csdn.net/StevenKyleLee/article/details/88075814</a></p>
 <h3 id="一点是否在多边形内"><a href="#一点是否在多边形内" class="headerlink" title="一点是否在多边形内"></a>一点是否在多边形内</h3><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/StevenKyleLee/article/details/88044589">https://blog.csdn.net/StevenKyleLee/article/details/88044589</a></p>
 <p>一般用射线法这里说一下特殊情况：<br><img src="/imgs/SpringBoss/RayPointSpe.png" style="zoom:100%;" ><br>这里的(b)因为中间那个顶点左右两条边都在该顶点的上侧，所以该顶点不识为于射线相交。<br>具体的判定过程应该可以根据多边形绕向找相邻点进行判断。</p>
@@ -459,28 +528,67 @@
 </ul>
 <h2 id="Z-fighting"><a href="#Z-fighting" class="headerlink" title="Z-fighting"></a>Z-fighting</h2><h2 id="景深"><a href="#景深" class="headerlink" title="景深"></a>景深</h2><p>所谓景深就是照片背景的虚化程度，规律是：光圈越大，景深越浅，背景越模糊；光圈越小，景深越深，背景越清晰。<br><a target="_blank" rel="noopener" href="http://www.ownself.org/blog/2010/jing-shen-depth-of-field.html">景深</a></p>
 <h2 id="点到三角形距离"><a href="#点到三角形距离" class="headerlink" title="点到三角形距离"></a>点到三角形距离</h2><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/148511581">https://zhuanlan.zhihu.com/p/148511581</a><br><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/148511581">点到三角形面距离</a></p>
+<h2 id="PBR"><a href="#PBR" class="headerlink" title="PBR"></a>PBR</h2><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/poem_qianmo/article/details/85239398">【基于物理的渲染（PBR）白皮书】（一） 开篇：PBR核心知识体系总结与概览</a></p>
+<h2 id="材质系统"><a href="#材质系统" class="headerlink" title="材质系统"></a>材质系统</h2><p>材质系统了解、实现。</p>
 <h1 id="计组部分"><a href="#计组部分" class="headerlink" title="计组部分"></a>计组部分</h1><h3 id="大端和小端模式"><a href="#大端和小端模式" class="headerlink" title="大端和小端模式"></a>大端和小端模式</h3><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/wei_cheng18/article/details/79856207">https://blog.csdn.net/wei_cheng18/article/details/79856207</a></p>
-<h3 id="Cache-命中率"><a href="#Cache-命中率" class="headerlink" title="Cache 命中率"></a>Cache 命中率</h3><h1 id="编译原理"><a href="#编译原理" class="headerlink" title="编译原理"></a>编译原理</h1><h2 id="逆波兰式"><a href="#逆波兰式" class="headerlink" title="逆波兰式"></a><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_43919932/article/details/103327530">逆波兰式</a></h2><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/tangqs/archive/2012/05/18/2507708.html">https://www.cnblogs.com/tangqs/archive/2012/05/18/2507708.html</a><br> 如果是右单目运算符，直接入存储器栈；比如 阶乘！与百分号%</p>
+<ul>
+<li><strong>大端</strong>（Big_endian）字数据的<strong>高字节</strong>存储在<strong>低地址</strong>中，字数据的<strong>低字节</strong>存储在<strong>高地址</strong>中。</li>
+<li><strong>小端</strong>（Little_endian）字数据的<strong>高字节</strong>存储在<strong>高地址</strong>中，字数据的<strong>低字节</strong>存储在<strong>低地址</strong>中。</li>
+</ul>
+<h3 id="Cache-命中率"><a href="#Cache-命中率" class="headerlink" title="Cache 命中率"></a>Cache 命中率</h3><h1 id="计网"><a href="#计网" class="headerlink" title="计网"></a>计网</h1><h2 id="TCP"><a href="#TCP" class="headerlink" title="TCP"></a>TCP</h2><h3 id="TCP三次握手"><a href="#TCP三次握手" class="headerlink" title="TCP三次握手"></a><a target="_blank" rel="noopener" href="https://blog.csdn.net/jun2016425/article/details/81506353">TCP三次握手</a></h3><ul>
+<li>第一次握手：客户端向服务器发起链接请求</li>
+<li>第二次握手：服务器向客户端返回，发送答应客户端请求的确认信息。</li>
+<li>第三次握手：客户端向服务器，告诉服务器已经收到第二次握手的确认信息。</li>
+</ul>
+<h4 id="TCP的三次握手过程？为什么会采用三次握手，若采用二次握手可以吗？"><a href="#TCP的三次握手过程？为什么会采用三次握手，若采用二次握手可以吗？" class="headerlink" title="TCP的三次握手过程？为什么会采用三次握手，若采用二次握手可以吗？"></a>TCP的三次握手过程？为什么会采用三次握手，若采用二次握手可以吗？</h4><p>答：建立连接的过程是利用客户服务器模式，假设主机A为客户端，主机B为服务器端。</p>
+<p>（1）TCP的三次握手过程：主机A向B发送连接请求；主机B对收到的主机A的报文段进行确认；主机A再次对主机B的确认进行确认。</p>
+<p>（2）采用三次握手是为了防止失效的连接请求报文段突然又传送到主机B，因而产生错误。失效的连接请求报文段是指：主机A发出的连接请求没有收到主机B的确认，于是经过一段时间后，主机A又重新向主机B发送连接请求，且建立成功，顺序完成数据传输。考虑这样一种特殊情况，主机A第一次发送的连接请求并没有丢失，而是因为网络节点导致延迟达到主机B，主机B以为是主机A又发起的新连接，于是主机B同意连接，并向主机A发回确认，但是此时主机A根本不会理会，主机B就一直在等待主机A发送数据，导致主机B的资源浪费。</p>
+<p>（3）采用两次握手不行，原因就是上面说的失效的连接请求的特殊情况，因此采用三次握手刚刚好，两次可能出现失效，四次甚至更多次则没必要，反而复杂了</p>
+<h3 id="四次挥手"><a href="#四次挥手" class="headerlink" title="四次挥手"></a>四次挥手</h3><ul>
+<li>第一次挥手：主动关闭方发送一个FIN，用来关闭主动方到被动关闭方的数据传送，<strong>主动方：“我不会再给你数据了。”</strong></li>
+<li>第二次挥手：被动关闭方收到FIN包后，发送一个ACK给对方，确认序号为收到序号+1，<strong>被动方：“我知道了！”</strong></li>
+<li>第三次挥手：被动关闭方发送一个FIN，用来关闭被动关闭方到主动关闭方的数据传送，<strong>被动方：”我的数据也发送完了，不会再给你发数据了。“</strong></li>
+<li>第四次挥手：主动关闭方收到FIN后，发送一个ACK给被动关闭方，确认序号为收到序号+1，<strong>主动方：“行了，那我知道了，一切结束”</strong></li>
+</ul>
+<h1 id="编译原理"><a href="#编译原理" class="headerlink" title="编译原理"></a>编译原理</h1><h2 id="逆波兰式"><a href="#逆波兰式" class="headerlink" title="逆波兰式"></a><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_43919932/article/details/103327530">逆波兰式</a></h2><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/tangqs/archive/2012/05/18/2507708.html">https://www.cnblogs.com/tangqs/archive/2012/05/18/2507708.html</a><br> 如果是右单目运算符，直接入存储器栈；比如 阶乘！与百分号%</p>
 <h1 id="OS"><a href="#OS" class="headerlink" title="OS"></a>OS</h1><h2 id="进程和线程"><a href="#进程和线程" class="headerlink" title="进程和线程"></a>进程和线程</h2><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/ThinkWon/article/details/102021274">进程和线程</a><br><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_33182418/article/details/121135914">线程调度</a><br><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_41784433/article/details/122194695">进程&#x2F;作业调度</a></p>
 <h3 id="多线程比单线程慢"><a href="#多线程比单线程慢" class="headerlink" title="多线程比单线程慢"></a>多线程比单线程慢</h3><p>存在上下文切换和死锁问题。<br><a target="_blank" rel="noopener" href="https://www.cnblogs.com/xrq730/p/5186609.html">https://www.cnblogs.com/xrq730/p/5186609.html</a></p>
 <h2 id="Linux-进程通讯"><a href="#Linux-进程通讯" class="headerlink" title="Linux 进程通讯"></a>Linux 进程通讯</h2><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_44443986/article/details/115065540">https://blog.csdn.net/qq_44443986/article/details/115065540</a></p>
 <h2 id="死锁和银行家算法"><a href="#死锁和银行家算法" class="headerlink" title="死锁和银行家算法"></a>死锁和银行家算法</h2><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/wyf2017/article/details/80068608">https://blog.csdn.net/wyf2017/article/details/80068608</a></p>
+<h2 id="什么是内存碎片，内存碎片是在虚拟内存还是物理内存？"><a href="#什么是内存碎片，内存碎片是在虚拟内存还是物理内存？" class="headerlink" title="什么是内存碎片，内存碎片是在虚拟内存还是物理内存？"></a>什么是内存碎片，内存碎片是在虚拟内存还是物理内存？</h2><p>采用分区式存储管理的系统，在储存分配过程中产生的、不能供用户作业使用的主存里的小分区称成“内存碎片”。内存碎片分为内部碎片和外部碎片。内存碎片只存在于虚拟内存上。</p>
 <h1 id="概率论"><a href="#概率论" class="headerlink" title="概率论"></a>概率论</h1><h2 id="期望计算和带保底卡池期望计算"><a href="#期望计算和带保底卡池期望计算" class="headerlink" title="期望计算和带保底卡池期望计算"></a>期望计算和带保底卡池期望计算</h2><h1 id="算法"><a href="#算法" class="headerlink" title="算法"></a>算法</h1><h2 id="LRU手撸"><a href="#LRU手撸" class="headerlink" title="LRU手撸"></a>LRU手撸</h2><p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/lru-cache-lcci/">https://leetcode.cn/problems/lru-cache-lcci/</a></p>
 <h2 id="统计子树中城市之间最大距离"><a href="#统计子树中城市之间最大距离" class="headerlink" title="统计子树中城市之间最大距离"></a>统计子树中城市之间最大距离</h2><p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/count-subtrees-with-max-distance-between-cities/submissions/412418189/">https://leetcode.cn/problems/count-subtrees-with-max-distance-between-cities/submissions/412418189/</a></p>
 <h2 id="A-算法"><a href="#A-算法" class="headerlink" title="A*算法"></a>A*算法</h2><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/54510444">https://zhuanlan.zhihu.com/p/54510444</a></p>
 <h2 id="岛屿问题"><a href="#岛屿问题" class="headerlink" title="岛屿问题"></a>岛屿问题</h2><p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/number-of-islands/solutions/13103/dao-yu-shu-liang-by-leetcode/">https://leetcode.cn/problems/number-of-islands/solutions/13103/dao-yu-shu-liang-by-leetcode/</a></p>
 <h2 id="Top-K-问题"><a href="#Top-K-问题" class="headerlink" title="Top K 问题"></a>Top K 问题</h2><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/64627590">https://zhuanlan.zhihu.com/p/64627590</a></p>
-<h1 id="C-和-Unity"><a href="#C-和-Unity" class="headerlink" title="C# 和 Unity"></a>C# 和 Unity</h1><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_21407523/article/details/108814300">CSDN不错的面试总结</a><br><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/554529423">知乎上的Unity面试题</a></p>
-<h2 id="反射"><a href="#反射" class="headerlink" title="反射"></a>反射</h2><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/wangshenhe/p/3256657.html">https://www.cnblogs.com/wangshenhe/p/3256657.html</a></p>
-<h2 id="工厂模式"><a href="#工厂模式" class="headerlink" title="工厂模式"></a>工厂模式</h2><p><a target="_blank" rel="noopener" href="https://wittykyrie.github.io/posts/Factor-Pattern/">https://wittykyrie.github.io/posts/Factor-Pattern/</a><br><a target="_blank" rel="noopener" href="https://blog.csdn.net/cxy_zxl/article/details/116695023">简单工厂模式、工厂方法模式优缺点</a></p>
+<h1 id="C-和-Unity"><a href="#C-和-Unity" class="headerlink" title="C# 和 Unity"></a>C# 和 Unity</h1><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_21407523/article/details/108814300">CSDN不错的面试总结-2022年Unity面试题分享 | 全面总结 | 建议收藏</a><br><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/554529423">知乎上五尘的Unity面试题</a></p>
+<h2 id="协程"><a href="#协程" class="headerlink" title="协程"></a>协程</h2><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/w2009211777/article/details/125514898">总结：协程与线程</a></p>
+<h2 id="请简述GC（垃圾回收）产生的原因，并描述如何避免？"><a href="#请简述GC（垃圾回收）产生的原因，并描述如何避免？" class="headerlink" title="请简述GC（垃圾回收）产生的原因，并描述如何避免？"></a>请简述GC（垃圾回收）产生的原因，并描述如何避免？</h2><p>GC回收堆上的内存避免：1.减少new产生对象的次数2.使用公用的对象（静态成员）3.将String换为StringBuilder</p>
+<h2 id="C-指针和C-的引用"><a href="#C-指针和C-的引用" class="headerlink" title="C++指针和C#的引用"></a>C++指针和C#的引用</h2><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/389422617">c++引用和c#引用类型的区别</a></p>
+<h2 id="反射"><a href="#反射" class="headerlink" title="反射"></a>反射</h2><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/wangshenhe/p/3256657.html">[整理]C#反射(Reflection)详解</a><br><a target="_blank" rel="noopener" href="https://www.cnblogs.com/shahdza/p/12261831.html">【Unity|C#】基础篇(12)——反射（Reflection）（核心类：Type、Assembly）</a></p>
+<ul>
+<li><p>反射的定义：审查元数据并收集关于它的类型信息的能力。元数据（编译以后的最基本数据单元）就是一大堆的表，当编译程序集或者模块时，编译器会创建一个类定义表，一个字段定义表，和一个方法定义表等。</p>
+</li>
+<li><p>.NET的应用程序由几个部分：<strong>程序集（Assembly）、模块（Module）、类型（class）组成</strong>。</p>
+</li>
+</ul>
+<h2 id="工厂模式"><a href="#工厂模式" class="headerlink" title="工厂模式"></a>工厂模式</h2><p><a target="_blank" rel="noopener" href="https://wittykyrie.github.io/posts/Factor-Pattern/">https://wittykyrie.github.io/posts/Factor-Pattern/</a><br><a target="_blank" rel="noopener" href="https://blog.csdn.net/cxy_zxl/article/details/116695023">简单工厂模式、工厂方法模式优缺点</a><br><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/83535678">C++ 深入浅出工厂模式（初识篇）</a></p>
 <h3 id="抽象工厂模式"><a href="#抽象工厂模式" class="headerlink" title="抽象工厂模式"></a>抽象工厂模式</h3><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/m0_46502538/article/details/120343296">https://blog.csdn.net/m0_46502538/article/details/120343296</a></p>
 <h2 id="UGUI-如何实现UI物体淡入淡出"><a href="#UGUI-如何实现UI物体淡入淡出" class="headerlink" title="UGUI 如何实现UI物体淡入淡出?"></a>UGUI 如何实现UI物体淡入淡出?</h2><ul>
 <li>Text，Image这些组件都有继承Graphic类，这个类提供了CrossFadeAlpha()方法，可以做透明度渐变。</li>
 <li>但如果界面东西多了，要获取每个Graphic是挺麻烦了。其实还有一个很简便的方法，用起来跟NGUI差不多。就是CanvasGruop组件，把这个组件放到界面根节点上，对这个组件的alpha做改变就行了。看看官方文档的解释，</li>
 </ul>
 <h2 id="ESC-框架"><a href="#ESC-框架" class="headerlink" title="ESC 框架"></a>ESC 框架</h2><p><a target="_blank" rel="noopener" href="https://blog.codingnow.com/2017/06/overwatch_ecs.html">https://blog.codingnow.com/2017/06/overwatch_ecs.html</a></p>
+<p>ECS 的 E ，也就是 Entity ，可以说就是传统引擎中的 Game Object 。但是是 C 的整合其实。</p>
+<p>C 和 S 是这个框架的核心。System 系统，也就是我上面提到的模块。每个模块应该专注于干好一件事，而每件事要么是作用于游戏世界里同类的一组对象的每单个个体的，要么是关心这类对象的某种特定的交互行为。比如碰撞系统，就只关心对象的体积和位置，不关心对象的名字，连接状态，音效、敌对关系等。</p>
+<p>每个可能单独使用的对象属性归纳为一个个 Component ，比如对象的名字就是一个 Component ，对象的位置状态是另一个 Component 。</p>
 <h2 id="unity的委托是什么-event-关键字有什么用？"><a href="#unity的委托是什么-event-关键字有什么用？" class="headerlink" title="unity的委托是什么? event 关键字有什么用？"></a>unity的委托是什么? event 关键字有什么用？</h2><p>委托是一个容器，可以放函数对象，并且可以触发委托面的每个函数调用。委托主要用户回调函数。如果在外部给委托变量加函数进来，那么委托要定义成public, 这样做又有一个问题，public外部的人也可以触发这个委托，如果我希望设计成外部可以加回调，但是只能是模块内部触发委托，那么我可以加一个event来修饰，这样虽然是public,但是外部无法触发委托,只能类的内部触发。</p>
-<h1 id="Unity"><a href="#Unity" class="headerlink" title="Unity"></a>Unity</h1><h2 id="Unity-UGUI不规则区域点击问题"><a href="#Unity-UGUI不规则区域点击问题" class="headerlink" title="Unity UGUI不规则区域点击问题"></a>Unity UGUI不规则区域点击问题</h2><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/msxh/p/9283266.html">https://www.cnblogs.com/msxh/p/9283266.html</a></p>
+<h1 id="DX12"><a href="#DX12" class="headerlink" title="DX12"></a>DX12</h1><p>DX12和</p>
+<h1 id="Vulkan"><a href="#Vulkan" class="headerlink" title="Vulkan"></a>Vulkan</h1><p><a target="_blank" rel="noopener" href="https://geek-docs.com/vulkan/vulkan-tutorial/vulkan-tutorial-index.html">vulkan教程</a></p>
+<h2 id="Vulkan和DX12相比OpenGL好在哪里？"><a href="#Vulkan和DX12相比OpenGL好在哪里？" class="headerlink" title="Vulkan和DX12相比OpenGL好在哪里？"></a>Vulkan和DX12相比OpenGL好在哪里？</h2><h1 id="Unity"><a href="#Unity" class="headerlink" title="Unity"></a>Unity</h1><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/585164814">unity 八股文 实时更新</a></p>
+<h2 id="UnityUpdate"><a href="#UnityUpdate" class="headerlink" title="UnityUpdate"></a>UnityUpdate</h2><img src="/imgs/SpringBoss/unityUpdate.jpg">
+
+<h2 id="Unity-UGUI不规则区域点击问题"><a href="#Unity-UGUI不规则区域点击问题" class="headerlink" title="Unity UGUI不规则区域点击问题"></a>Unity UGUI不规则区域点击问题</h2><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/msxh/p/9283266.html">https://www.cnblogs.com/msxh/p/9283266.html</a></p>
 <h2 id="当一个细小的高速物体撞向另一个较大的物体时，会出现什么情况？如何避免？"><a href="#当一个细小的高速物体撞向另一个较大的物体时，会出现什么情况？如何避免？" class="headerlink" title="当一个细小的高速物体撞向另一个较大的物体时，会出现什么情况？如何避免？"></a>当一个细小的高速物体撞向另一个较大的物体时，会出现什么情况？如何避免？</h2><p>碰撞检测失败，会直接穿透</p>
 <p>避免方法：<br>（1）增大细小物体的碰撞体（不建议这样做）<br>（2）使用射线检测，检测他们之间的距离<br>（3）FixedUpdate频率修改，可以physics time减小（同样不建议）<br>（4）改变物体的速度（废话）<br>（5）将检测方式改为连续检测，rigifdbody.collisionDetectionMode &#x3D;CollisionDetectionMode.Continuous;<br>或者是动态连续检测（CollisionDetectionMode.ContinuousDynamic）<br>（6）代码限制，加大计算量 提前计算好下一个位置</p>
 <h2 id="Canvas-有几种模式，如何配置？"><a href="#Canvas-有几种模式，如何配置？" class="headerlink" title="Canvas 有几种模式，如何配置？"></a><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_42352178/article/details/109034679">Canvas 有几种模式，如何配置？</a></h2><p>Canvas的三种渲染模式：</p>
@@ -489,15 +597,15 @@
 <li>Screen Space-Camera（屏幕空间-摄影机模式）UI元素的位置坐标是屏幕空间的坐标，画布也是填满整个屏幕空间，如果屏幕尺寸改变，画布也会自动改变尺寸来匹配屏幕。所不同的是，在该模式下，画布会被放置到摄影机前方。在这种渲染模式下，画布看起来绘制在一个与摄影机固定距离的平面上。所有的UI元素都由该摄影机渲染，因此摄影机的设置会影响到UI画面。<br>此时，画布上的UI组件会随视角移动。</li>
 <li>World Space即世界空间模式，此模式下UI元素的位置坐标是世界空间的坐标。画布作为场景中的一部分被固定显示在场景中，显示效果类似Plane组件。</li>
 </ul>
-<h2 id="unity中UGUI如何打包成图集"><a href="#unity中UGUI如何打包成图集" class="headerlink" title="unity中UGUI如何打包成图集?"></a>unity中UGUI如何打包成图集?</h2><p><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/472146051/answer/2011067756">unity中UGUI如何打包成图集? - 鲨鱼辣椒的回答 - 知乎 </a></p>
+<h2 id="游戏动画"><a href="#游戏动画" class="headerlink" title="游戏动画"></a>游戏动画</h2><h3 id="关节动画"><a href="#关节动画" class="headerlink" title="关节动画"></a>关节动画</h3><h3 id="单一网格动画"><a href="#单一网格动画" class="headerlink" title="单一网格动画"></a>单一网格动画</h3><h3 id="骨骼动画"><a href="#骨骼动画" class="headerlink" title="骨骼动画"></a>骨骼动画</h3><h2 id="unity中UGUI如何打包成图集"><a href="#unity中UGUI如何打包成图集" class="headerlink" title="unity中UGUI如何打包成图集?"></a>unity中UGUI如何打包成图集?</h2><p><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/472146051/answer/2011067756">unity中UGUI如何打包成图集? - 鲨鱼辣椒的回答 - 知乎 </a></p>
 <ul>
-<li><p>开启UGUI的图集模式, Editor-&gt;Project Settings 下面有sprite packer的模式。</p>
-</li>
-<li><p>为每个UI图片制定要打入的图集的tag名字。</p>
-</li>
-<li><p>打包生成图集Window ——&gt;Sprite Packer, 点击Pack即可打包生成图集。</p>
-</li>
+<li>开启UGUI的图集模式, Editor-&gt;Project Settings 下面有sprite packer的模式。</li>
+<li>为每个UI图片制定要打入的图集的tag名字。</li>
+<li>打包生成图集Window ——&gt;Sprite Packer, 点击Pack即可打包生成图集。</li>
 </ul>
+<h2 id="Build-IN-RP和SRP"><a href="#Build-IN-RP和SRP" class="headerlink" title="Build-IN RP和SRP"></a>Build-IN RP和SRP</h2><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_41622043/article/details/107623694">Unity SRP URP HDRP 的区别</a></p>
+<h2 id="SRP"><a href="#SRP" class="headerlink" title="SRP"></a>SRP</h2><p><a target="_blank" rel="noopener" href="https://unity.com/cn/srp">Unity官方宣传</a></p>
+<h3 id="SRP-Batcher"><a href="#SRP-Batcher" class="headerlink" title="SRP Batcher"></a>SRP Batcher</h3><p><a target="_blank" rel="noopener" href="https://blog.unity.com/cn/technology/srp-batcher-speed-up-your-rendering">SPR Batcher 官方简介</a></p>
 
       
 
