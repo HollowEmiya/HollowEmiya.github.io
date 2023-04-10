@@ -49,7 +49,7 @@
 <meta property="og:image" content="http://example.com/imgs/SpringBoss/RayPointSpe.png">
 <meta property="og:image" content="http://example.com/imgs/SpringBoss/unityUpdate.jpg">
 <meta property="article:published_time" content="2023-03-04T07:14:23.000Z">
-<meta property="article:modified_time" content="2023-04-03T05:13:54.622Z">
+<meta property="article:modified_time" content="2023-04-10T07:52:52.108Z">
 <meta property="article:author" content="Eimya">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http://example.com/imgs/SpringBoss/C_ambient.png">
@@ -261,7 +261,73 @@
 <p>但是 new 不行！</p>
 <h3 id="10-客户处理内存分配不同"><a href="#10-客户处理内存分配不同" class="headerlink" title="10.客户处理内存分配不同"></a>10.客户处理内存分配不同</h3><p>operator new 抛出异常前会调用一个用户指定的错误处理函数 new-handler，指向一个错误处理函数。</p>
 <p>malloc 异常用户只能看着他 NULL</p>
-<h2 id="static关键字"><a href="#static关键字" class="headerlink" title="static关键字"></a>static关键字</h2><h2 id="拷贝构造函数"><a href="#拷贝构造函数" class="headerlink" title="拷贝构造函数"></a>拷贝构造函数</h2><p><strong>只有这三种情况！！！！！</strong></p>
+<h2 id="类和接口"><a href="#类和接口" class="headerlink" title="类和接口"></a>类和接口</h2><p>如果把类比作一把枪，接口就是枪的配件，比如握把，枪托等等。我们对于类重点在于描述一个对象，而对于接口重点在于描述接口能提供的功能，所以接口内没有数据成员，只有成员函数。</p>
+<h2 id="C-的public、protect、private和三种继承"><a href="#C-的public、protect、private和三种继承" class="headerlink" title="C++的public、protect、private和三种继承"></a>C++的public、protect、private和三种继承</h2><p>public 表示大家谁都能来访问，包括类对象自己和外部。<br>protect，外部不能访问，但是自己和子类可以访问。<br>private，表示只能自己访问，自己的子类都不能访问。<br>public 继承，不改变父类成员的可见性。<br>protect 继承，父类成员除private外，全部变为protect<br>private 继承全部变为private</p>
+<blockquote>
+<p>假如把父类比喻一个门派，期内对象就是武功秘籍<br>public 就像比较普通的武功，比如太祖长拳，大家都可以来学。<br>protect 就像门派内的高深强大的武功秘籍，比如降龙十八掌，只有你是下一任掌门才能学。<br>private 就像掌门自己偷学了邪门歪道，比如岳不群学《辟邪剑谱》，只能自己知道，外人不能晓得。除了自己谁也不让看。</p>
+<p>public 继承就像是普普通通比较开明的继承者，子承父业，原来掌门规定的哪些武功可以交给外人，哪些武功自己人学，都不变，但是掌门私底下学的歪门武功他也不知道是什么，对他而言不可见，想知道是什么得返回去用上一任掌门的去查。<br>protect 继承就像垄断或者有点小心思的人继承，我不让所有人随便学了，现在你们想从我这学你得是我的关门弟子下一任掌门。<br>private 继承就像断代了，诶，我谁也不教，全部变成private，只有我自己看，但是无论这三种哪一种都看不到父类的private。</p>
+</blockquote>
+<h2 id="static关键字"><a href="#static关键字" class="headerlink" title="static关键字"></a>static关键字</h2><p>static关键字表示静态元素，其在程序的生存周期中仅在<strong>静态存储区</strong>分配一次存储空间，直到程序的生存周期结束。<br>static常用于</p>
+<ul>
+<li>函数中的静态变量</li>
+<li>静态类对象</li>
+<li>类中的静态成员变量</li>
+<li>类中的静态方法</li>
+</ul>
+<h2 id="static-和const分别怎么用，类里面static和const可以同时修饰成员函数吗"><a href="#static-和const分别怎么用，类里面static和const可以同时修饰成员函数吗" class="headerlink" title="static 和const分别怎么用，类里面static和const可以同时修饰成员函数吗"></a><strong>static 和const分别怎么用，类里面static和const可以同时修饰成员函数吗</strong></h2><ul>
+<li><p><strong>static</strong></p>
+<ul>
+<li><p>static对于变量</p>
+<ol>
+<li><p>局部变量</p>
+<p>在局部变量之前加上关键字static，局部变量就被定义成为一个局部静态变量。</p>
+<p>内存中的位置：静态存储区</p>
+<p>初始化：局部的静态变量只能被初始化一次</p>
+<p>作用域：作用域仍为局部作用域，当定义它的函数或者语句块结束的时候，作用域随之结束。</p>
+<blockquote>
+<p>当static用来修饰局部变量的时候，它就改变了局部变量的存储位置（从原来的栈中存放改为静态存储区）及其生命周期（局部静态变量在离开作用域之后，并没有被销毁，而是仍然驻留在内存当中，直到程序结束，只不过我们不能再对他进行访问），但未改变其作用域。</p>
+</blockquote>
+</li>
+<li><p>全局变量</p>
+<p>在全局变量之前加上关键字static，全局变量就被定义成为一个全局静态变量。</p>
+<p>内存中的位置：静态存储区（静态存储区在整个程序运行期间都存在）</p>
+<p>初始化：未经初始化的全局静态变量会被程序自动初始化为0</p>
+<p>作用域：全局静态变量在声明他的文件之外是不可见的。准确地讲从定义之处开始到文件结尾。(只能在本文件中存在和使用)</p>
+<blockquote>
+<p>全局变量本身就是静态存储方式， 静态全局变量当然也是静态存储方式。两者的区别在于非静态全局变量的作用域是整个源程序， 当一个源程序由多个源文件组成时，非静态的全局变量在各个源文件中都是有效的（在其他源文件中使用时加上extern关键字重新声明即可）。 而静态全局变量则限制了其作用域， 即只在定义该变量的源文件内有效， 在同一源程序的其它源文件中不能使用它。</p>
+</blockquote>
+</li>
+</ol>
+</li>
+</ul>
+</li>
+<li><p>static对于函数</p>
+<p>修饰普通函数，表明函数的作用范围，仅在定义该函数的文件内才能使用。在多人开发项目时，为了防止与他人命名空间里的函数重名，可以将函数定位为 static。（和全局变量一样限制了作用域而已）</p>
+</li>
+<li><p>static对于类</p>
+<ol>
+<li><p>成员变量</p>
+<p>用static修饰类的数据成员实际使其成为类的全局变量，会被类的所有对象共享，<strong>包括派生类的对象</strong>。</p>
+<p>因此，static成员必须在类外进行初始化，而不能在构造函数内进行初始化。不过也可以用const修饰static数据成员在类内初始化 。</p>
+</li>
+<li><p>成员函数</p>
+<p>用static修饰成员函数，使这个类只存在这一份函数，所有对象共享该函数，<strong>不含this指针。</strong></p>
+<p>静态成员是可以独立访问的，也就是说，无须创建任何对象实例就可以访问。</p>
+<p><strong>不可以同时用const和static修饰成员函数。</strong></p>
+</li>
+</ol>
+</li>
+<li><p><strong>const</strong></p>
+<ol>
+<li>限定变量为不可修改。</li>
+<li>限定成员函数不可以修改任何数据成员</li>
+</ol>
+</li>
+<li><p>static和const可以同时修饰成员函数吗?</p>
+<p>答：不可以。C++编译器在实现const的成员函数的时候为了确保该函数不能修改类的实例的状态，会在函数中添加一个隐式的参数const this*。但当一个成员为static的时候，该函数是没有this指针的。也就是说此时const的用法和static是冲突的。两者的语意是矛盾的。<strong>static的作用是表示该函数只作用在类型的静态变量上，与类的实例没有关系；而const的作用是确保函数不能修改类的实例的状态</strong>，与类型的静态变量没有关系。因此不能同时用它们。</p>
+</li>
+</ul>
+<h2 id="拷贝构造函数"><a href="#拷贝构造函数" class="headerlink" title="拷贝构造函数"></a>拷贝构造函数</h2><p><strong>只有这三种情况！！！！！</strong></p>
 <h3 id="1-用一个对象初始化另一个对象。"><a href="#1-用一个对象初始化另一个对象。" class="headerlink" title="1.用一个对象初始化另一个对象。"></a>1.用一个对象初始化另一个对象。</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">Point <span class="title">p2</span><span class="params">(p1)</span></span>;</span><br><span class="line">Point p3 = p1</span><br></pre></td></tr></table></figure>
 
 <p>这两种情况一样。</p>
@@ -339,16 +405,21 @@
 <p>问题：A-&gt;B;A-&gt;C;B,C-&gt;D; B,C继承了A，D继承了A。<br>在调用D的成员函数时候就不知道是调用B的，还是C的，所以在继承中使用</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Animal</span></span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">func</span><span class="params">()</span> </span>&#123; cout &lt;&lt; <span class="string">&quot;Animal&quot;</span>; &#125;;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Lion</span> : <span class="keyword">virtual</span> <span class="keyword">public</span> Animal</span><br><span class="line">&#123;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Wolf</span> : <span class="keyword">virtual</span> <span class="keyword">public</span> Animal</span><br><span class="line">&#123;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Cat</span> : <span class="keyword">public</span> Wolf, <span class="keyword">public</span> Lion</span><br><span class="line">&#123;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 
-
-
+<p>加上virtual保证子类只有一个父类的子对象，防止发生二义性。</p>
 <h2 id="C-深拷贝浅拷贝"><a href="#C-深拷贝浅拷贝" class="headerlink" title="C++ 深拷贝浅拷贝"></a>C++ 深拷贝浅拷贝</h2><p>（1）拷贝构造函数的作用就是定义了当我们用同类型的另外一个对象初始化本对象的时候做了什么，在某些情况下，如果我们不自己定义拷贝构造函数，使用默认的拷贝构造函数，就会出错。比如一个类里面有一个指针，如果使用默认的拷贝构造函数，会将指针拷贝过去，即两个指针指向同个对象，那么其中一个类对象析构之后，这个指针也会被delete掉，那么另一个类里面的指针就会变成<strong>野指针（悬浮指针）</strong>；</p>
 <p>（2）这也正是深拷贝和浅拷贝的区别，浅拷贝只是简单直接地复制指向某个对象的指针，而不复制对象本身，新旧对象还是共享同一块内存。 但深拷贝会另外创造一个一模一样的对象，新对象跟原对象不共享内存，修改新对象不会改到原对象。</p>
 <h2 id="C-野指针"><a href="#C-野指针" class="headerlink" title="C++野指针"></a>C++野指针</h2><p>指针指向了一块非法内存区域(悬空或者说未知区域)。</p>
 <h2 id="C-虚函数"><a href="#C-虚函数" class="headerlink" title="C++ 虚函数"></a>C++ 虚函数</h2><h3 id="哪些函数不能是虚函数"><a href="#哪些函数不能是虚函数" class="headerlink" title="哪些函数不能是虚函数"></a><a target="_blank" rel="noopener" href="https://www.cnblogs.com/NeilZhang/p/5427872.html">哪些函数不能是虚函数</a></h3><p>常见的不不能声明为虚函数的有：普通函数（非成员函数）；静态成员函数；内联成员函数；构造函数；友元函数。</p>
-<h2 id="C-内存模型"><a href="#C-内存模型" class="headerlink" title="C++ 内存模型"></a>C++ 内存模型</h2><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/yunlambert/p/9876491.html">https://www.cnblogs.com/yunlambert/p/9876491.html</a><br>空类(空 class)大小是1，为了标识对象<br><a target="_blank" rel="noopener" href="https://blog.csdn.net/li975242487/article/details/121395693">不同类型占用的字节</a></p>
+<h2 id="C-内存模型"><a href="#C-内存模型" class="headerlink" title="C++ 内存模型"></a>C++ 内存模型</h2><h3 id="C-内存布局"><a href="#C-内存布局" class="headerlink" title="C++内存布局"></a>C++内存布局</h3><h4 id="Heap-堆"><a href="#Heap-堆" class="headerlink" title="Heap 堆"></a>Heap 堆</h4><p>由new分配的内存块，其释放编译器不去管，由我们<strong>程序自己控制（一个new对应一个delete）</strong>。如果程序员没有释放掉，在程序结束时OS会自动回收。涉及的问题：“缓冲区溢出”、“内存泄露”</p>
+<h4 id="Stack-栈"><a href="#Stack-栈" class="headerlink" title="Stack 栈"></a>Stack 栈</h4><p><strong>编译器</strong>在需要时<strong>分配</strong>，在不需要时自动清除。存放<strong>局部变量</strong>和<strong>函数参数</strong>。<br>存放在栈中的数据只在当前函数及下一层函数中有效，一旦函数返回了，这些数据也就自动释放了。</p>
+<h4 id="全局-x2F-静态存储区-bss和-data段"><a href="#全局-x2F-静态存储区-bss和-data段" class="headerlink" title="全局&#x2F;静态存储区(.bss和.data段)"></a>全局&#x2F;静态存储区(.bss和.data段)</h4><p>全局和静态变量被分配到同一块内存中。在C语言中，未初始化的放在.bss段中称为zero initialization，初始化的放在.data段中，称为const initialization；在C++中二者不进行区分。<br>虚函数表就存在这里，因为是全局公用的一张表，通过虚函数指针查找。</p>
+<h4 id="常量存储区-rodata段"><a href="#常量存储区-rodata段" class="headerlink" title="常量存储区(.rodata段)"></a>常量存储区(.rodata段)</h4><p>存放常量，不允许修改，比如<code>const int a = 3</code></p>
+<h4 id="代码区-text段"><a href="#代码区-text段" class="headerlink" title="代码区(.text段)"></a>代码区(.text段)</h4><p>存放代码，比如我们的函数和类的成员函数。不许修改但是可以执行。</p>
+<h3 id="C-内存区域"><a href="#C-内存区域" class="headerlink" title="C++内存区域"></a>C++内存区域</h3><p>根据生命周期不同，C++中可划分出三种不同的内存区域</p>
+<p>1.自由存储区、动态区、静态区局部非静态变量的存储区域(栈)<br>2.动态区：new，malloc分配的内存<br>3.静态区：全局变量，静态变量，字符串常量存在位置</p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/yunlambert/p/9876491.html">https://www.cnblogs.com/yunlambert/p/9876491.html</a><br><a target="_blank" rel="noopener" href="https://blog.csdn.net/JUST__Tw/article/details/118551674">深入理解计算机系统（内存管理）—-内存模型</a><br>空类(空 class)大小是1，为了标识对象<br><a target="_blank" rel="noopener" href="https://blog.csdn.net/li975242487/article/details/121395693">不同类型占用的字节</a></p>
 <h2 id="C-运算符重载"><a href="#C-运算符重载" class="headerlink" title="C++运算符重载"></a>C++运算符重载</h2><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/liuchenxu123/p/12538623.html">https://www.cnblogs.com/liuchenxu123/p/12538623.html</a></p>
 <h2 id="派生类的构造函数顺序"><a href="#派生类的构造函数顺序" class="headerlink" title="派生类的构造函数顺序"></a>派生类的构造函数顺序</h2><p><a target="_blank" rel="noopener" href="https://www.nowcoder.com/questionTerminal/6348a321452a4318a2da5f3757baf620?source=relative">https://www.nowcoder.com/questionTerminal/6348a321452a4318a2da5f3757baf620?source=relative</a></p>
-<h2 id="内存模型"><a href="#内存模型" class="headerlink" title="内存模型"></a>内存模型</h2><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/JUST__Tw/article/details/118551674">https://blog.csdn.net/JUST__Tw/article/details/118551674</a></p>
 <h2 id="迭代器"><a href="#迭代器" class="headerlink" title="迭代器"></a>迭代器</h2><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/QIANGWEIYUAN/article/details/89184546">https://blog.csdn.net/QIANGWEIYUAN/article/details/89184546</a></p>
 <h2 id="红黑树"><a href="#红黑树" class="headerlink" title="红黑树"></a>红黑树</h2><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/u014454538/article/details/120120216">https://blog.csdn.net/u014454538/article/details/120120216</a></p>
 <h2 id="小根堆，大根堆"><a href="#小根堆，大根堆" class="headerlink" title="小根堆，大根堆"></a>小根堆，大根堆</h2><h3 id="完全二叉堆"><a href="#完全二叉堆" class="headerlink" title="完全二叉堆"></a>完全二叉堆</h3><p>堆又可称之为完全二叉堆。这是一个逻辑上基于完全二叉树、物理上一般基于线性数据结构（如数组、向量、链表等）的一种数据结构。</p>
