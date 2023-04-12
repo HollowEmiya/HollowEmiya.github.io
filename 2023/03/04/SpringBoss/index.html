@@ -49,7 +49,7 @@
 <meta property="og:image" content="http://example.com/imgs/SpringBoss/RayPointSpe.png">
 <meta property="og:image" content="http://example.com/imgs/SpringBoss/unityUpdate.jpg">
 <meta property="article:published_time" content="2023-03-04T07:14:23.000Z">
-<meta property="article:modified_time" content="2023-04-10T07:52:52.108Z">
+<meta property="article:modified_time" content="2023-04-12T08:13:06.856Z">
 <meta property="article:author" content="Eimya">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http://example.com/imgs/SpringBoss/C_ambient.png">
@@ -262,7 +262,18 @@
 <h3 id="10-客户处理内存分配不同"><a href="#10-客户处理内存分配不同" class="headerlink" title="10.客户处理内存分配不同"></a>10.客户处理内存分配不同</h3><p>operator new 抛出异常前会调用一个用户指定的错误处理函数 new-handler，指向一个错误处理函数。</p>
 <p>malloc 异常用户只能看着他 NULL</p>
 <h2 id="类和接口"><a href="#类和接口" class="headerlink" title="类和接口"></a>类和接口</h2><p>如果把类比作一把枪，接口就是枪的配件，比如握把，枪托等等。我们对于类重点在于描述一个对象，而对于接口重点在于描述接口能提供的功能，所以接口内没有数据成员，只有成员函数。</p>
-<h2 id="C-的public、protect、private和三种继承"><a href="#C-的public、protect、private和三种继承" class="headerlink" title="C++的public、protect、private和三种继承"></a>C++的public、protect、private和三种继承</h2><p>public 表示大家谁都能来访问，包括类对象自己和外部。<br>protect，外部不能访问，但是自己和子类可以访问。<br>private，表示只能自己访问，自己的子类都不能访问。<br>public 继承，不改变父类成员的可见性。<br>protect 继承，父类成员除private外，全部变为protect<br>private 继承全部变为private</p>
+<h2 id="构造函数链和析构函数链"><a href="#构造函数链和析构函数链" class="headerlink" title="构造函数链和析构函数链"></a>构造函数链和析构函数链</h2><h3 id="构造函数链"><a href="#构造函数链" class="headerlink" title="构造函数链"></a>构造函数链</h3><p>一个类中有父类成员，成员变量。对于构造函数我们</p>
+<ol>
+<li>先调用父类，</li>
+<li>再调用成员变量的构造函数，</li>
+<li>最后调用子类构造函数在构造过程中</li>
+</ol>
+<p>子类是继承父类的成员</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">A</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">int</span> a;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">B</span> : <span class="keyword">public</span> A</span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">int</span> b;    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里B有成员b，和从父类继承的a。<br>因为 a 是父类成员，所以交由父类初始化，如果先调子类，子类成员有a，b，对a，b初始化，再调父类，a又初始化初始化两次。<br>对于成员变量，成员变量有自己的构造函数，是当前子类无需关心的，对于他们先交给他们自己初始化即可。</p>
+<h2 id="析构函数链"><a href="#析构函数链" class="headerlink" title="析构函数链"></a>析构函数链</h2><p>对于析构函数链，我们把子类可以看成一个套娃。<br>我们装套娃会从小到大(从父到子)</p>
+<h2 id="C-的public、protected、private和三种继承"><a href="#C-的public、protected、private和三种继承" class="headerlink" title="C++的public、protected、private和三种继承"></a>C++的public、protected、private和三种继承</h2><p>public 表示大家谁都能来访问，包括类对象自己和外部。<br>protected,外部不能访问，但是自己和子类可以访问。<br>private，表示只能自己访问，自己的子类都不能访问。<br>public 继承，不改变父类成员的可见性。<br>protected 继承，父类成员除private外，全部变为protect<br>private 继承全部变为private</p>
 <blockquote>
 <p>假如把父类比喻一个门派，期内对象就是武功秘籍<br>public 就像比较普通的武功，比如太祖长拳，大家都可以来学。<br>protect 就像门派内的高深强大的武功秘籍，比如降龙十八掌，只有你是下一任掌门才能学。<br>private 就像掌门自己偷学了邪门歪道，比如岳不群学《辟邪剑谱》，只能自己知道，外人不能晓得。除了自己谁也不让看。</p>
 <p>public 继承就像是普普通通比较开明的继承者，子承父业，原来掌门规定的哪些武功可以交给外人，哪些武功自己人学，都不变，但是掌门私底下学的歪门武功他也不知道是什么，对他而言不可见，想知道是什么得返回去用上一任掌门的去查。<br>protect 继承就像垄断或者有点小心思的人继承，我不让所有人随便学了，现在你们想从我这学你得是我的关门弟子下一任掌门。<br>private 继承就像断代了，诶，我谁也不教，全部变成private，只有我自己看，但是无论这三种哪一种都看不到父类的private。</p>
@@ -577,7 +588,7 @@
 <h4 id="参考学习！记得学啊！"><a href="#参考学习！记得学啊！" class="headerlink" title="参考学习！记得学啊！"></a>参考学习！记得学啊！</h4><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/50720158">PBRT-E4.3-层次包围体(BVH)（一） - 玉米的文章 - 知乎</a><br><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/54620381">PBRT-E4.3-层次包围体(BVH)（二） - 玉米的文章 - 知乎</a><br><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/54694041">PBRT-E4.3-层次包围体(BVH)（三） - 玉米的文章 - 知乎</a></p>
 <h2 id="渲染管线"><a href="#渲染管线" class="headerlink" title="渲染管线"></a>渲染管线</h2><p>一般就说说大概的流程 IA-&gt;VS-&gt;Hull-&gt;TS-&gt;Domain-&gt;GS-&gt;OS-&gt;RS-&gt;PS-&gt;OM</p>
 <h3 id="什么是曲面细分着色器"><a href="#什么是曲面细分着色器" class="headerlink" title="什么是曲面细分着色器"></a>什么是曲面细分着色器</h3><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/chenglixue/p/17227713.html">大体介绍了一下曲面细分</a></p>
-<h2 id="透明效果"><a href="#透明效果" class="headerlink" title="透明效果"></a>透明效果</h2><h2 id="阴影"><a href="#阴影" class="headerlink" title="阴影"></a>阴影</h2><p>LightMap</p>
+<h2 id="透明效果"><a href="#透明效果" class="headerlink" title="透明效果"></a>透明效果</h2><h1 id="球谐函数"><a href="#球谐函数" class="headerlink" title="球谐函数"></a>球谐函数</h1><h2 id="雾效"><a href="#雾效" class="headerlink" title="雾效"></a>雾效</h2><h1 id="重要性采样"><a href="#重要性采样" class="headerlink" title="重要性采样"></a>重要性采样</h1><h2 id="阴影"><a href="#阴影" class="headerlink" title="阴影"></a>阴影</h2><p>LightMap</p>
 <p>ShadowMapping</p>
 <p>PCF</p>
 <p>PCSS</p>
@@ -628,6 +639,9 @@
 <h2 id="死锁和银行家算法"><a href="#死锁和银行家算法" class="headerlink" title="死锁和银行家算法"></a>死锁和银行家算法</h2><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/wyf2017/article/details/80068608">https://blog.csdn.net/wyf2017/article/details/80068608</a></p>
 <h2 id="什么是内存碎片，内存碎片是在虚拟内存还是物理内存？"><a href="#什么是内存碎片，内存碎片是在虚拟内存还是物理内存？" class="headerlink" title="什么是内存碎片，内存碎片是在虚拟内存还是物理内存？"></a>什么是内存碎片，内存碎片是在虚拟内存还是物理内存？</h2><p>采用分区式存储管理的系统，在储存分配过程中产生的、不能供用户作业使用的主存里的小分区称成“内存碎片”。内存碎片分为内部碎片和外部碎片。内存碎片只存在于虚拟内存上。</p>
 <h1 id="概率论"><a href="#概率论" class="headerlink" title="概率论"></a>概率论</h1><h2 id="期望计算和带保底卡池期望计算"><a href="#期望计算和带保底卡池期望计算" class="headerlink" title="期望计算和带保底卡池期望计算"></a>期望计算和带保底卡池期望计算</h2><h1 id="算法"><a href="#算法" class="headerlink" title="算法"></a>算法</h1><h2 id="LRU手撸"><a href="#LRU手撸" class="headerlink" title="LRU手撸"></a>LRU手撸</h2><p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/lru-cache-lcci/">https://leetcode.cn/problems/lru-cache-lcci/</a></p>
+<p>LRU算法还有进化版LFU算法</p>
+<h2 id="双端队列"><a href="#双端队列" class="headerlink" title="双端队列"></a>双端队列</h2><p>一个能用队列和栈实现的增删查改都是O(1)的数据结构，是什么<br>这个能用队列和栈实现的增删查改都是O(1)的数据结构是双端队列（deque）[<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E9%98%9F%E5%88%97#%E5%8F%8C%E7%AB%AF%E9%98%9F%E5%88%97">1</a>]。双端队列不仅支持在队列的一端进行入队和出队操作，也支持在队列的另一端进行插入和删除操作。因此，在使用双端队列时，可以根据具体的需求选择在队列的哪一端进行操作，从而实现了增删查改都是O(1)的效率。</p>
+<h3 id="双端队列定义"><a href="#双端队列定义" class="headerlink" title="双端队列定义"></a>双端队列定义</h3><p>能在队列两端进行入队、出队操作。</p>
 <h2 id="统计子树中城市之间最大距离"><a href="#统计子树中城市之间最大距离" class="headerlink" title="统计子树中城市之间最大距离"></a>统计子树中城市之间最大距离</h2><p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/count-subtrees-with-max-distance-between-cities/submissions/412418189/">https://leetcode.cn/problems/count-subtrees-with-max-distance-between-cities/submissions/412418189/</a></p>
 <h2 id="A-算法"><a href="#A-算法" class="headerlink" title="A*算法"></a>A*算法</h2><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/54510444">https://zhuanlan.zhihu.com/p/54510444</a></p>
 <h2 id="岛屿问题"><a href="#岛屿问题" class="headerlink" title="岛屿问题"></a>岛屿问题</h2><p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/number-of-islands/solutions/13103/dao-yu-shu-liang-by-leetcode/">https://leetcode.cn/problems/number-of-islands/solutions/13103/dao-yu-shu-liang-by-leetcode/</a></p>
@@ -668,6 +682,40 @@
 <li>Screen Space-Camera（屏幕空间-摄影机模式）UI元素的位置坐标是屏幕空间的坐标，画布也是填满整个屏幕空间，如果屏幕尺寸改变，画布也会自动改变尺寸来匹配屏幕。所不同的是，在该模式下，画布会被放置到摄影机前方。在这种渲染模式下，画布看起来绘制在一个与摄影机固定距离的平面上。所有的UI元素都由该摄影机渲染，因此摄影机的设置会影响到UI画面。<br>此时，画布上的UI组件会随视角移动。</li>
 <li>World Space即世界空间模式，此模式下UI元素的位置坐标是世界空间的坐标。画布作为场景中的一部分被固定显示在场景中，显示效果类似Plane组件。</li>
 </ul>
+<h2 id="Unity-渲染队列"><a href="#Unity-渲染队列" class="headerlink" title="Unity 渲染队列"></a>Unity 渲染队列</h2><table>
+<thead>
+<tr>
+<th>Name</th>
+<th>ID</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Background</td>
+<td>1000</td>
+<td>会在任何其他队列前渲染，渲染需要绘制在背景上的物体</td>
+</tr>
+<tr>
+<td>Geometry</td>
+<td>2000</td>
+<td>默认的渲染队列，大部分物体都使用这个队列，不透明物体一般使用这个队列</td>
+</tr>
+<tr>
+<td>AlphaTest</td>
+<td>2450</td>
+<td>需要进行透明测试的物体</td>
+</tr>
+<tr>
+<td>Transparent</td>
+<td>3000</td>
+<td>在 Geometry 和 AlphaTest 后，<strong>从后向前</strong>地渲染，任何使用透明混合的物体都使用此队列</td>
+</tr>
+<tr>
+<td>Overlay</td>
+<td>4000</td>
+<td>该队列用于实现叠加效果，任何需要最后渲染的物体都使用此队列。</td>
+</tr>
+</tbody></table>
 <h2 id="游戏动画"><a href="#游戏动画" class="headerlink" title="游戏动画"></a>游戏动画</h2><h3 id="关节动画"><a href="#关节动画" class="headerlink" title="关节动画"></a>关节动画</h3><h3 id="单一网格动画"><a href="#单一网格动画" class="headerlink" title="单一网格动画"></a>单一网格动画</h3><h3 id="骨骼动画"><a href="#骨骼动画" class="headerlink" title="骨骼动画"></a>骨骼动画</h3><h2 id="unity中UGUI如何打包成图集"><a href="#unity中UGUI如何打包成图集" class="headerlink" title="unity中UGUI如何打包成图集?"></a>unity中UGUI如何打包成图集?</h2><p><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/472146051/answer/2011067756">unity中UGUI如何打包成图集? - 鲨鱼辣椒的回答 - 知乎 </a></p>
 <ul>
 <li>开启UGUI的图集模式, Editor-&gt;Project Settings 下面有sprite packer的模式。</li>
