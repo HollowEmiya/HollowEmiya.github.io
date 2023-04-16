@@ -49,7 +49,7 @@
 <meta property="og:image" content="http://example.com/imgs/SpringBoss/RayPointSpe.png">
 <meta property="og:image" content="http://example.com/imgs/SpringBoss/unityUpdate.jpg">
 <meta property="article:published_time" content="2023-03-04T07:14:23.000Z">
-<meta property="article:modified_time" content="2023-04-12T08:13:06.856Z">
+<meta property="article:modified_time" content="2023-04-14T17:33:12.003Z">
 <meta property="article:author" content="Eimya">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http://example.com/imgs/SpringBoss/C_ambient.png">
@@ -367,7 +367,7 @@
 </ul>
 <h3 id="智能指针"><a href="#智能指针" class="headerlink" title="智能指针"></a>智能指针</h3><h3 id="类型推断"><a href="#类型推断" class="headerlink" title="类型推断"></a>类型推断</h3><h3 id="lambda表达式"><a href="#lambda表达式" class="headerlink" title="lambda表达式"></a>lambda表达式</h3><h3 id="类型转换"><a href="#类型转换" class="headerlink" title="类型转换"></a>类型转换</h3><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/417640759">九阳神功！不会C++就看这个！</a>（1）const_cast: 把const属性去掉，即将const转换为非const（也可以反过来），const_cast只能用于指针或引用，并且只能改变对象的底层const（顶层const，本身是const，底层const，指向对象const）；</p>
 <p>（2）static_cast: 隐式类型转换，可以实现C++中内置基本数据类型之间的相互转换，enum、struct、 int、char、float等，能进行类层次间的向上类型转换和向下类型转换（向下不安全，因为没有进行动态类型检查）。它不能进行无关类型(如非基类和子类)指针之间的转换，也不能作用包含底层const的对象；</p>
-<p>（3）dynamic_cast：动态类型转换，用于将基类的指针或引用安全地转换成派生类的指针或引用（也可以向上转换），若指针转换失败返回NULL，若引用返回失败抛出bad_cast异常。dynamic_cast是在运行时进行安全性检查；使用dynamic_cast父类一定要有虚函数，否则编译不通过；</p>
+<p>（3）dynamic_cast：动态类型转换，用于将基类的指针或引用安全地转换成派生类的指针或引用（也可以向上转换），若指针转换失败返回NULL，若引用返回失败抛出bad_cast异常。dynamic_cast是在运行时进行安全性检查；使用<strong>dynamic_cast父类一定要有虚函数，否则编译不通过；</strong></p>
 <p>（4）reinterpret_cast：reinterpret是重新解释的意思，此标识符的意思即为将数据的二进制形式重新解释，但是不改变其值，有着和C风格的强制转换同样的能力。它可以转化任何内置的数据类型为其他任何的数据类型，也可以转化任何指针类型为其他的类型。它甚至可以转化内置的数据类型为指针，无须考虑类型安全或者常量的情形。不到万不得已绝对不用（比较不安全）</p>
 <h2 id="C-struct和class区别"><a href="#C-struct和class区别" class="headerlink" title="C++ struct和class区别"></a>C++ struct和class区别</h2><ul>
 <li><p>在 <strong>C 语言</strong> 中，<strong>结构体</strong> 只能存放一些 <strong>变量</strong> 的集合，并不能有 <strong>函数</strong>，但 <strong>C++</strong> 中的结构体对 C 语言中的结构体做了扩充，可以有函数，因此 C++ 中的结构体跟 C++ 中的类很类似。C++ 中的 struct 可以包含成员函数，也能继承，也可以实现多态。</p>
@@ -402,7 +402,11 @@
 <li>weak_ptr是为了解决shared_ptr的循环引用问题，那为什么不用raw ptr来解决这个问题？</li>
 </ul>
 <p>答：一个weak_ptr绑定到shared_ptr之后不会增加引用计数，一旦最后一个指向对象的shared_ptr被销毁，对象就会被释放，即使weak_ptr指向对象，也还是会释放；raw指针，当对象销毁之后会变成悬浮指针。</p>
-<h2 id="Shared-ptr实现原理"><a href="#Shared-ptr实现原理" class="headerlink" title="Shared_ptr实现原理"></a>Shared_ptr实现原理</h2><h2 id="为什么析构函数一定要被设置为虚函数"><a href="#为什么析构函数一定要被设置为虚函数" class="headerlink" title="为什么析构函数一定要被设置为虚函数"></a>为什么析构函数一定要被设置为虚函数</h2><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/yuanch2019/p/11625460.html">为什么析构函数必须是虚函数？为什么C++默认的析构函数不是虚函数</a></p>
+<h2 id="Shared-ptr实现原理"><a href="#Shared-ptr实现原理" class="headerlink" title="Shared_ptr实现原理"></a>Shared_ptr实现原理</h2><h3 id="智能指针如何实现"><a href="#智能指针如何实现" class="headerlink" title="智能指针如何实现"></a>智能指针如何实现</h3><p>C++中的智能指针（smart pointers）是一种RAII（Resource Acquisition Is Initialization）技术的实现方式，它们可以自动管理内存资源，并确保在对象离开作用域时正确地释放这些资源。智能指针的主要目的是确保资源获取与对象初始化同时发生，从而能够创建该对象的所有资源并在某行代码中准备就绪。</p>
+<p>C++11中引入了三种智能指针：<code>std::unique_ptr</code>、<code>std::shared_ptr</code>和<code>std::weak_ptr</code>。其中<code>std::unique_ptr</code>是用于独占式拥有一个对象，<code>std::shared_ptr</code>是用于共享拥有一个对象，而<code>std::weak_ptr</code>则是用于弱引用一个对象。</p>
+<p>当我们需要使用RAII技术来管理动态分配的内存时，我们通常使用<code>std::unique_ptr</code>来管理指向单个对象的指针，并使用<code>std::shared_ptr</code>来管理指向共享资源的指针。如果我们需要在一个对象中存储多个指向共享资源的指针，则应使用<code>std::weak_ptr</code>来避免循环引用问题。</p>
+<p>总之，智能指针是一种非常有用的C++编程工具，可以帮助我们更安全、更简单地管理内存资源，并且对于编写高质量的C++代码来说至关重要。更多关于智能指针的资料可以参考[<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/150555165">3</a>][<a target="_blank" rel="noopener" href="https://learn.microsoft.com/zh-cn/cpp/cpp/smart-pointers-modern-cpp?view=msvc-170">4</a>]。</p>
+<h2 id="为什么析构函数一定要被设置为虚函数"><a href="#为什么析构函数一定要被设置为虚函数" class="headerlink" title="为什么析构函数一定要被设置为虚函数"></a>为什么析构函数一定要被设置为虚函数</h2><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/yuanch2019/p/11625460.html">为什么析构函数必须是虚函数？为什么C++默认的析构函数不是虚函数</a></p>
 <p>首先类的<strong>虚函数</strong>调用是靠<strong>虚函数指针</strong>调用的，而函数成员靠的是对象类型。</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">A</span></span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">func1</span><span class="params">()</span></span>&#123;&#125;;</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="type">void</span> <span class="title">func2</span><span class="params">()</span></span>&#123;&#125;;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    A a;</span><br><span class="line">    a.<span class="built_in">func1</span>();</span><br><span class="line">    a.<span class="built_in">func2</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
@@ -437,6 +441,7 @@
 <h4 id="完全二叉树"><a href="#完全二叉树" class="headerlink" title="完全二叉树"></a>完全二叉树</h4><p>完全二叉树是由满二叉树而引出来的，若设二叉树的<code>深度为h</code>，<code>除第 h 层外</code>，<code>其它各层 (1～h-1) 的结点数都达到最大个数(即1~h-1层为一个满二叉树)</code>，第 h 层所有的结点都连续集中在最左边，这就是完全二叉树。</p>
 <h3 id="小根堆"><a href="#小根堆" class="headerlink" title="小根堆"></a>小根堆</h3><p>根小于节点</p>
 <h3 id="大根堆"><a href="#大根堆" class="headerlink" title="大根堆"></a>大根堆</h3><p>根大于节点</p>
+<h2 id="对象池"><a href="#对象池" class="headerlink" title="对象池"></a>对象池</h2><p>对象池内通常是对象实例的指针，因为对象池的原理是将对象放入池管理的某种内存连续的数据结构中，当不需要对象时，并不销毁对象，而是将对象回收到池中，下次需要的时候再次从池中拿出来。由于对象储存在内存连续的数据结构中，所以能够有效地解决内存碎片的问题。因此，对象池中保存对象的指针比直接保存对象实例更为高效，能够避免频繁分配和销毁内存，从而提高了程序的性能。</p>
 <h2 id="多线程"><a href="#多线程" class="headerlink" title="多线程"></a>多线程</h2><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/430069448">进程间通信方式；线程间通信方式</a></p>
 <h3 id="进程间通讯的方式？"><a href="#进程间通讯的方式？" class="headerlink" title="进程间通讯的方式？"></a>进程间通讯的方式？</h3><p>管道通信，消息队列，共享内存，socket，串口都可以实现。</p>
 <h4 id="管道-pipe-："><a href="#管道-pipe-：" class="headerlink" title="管道( pipe )："></a>管道( pipe )：</h4><p>管道是一种半双工的通信方式，数据只能单向流动，而且只能在具有亲缘关系的进程间使用。进程的亲缘关系通常是指父子进程关系。</p>

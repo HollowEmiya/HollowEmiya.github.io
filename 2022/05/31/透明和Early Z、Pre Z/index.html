@@ -20,7 +20,7 @@
 <meta property="og:image" content="http://example.com/imgs/透明和Early%20Z、Pre%20Z/TB.jpg">
 <meta property="og:image" content="http://example.com/2022/05/31/%E9%80%8F%E6%98%8E%E5%92%8CEarly%20Z%E3%80%81Pre%20Z/imgs/透明和Early%20Z、Pre%20Z/qh.jpg">
 <meta property="article:published_time" content="2022-05-31T12:52:39.000Z">
-<meta property="article:modified_time" content="2023-03-10T06:12:04.704Z">
+<meta property="article:modified_time" content="2023-04-13T02:50:19.374Z">
 <meta property="article:author" content="Eimya">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http://example.com/imgs/透明和Early%20Z、Pre%20Z/渲染流程.png">
@@ -234,7 +234,7 @@
 
 <h4 id="开启深度写入的半透明"><a href="#开启深度写入的半透明" class="headerlink" title="开启深度写入的半透明"></a>开启深度写入的半透明</h4><p>这种方法往往是针对一个半透明物体内部前后关系错误的问题，就会用到我们介绍的Z-prePass，注意我们现在在渲染透明物体其他不透明物体已经绘制过了，换句话说缓存中已经有颜色我们是做混合，在第一个pass中写入透明物体的深度值，在第二个根据深度信息进行透明混合的渲染，这样就可以得到前后关系正确的半透明效果。(但是看不到透明物体的背面)</p>
 <h4 id="双面透明"><a href="#双面透明" class="headerlink" title="双面透明"></a>双面透明</h4><p>对于透明物体只能观测到正面的问题，我们可以用一个Pass先渲染背面剔除正面，然后再用一个Pass渲染正面剔除背面，这种情况只需关闭深度写入的透明混合即可，不需要上面的Z-prepass，我之前老是有些分不清。</p>
-<p>透明和early z就先写到这吧，做一些复习用所以只概述了技术的大体思路，没有贴什么代码和具体细节，其实我GitHub上有，不过懒得贴了(</p>
+<p>透明和early z就先写到这吧，做一些复习用所以只概述了技术的大体思路，没有贴什么代码和具体细节，其实我GitHub上有，不过懒得贴了(<br>关于透明物体顺序问题还有OIT技术。</p>
 
       
 
