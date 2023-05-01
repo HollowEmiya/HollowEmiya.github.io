@@ -6,13 +6,17 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://example.com">
-  <title>Archives: 2023 | Emiya Blog</title>
+  <title>C++11之 lambda 和 function | Emiya Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Emiya Blog">
-<meta property="og:url" content="http://example.com/archives/2023/index.html">
+  <meta name="description" content="C++11 的lambda 表达式和 function 是新引入的功能，他们的好处在于可以简化代码、使之更灵活而且在并发编程中一个 lambda 表达式或 function 对象作为线程的执行体会更安全，避免为一个线程单独写一个函数。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C++11之 lambda 和 function">
+<meta property="og:url" content="http://example.com/2023/05/01/C++11%E4%B9%8Bfunction%E5%92%8Clambda/index.html">
 <meta property="og:site_name" content="Emiya Blog">
+<meta property="og:description" content="C++11 的lambda 表达式和 function 是新引入的功能，他们的好处在于可以简化代码、使之更灵活而且在并发编程中一个 lambda 表达式或 function 对象作为线程的执行体会更安全，避免为一个线程单独写一个函数。">
 <meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2023-05-01T06:20:22.000Z">
+<meta property="article:modified_time" content="2023-05-01T07:32:15.628Z">
 <meta property="article:author" content="Eimya">
 <meta name="twitter:card" content="summary">
   
@@ -150,259 +154,185 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
+            <article id="post-C++11之function和lambda" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
   
+    <h1 class="article-title" itemprop="name">
+      C++11之 lambda 和 function
+    </h1>
   
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2023" class="archive-year">2023</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2023/05/01/C++11%E4%B9%8Bfunction%E5%92%8Clambda/" class="archive-article-date">
+
+        
+        <a href="/2023/05/01/C++11%E4%B9%8Bfunction%E5%92%8Clambda/" class="archive-article-date">
   	<time datetime="2023-05-01T06:20:22.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2023-05-01</time>
 </a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2023/05/01/C++11%E4%B9%8Bfunction%E5%92%8Clambda/">C++11之 lambda 和 function</a>
-    </h1>
-  
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>C++11 的lambda 表达式和 function 是新引入的功能，他们的好处在于可以<strong>简化代码、使之更灵活</strong>而且在并发编程中一个 lambda 表达式或 function 对象作为线程的执行体会更安全，避免为一个线程单独写一个函数。</p>
+<span id="more"></span>
 
-        <div class="article-info info-on-right">
-          
-          
+<h1 id="Lambda-和-Function"><a href="#Lambda-和-Function" class="headerlink" title="Lambda 和 Function"></a>Lambda 和 Function</h1><h2 id="Lambda-和-Function-的好处"><a href="#Lambda-和-Function-的好处" class="headerlink" title="Lambda 和 Function 的好处"></a>Lambda 和 Function 的好处</h2><ol>
+<li>Lambda表达式能够简化代码，使代码更加简洁。Lambda表达式相当于一个匿名函数，可以在需要的地方直接定义使用，不必再为了实现某个功能而额外定义一个函数。</li>
+<li>Lambda表达式和Function都能够实现函数对象的传递，即将函数作为参数传递给其他函数。这种方式可以让代码更加灵活，更加符合面向对象编程的思想。</li>
+<li>Function是一个通用的函数封装器，可以将任何可调用的对象（比如函数指针、成员函数指针、Lambda表达式等）转换为一个统一的函数类型。Function可以让代码更加通用，更不易出错。</li>
+<li>Lambda表达式和Function都能够简化并发编程的代码。在并发编程中，有时需要定义一个Lambda表达式或Function对象作为一个线程的执行体，这样可以避免为线程另外写一个函数。</li>
+</ol>
+<p>总结：Lambda表达式和Function的好处包括代码简洁、函数传递灵活、通用性强、并发编程简单等。</p>
+<h2 id="实例代码"><a href="#实例代码" class="headerlink" title="实例代码"></a>实例代码</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">function&lt;<span class="type">int</span>(<span class="type">int</span>)&gt; dfs=[&amp;](<span class="type">int</span> cur) -&gt; <span class="type">int</span> &#123;</span><br><span class="line">    <span class="type">int</span> res=<span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> nei : g[cur])</span><br><span class="line">    &#123;</span><br><span class="line">        res = <span class="built_in">max</span>(res,<span class="built_in">dfs</span>(nei));</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> information[cur]+res;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 
+<h2 id="function"><a href="#function" class="headerlink" title="function"></a>function</h2><p>function 是 std::function 类型，可以用来存储任意可调用对象，包括函数指针、Lambda 表达式等等。</p>
+<p>其使用方法为<br><code>function&lt;int(char)&gt;</code> , int 为声明的返回值类型，而 char 为声明的参数类型，如果有多个参数即多个声明，如 <code>function&lt;void(int,char)&gt;</code>。</p>
+<p>function 和函数指针有些类似，但是代码更灵活可以和 lambda 表达式相结合使用，而没有指针带来的问题，但是因为使用了模板所以会有一定的实例化开销。<br>我们也可以用 auto 去指定 lambda 表达式的匿名函数。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">auto</span> funcPtr = &amp;functionName;</span><br><span class="line"><span class="keyword">auto</span> lambda = [](<span class="type">int</span> x, <span class="type">int</span> y)&#123; <span class="keyword">return</span> x+y;&#125;;</span><br><span class="line"><span class="built_in">int</span> (*function) (<span class="type">int</span>,<span class="type">int</span>) = lambda;	<span class="comment">// 将 Lambda 表达式赋值给函数指针</span></span><br></pre></td></tr></table></figure>
+
+<p>int (*funcPtr)(int, int) 是一个函数指针，它可以指向一个返回类型为 int，参数列表为 (int, int) 的函数。而 lambda 表达式则相当于一个匿名函数，用于表示一个可调用对象，可以被赋值给一个函数指针。</p>
+<h2 id="Lambda"><a href="#Lambda" class="headerlink" title="Lambda"></a>Lambda</h2><p>可以用在 sort 函数中自定义排序</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sort</span>(nums.<span class="built_in">begin</span>(),nums.<span class="built_in">end</span>(),[&amp;](<span class="type">const</span> <span class="type">int</span>&amp; a, <span class="type">const</span> <span class="type">int</span>&amp; b)</span><br><span class="line">     &#123;</span><br><span class="line">         <span class="keyword">if</span>(a &lt; b)</span><br><span class="line">         &#123;</span><br><span class="line">             <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">         &#125;</span><br><span class="line">         <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">     &#125;);</span><br></pre></td></tr></table></figure>
+
+<p>其中“[&amp;]”表示的是捕获方式，Lambda 表达式有三种捕获方式：</p>
+<ol>
+<li>”[&amp;]“，用引用去捕获所有外部变量，表示该 Lambda 表达式使用一个引用以捕获所有局部变量。这意味着Lambda函数内的局部变量实际上是对外部作用域中的同名变量的别名。在Lambda函数中，对于捕获的变量的修改将直接影响外部作用域中的原始变量。</li>
+<li>“[&#x3D;]”：以复制方式捕获所有外部变量。Lambda 表达式使用复制构造函数以复制传递给它们的所有数据，并在 Lambda 函数体中使用该复制的变量副本。当然，对于复制的对象进行修改，不会影响到原始参数。</li>
+<li>“[cur]”：以复制方式仅捕获外部变量 cur。这种方式只捕获指定的变量，每个指定的变量都使用复制构造函数以复制传递给它们的数据。</li>
+</ol>
+<h3 id="捕获变量例"><a href="#捕获变量例" class="headerlink" title="捕获变量例"></a>捕获变量例</h3><p>这里的捕获变量不是说 lambda 表达式定义的函数参数，而是对函数外部变量的使用，比如</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> a = <span class="number">1</span>;</span><br><span class="line"><span class="keyword">auto</span> func = [=]() <span class="keyword">mutable</span></span><br><span class="line">&#123;</span><br><span class="line">    a += <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">return</span> a;</span><br><span class="line">&#125;;a</span><br><span class="line">std::cout &lt;&lt; <span class="built_in">func</span>() &lt;&lt; std::endl;	<span class="comment">// 2</span></span><br><span class="line">std::cout &lt;&lt; a &lt;&lt; std::endl;	<span class="comment">// 1</span></span><br></pre></td></tr></table></figure>
+
+<p>这里就是对 int a，lambda表达式用那种方式使用，而非()内的参数。<br>还有一点</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> a = <span class="number">1</span>;</span><br><span class="line"><span class="keyword">auto</span> func = [=](<span class="type">int</span>&amp; a) <span class="keyword">mutable</span></span><br><span class="line">&#123;</span><br><span class="line">    a += <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">return</span> a;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="type">int</span> b = <span class="number">0</span>;</span><br><span class="line">std::cout &lt;&lt; <span class="built_in">func</span>(b) &lt;&lt; std::endl;	<span class="comment">// 1</span></span><br><span class="line">std::cout &lt;&lt; b &lt;&lt; std::endl;	<span class="comment">// 1</span></span><br></pre></td></tr></table></figure>
+
+<p>这里的(int&amp; a)对a有更高优先级，就是先匹配函数参数，外部定义的 int a，lambda函数是无法使用的。</p>
+<ol>
+<li><p>[&amp;], 所有参数全为引用</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> a=<span class="number">1</span>;</span><br><span class="line"><span class="keyword">auto</span> func=[&amp;]()</span><br><span class="line">&#123;</span><br><span class="line">    a+=<span class="number">1</span>;</span><br><span class="line">    <span class="keyword">return</span> a;</span><br><span class="line">&#125;</span><br><span class="line">std::cout &lt;&lt; <span class="built_in">func</span>()&lt;&lt;std::endl;	<span class="comment">// 2</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>[&#x3D;], 所有变量都复制捕获</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> a = <span class="number">1</span>;</span><br><span class="line"><span class="keyword">auto</span> func=[=]() <span class="keyword">mutable</span></span><br><span class="line">&#123;</span><br><span class="line">    a+=<span class="number">1</span>;</span><br><span class="line">    <span class="keyword">return</span> a;</span><br><span class="line">&#125;;</span><br><span class="line">std::cout &lt;&lt; <span class="built_in">func</span>() &lt;&lt;std::endl;	<span class="comment">// 2</span></span><br><span class="line">std::cout &lt;&lt; a &lt;&lt;std::endl;	<span class="comment">// 1</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>[cur], 指定某个参数的捕获方式</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> num1 = <span class="number">1</span>, num2 = <span class="number">2</span>;</span><br><span class="line"><span class="keyword">auto</span> func = [num1, &amp;num2]() <span class="keyword">mutable</span>&#123;</span><br><span class="line">	num1 += <span class="number">1</span>;</span><br><span class="line">	num2 += <span class="number">1</span>;</span><br><span class="line">	<span class="keyword">return</span> num1 + num2;</span><br><span class="line">&#125;;</span><br><span class="line">std::cout &lt;&lt; <span class="built_in">func</span>() &lt;&lt; std::endl; <span class="comment">// 2+3=5</span></span><br><span class="line">std::cout &lt;&lt; num1 &lt;&lt; num2 &lt;&lt; std::endl; <span class="comment">// 1,3</span></span><br></pre></td></tr></table></figure></li>
+</ol>
+<p>4.[], 如果在 Lambda 表达式中使用了 <code>[]</code>，而没有写任何符号，表示不捕获任何外部变量。这种情况下，<strong>Lambda 表达式只能访问自己内部定义的变量和函数，不能访问任何外部的变量和函数。</strong><br>对于之前的a，b参数覆盖问题就应该声明成[]。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> a = <span class="number">1</span>;</span><br><span class="line"><span class="keyword">auto</span> func = [](<span class="type">int</span>&amp; a)</span><br><span class="line">&#123;</span><br><span class="line">    a += <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">return</span> a;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="type">int</span> b = <span class="number">0</span>;</span><br><span class="line">std::cout &lt;&lt; <span class="built_in">func</span>(b) &lt;&lt; std::endl;	<span class="comment">// 1</span></span><br><span class="line">std::cout &lt;&lt; b &lt;&lt; std::endl;	<span class="comment">// 1</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="mutable"><a href="#mutable" class="headerlink" title="mutable"></a>mutable</h3><p><code>mutable</code> 是 C++ 中的一个关键字，用于修饰类的成员变量或者 Lambda 表达式中捕获的变量，表示这些变量是可变的，即使在 const 或者引用等限制的情况下也可以被修改。</p>
+<p>在 Lambda 表达式中，如果想要修改按值捕获的外部变量，需要将其声明为 <code>mutable</code>，否则会编译错误。例如：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> a = <span class="number">10</span>;</span><br><span class="line"><span class="keyword">auto</span> func = [a]() <span class="keyword">mutable</span> &#123;</span><br><span class="line">    a += <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">return</span> a;</span><br><span class="line">&#125;;</span><br><span class="line">std::cout &lt;&lt; <span class="built_in">func</span>() &lt;&lt; std::endl; <span class="comment">// 输出 11</span></span><br><span class="line">std::cout &lt;&lt; a &lt;&lt; std::endl; <span class="comment">// 输出 10</span></span><br></pre></td></tr></table></figure>
+
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://example.com/2023/05/01/C++11%E4%B9%8Bfunction%E5%92%8Clambda/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2023/04/16/%E4%B8%80%E4%BA%9B%E9%85%8D%E7%BD%AE%E7%8E%AF%E5%A2%83%E6%95%99%E7%A8%8B/" class="archive-article-date">
-  	<time datetime="2023-04-15T16:00:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2023-04-16</time>
-</a>
+<nav id="article-nav">
+  
+  
+    <a href="/2023/04/16/%E4%B8%80%E4%BA%9B%E9%85%8D%E7%BD%AE%E7%8E%AF%E5%A2%83%E6%95%99%E7%A8%8B/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">一些环境配置教程</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
+        
+        
+    </div>
+</aside>
+
+
+
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2023/04/16/%E4%B8%80%E4%BA%9B%E9%85%8D%E7%BD%AE%E7%8E%AF%E5%A2%83%E6%95%99%E7%A8%8B/">一些环境配置教程</a>
-    </h1>
+  
   
 
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2023/04/11/%E7%90%83%E8%B0%90%E5%87%BD%E6%95%B0/" class="archive-article-date">
-  	<time datetime="2023-04-11T11:20:11.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2023-04-11</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2023/04/11/%E7%90%83%E8%B0%90%E5%87%BD%E6%95%B0/">简单学习球谐函数</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2023/04/10/%E5%B8%B8%E8%A7%81%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" class="archive-article-date">
-  	<time datetime="2023-04-10T04:23:38.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2023-04-10</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2023/04/10/%E5%B8%B8%E8%A7%81%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式学习</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2023/03/10/CMake%20Note/" class="archive-article-date">
-  	<time datetime="2023-03-10T05:15:23.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2023-03-10</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2023/03/10/CMake%20Note/">我的CMake学习</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2023/03/04/SpringBoss/" class="archive-article-date">
-  	<time datetime="2023-03-04T07:14:23.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2023-03-04</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2023/03/04/SpringBoss/">春招寄语</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2023/03/03/%E7%B4%A7%E6%80%A5%E8%AF%B4%E6%98%8E/" class="archive-article-date">
-  	<time datetime="2023-03-03T09:39:18.032Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2023-03-03</time>
-</a>
-        </div>
-    	 
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2023/02/27/%E5%8C%85%E5%9B%B4%E7%9B%92%E4%B8%8E%E7%89%A9%E4%BD%93%E7%A2%B0%E6%92%9E/" class="archive-article-date">
-  	<time datetime="2023-02-27T05:10:02.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2023-02-27</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2023/02/27/%E5%8C%85%E5%9B%B4%E7%9B%92%E4%B8%8E%E7%89%A9%E4%BD%93%E7%A2%B0%E6%92%9E/">包围盒与物体碰撞(学习中)</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2023/02/10/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/" class="archive-article-date">
-  	<time datetime="2023-02-10T08:54:55.627Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2023-02-10</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2023/02/10/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/">排序算法学习总结</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
-  
-
-    
 
 
           </div>
@@ -425,8 +355,8 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,
