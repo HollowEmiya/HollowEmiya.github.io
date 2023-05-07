@@ -16,7 +16,7 @@
 <meta property="og:description" content="C++11 的lambda 表达式和 function 是新引入的功能，他们的好处在于可以简化代码、使之更灵活而且在并发编程中一个 lambda 表达式或 function 对象作为线程的执行体会更安全，避免为一个线程单独写一个函数。">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2023-05-01T06:20:22.000Z">
-<meta property="article:modified_time" content="2023-05-01T07:32:15.628Z">
+<meta property="article:modified_time" content="2023-05-01T09:40:01.697Z">
 <meta property="article:author" content="Eimya">
 <meta name="twitter:card" content="summary">
   
@@ -225,6 +225,10 @@
 <p>在 Lambda 表达式中，如果想要修改按值捕获的外部变量，需要将其声明为 <code>mutable</code>，否则会编译错误。例如：</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> a = <span class="number">10</span>;</span><br><span class="line"><span class="keyword">auto</span> func = [a]() <span class="keyword">mutable</span> &#123;</span><br><span class="line">    a += <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">return</span> a;</span><br><span class="line">&#125;;</span><br><span class="line">std::cout &lt;&lt; <span class="built_in">func</span>() &lt;&lt; std::endl; <span class="comment">// 输出 11</span></span><br><span class="line">std::cout &lt;&lt; a &lt;&lt; std::endl; <span class="comment">// 输出 10</span></span><br></pre></td></tr></table></figure>
 
+<h3 id="指定返回值类型"><a href="#指定返回值类型" class="headerlink" title="指定返回值类型"></a>指定返回值类型</h3><p>lambda 表达式可以指定返回值类型，只需要</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">function&lt;<span class="type">int</span>(<span class="type">int</span>)&gt; dfs=[&amp;](<span class="type">int</span> cur) -&gt; <span class="type">int</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> cur;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>这里的<code>-&gt;</code>就指定了返回值 int 类型。</p>
 
       
 
