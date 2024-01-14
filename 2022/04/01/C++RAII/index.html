@@ -16,16 +16,16 @@
   <meta name="author" content="Hollow Emiya">
   <meta name="keywords" content="">
   
-    <meta name="description" content="What is RAII? Youtube Vedio">
+    <meta name="description" content="What is RAII? Youtube Vedio">
 <meta property="og:type" content="article">
 <meta property="og:title" content="C++ RAII">
 <meta property="og:url" content="http://example.com/2022/04/01/C++RAII/index.html">
 <meta property="og:site_name" content="Emiya Blog">
-<meta property="og:description" content="What is RAII? Youtube Vedio">
+<meta property="og:description" content="What is RAII? Youtube Vedio">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://example.com/2022/04/01/C++RAII/imgs/C++RAII/35.png">
 <meta property="article:published_time" content="2022-04-01T04:24:22.000Z">
-<meta property="article:modified_time" content="2024-01-13T12:27:18.768Z">
+<meta property="article:modified_time" content="2024-01-14T07:10:30.269Z">
 <meta property="article:author" content="Hollow Emiya">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="http://example.com/2022/04/01/C++RAII/imgs/C++RAII/35.png">
@@ -100,7 +100,7 @@
   <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand" href="/">
-      <strong>Emiya&#39;s Blog Home</strong>
+      <strong>Emiya&#39;s Blog</strong>
     </a>
 
     <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
@@ -279,7 +279,8 @@
               <div class="markdown-body">
                 
                 <p><a target="_blank" rel="noopener" href="https://medium.com/swlh/what-is-raii-e016d00269f9">What is
-RAII?</a> <a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=q6dVKMgeEkk">Youtube
+RAII?</a><br />
+<a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=q6dVKMgeEkk">Youtube
 Vedio</a></p>
 <span id="more"></span>
 <h1 id="c-raiiresurce-acquisition-is-initialization">C++ RAII(Resurce
@@ -310,17 +311,18 @@ join 或 detach 是非常重要的。</p>
 <li><p><code>join</code>
 通过阻塞当前线程等待被调用的线程完成，确保主线程在子线程执行完毕后在继续执行，从而避免子线程在主线程退出去终止，或者超出作用域导致
 <code>std::terminate</code> 导致整个进程结束。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-function">std::thread <span class="hljs-title">t</span><span class="hljs-params">(threadFunction)</span></span>;<br><br>t.<span class="hljs-built_in">jion</span>();		<span class="hljs-comment">// 阻塞该主线程，等待子线程完成</span><br></code></pre></td></tr></table></figure></li>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-function">std::thread <span class="hljs-title">t</span><span class="hljs-params">(threadFunction)</span></span>;<br><br>t.<span class="hljs-built_in">jion</span>();		<span class="hljs-comment">// 阻塞该主线程，等待子线程完成  </span><br></code></pre></td></tr></table></figure></li>
 <li><p><code>detach</code>
 将当前线程和新线程分离，使其独立运行。一旦被分离后就无法使用
 <code>join</code>
 方法等待线程结束。<u><strong>此时</strong>线程的生命周期就由自己控制了，主线程和子线程可以并发执行，互相独立。</u></p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs c++">std::<span class="hljs-built_in">thread</span>(threadFuntion);<br>t.<span class="hljs-built_in">detach</span>();<br></code></pre></td></tr></table></figure></li>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs c++">std::<span class="hljs-built_in">thread</span>(threadFuntion);  <br>t.<span class="hljs-built_in">detach</span>();  <br></code></pre></td></tr></table></figure></li>
 </ol>
 <p>通过以上三个例子，我们可以看到错误发生是有一定规律的。首先在这些例子中我们获取了某些资源，如Heap上的内存、锁、线程。获取资源当然没有问题，但是当资源超出作用范围问题就发生了(内存泄露，死锁，进程终止)，在第一个问题中我们要时刻记得
 delete、第二个需要 unlock，第三个需要 join，这显然是很繁琐的。</p>
-<p>RAII 就是为了避免犯错和繁琐的手动释放。 C++ 和
-Java，Python等的垃圾回收不同其析构函数是显式的，离开作用域自动销毁。
+<p>RAII 就是为了避免犯错和繁琐的手动释放。<br />
+C++ 和
+Java，Python等的垃圾回收不同其析构函数是显式的，离开作用域自动销毁。<br />
 其他比如向 vector
 push一个资源，然后退出引用计数归零，但是不会立即删除，而是过段时间后调用一个
 GC 程序将引用计数为零的对象删除。</p>
@@ -334,8 +336,10 @@ GC。</p>
 析构函数</h3>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">struct</span> <span class="hljs-title class_">Pig</span><br>&#123;<br>    std::string name;<br>    <span class="hljs-type">int</span> age;<br>    <br>    <span class="hljs-built_in">Pig</span>():<span class="hljs-built_in">name</span>(<span class="hljs-string">&quot;Kit&quot;</span>),<span class="hljs-built_in">age</span>(<span class="hljs-number">10</span>)<br>    &#123;<br>        <br>    &#125;<br>    <br>    <span class="hljs-built_in">Pig</span>(string n, <span class="hljs-type">int</span> a):<span class="hljs-built_in">name</span>(n),<span class="hljs-built_in">age</span>(a)		<span class="hljs-comment">// 拷贝构造函数</span><br>    &#123;<br>        <br>    &#125;<br>    <br>    <span class="hljs-built_in">Pig</span>(string n, <span class="hljs-type">int</span> a)		<span class="hljs-comment">// 拷贝赋值函数</span><br>    &#123;<br>        name = n;<br>        age = a;<br>    &#125;<br>&#125;; <br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>    Pig pig0;<br>    <span class="hljs-function">Pig <span class="hljs-title">pig1</span><span class="hljs-params">(<span class="hljs-string">&quot;Kiii&quot;</span>,<span class="hljs-number">2</span>)</span></span>;<br>&#125;<br></code></pre></td></tr></table></figure>
 <ul>
-<li>高效：使用初始化列表可以避免重复初始化，如果不使用，首先会先将数据成员空初始化，然后在构造函数内部进行赋值。</li>
-<li>避免错误，因为不用初始化列表会先对成员进行无参初始化，而这时若类成员没有无参构造函数就会出错。</li>
+<li>高效：使用初始化列表可以避免重复初始化，如果不使用，首先会先将数据成员空初始化，然后在构造函数内部进行赋值。<br />
+</li>
+<li>避免错误，因为不用初始化列表会先对成员进行无参初始化，而这时若类成员没有无参构造函数就会出错。<br />
+</li>
 <li>类成员为 const，因为 const
 对象只能初始化一次，所以只能在初始化列表中进行。</li>
 </ul>
@@ -346,8 +350,10 @@ GC。</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">struct</span> <span class="hljs-title class_">Pig</span><br>&#123;<br>	string name;<br>    <span class="hljs-type">int</span> age;<br>    <br>    <span class="hljs-built_in">Pig</span>(<span class="hljs-type">int</span> age_):<span class="hljs-built_in">name</span>(<span class="hljs-string">&quot;a Pig aged&quot;</span>+<span class="hljs-built_in">to_string</span>(age_)),<span class="hljs-built_in">age</span>(age_)<br>    &#123;<br>        <br>    &#125;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>    Pig pig = <span class="hljs-number">80</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
 <p>这里 <code>= 80</code>
 是隐式地调用了构造函数，如果想为了可读性避免这种隐式构造，可以使用
-explicit。 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">struct</span> <span class="hljs-title class_">Pig</span><br>&#123;<br>	string name;<br>    <span class="hljs-type">int</span> age;<br>    <br>    <span class="hljs-function"><span class="hljs-keyword">explicit</span> <span class="hljs-title">Pig</span><span class="hljs-params">(<span class="hljs-type">int</span> age_)</span>:name(<span class="hljs-string">&quot;a Pig aged&quot;</span>+to_string(age_)),age(age_)</span><br><span class="hljs-function">    &#123;</span><br>        <br>    &#125;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-comment">// Pig pig = 80;</span><br>    <span class="hljs-function">Pig <span class="hljs-title">pig</span><span class="hljs-params">(<span class="hljs-number">80</span>)</span></span>;<br>&#125;<br></code></pre></td></tr></table></figure></p>
-<p>explicit 使其必须使用<code>(80)</code>这种格式显式调用构造函数。
+explicit。<br />
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">struct</span> <span class="hljs-title class_">Pig</span><br>&#123;<br>	string name;<br>    <span class="hljs-type">int</span> age;<br>    <br>    <span class="hljs-function"><span class="hljs-keyword">explicit</span> <span class="hljs-title">Pig</span><span class="hljs-params">(<span class="hljs-type">int</span> age_)</span>:name(<span class="hljs-string">&quot;a Pig aged&quot;</span>+to_string(age_)),age(age_)</span><br><span class="hljs-function">    &#123;</span><br>        <br>    &#125;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-comment">// Pig pig = 80;</span><br>    <span class="hljs-function">Pig <span class="hljs-title">pig</span><span class="hljs-params">(<span class="hljs-number">80</span>)</span></span>;<br>&#125;<br></code></pre></td></tr></table></figure></p>
+<p>explicit
+使其必须使用<code>(80)</code>这种格式显式调用构造函数。<br />
 explicit 的作用就在于避免因为隐式调用而导致代码可读性的降低。</p>
 <h4 id="explicit-多参数">explicit 多参数</h4>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">struct</span> <span class="hljs-title class_">Pig</span><br>&#123;<br>    string p_name;<br>    <span class="hljs-type">int</span> p_age;<br>    <br>    <span class="hljs-function"><span class="hljs-keyword">explicit</span> <span class="hljs-title">Pig</span><span class="hljs-params">(string name, <span class="hljs-type">int</span> age)</span>:p_name(name),p_age(age)</span><br><span class="hljs-function">    &#123;</span><br>        <br>    &#125;<br>&#125;;<br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>    Pig pig = &#123;<span class="hljs-string">&quot;Kit&quot;</span>,<span class="hljs-number">5</span>&#125;;	<span class="hljs-comment">// Error</span><br>    Pig pig2&#123;<span class="hljs-string">&quot;Kit2&quot;</span>,<span class="hljs-number">7</span>&#125;;		<span class="hljs-comment">// Right</span><br>    <span class="hljs-function">Pig <span class="hljs-title">pig3</span><span class="hljs-params">(<span class="hljs-string">&quot;Kit3&quot;</span>,<span class="hljs-number">10</span>)</span></span>;	<span class="hljs-comment">// Right</span><br>&#125;<br></code></pre></td></tr></table></figure>
@@ -357,7 +363,8 @@ explicit 的作用就在于避免因为隐式调用而导致代码可读性的�
 <h4 id="和-调用的区别">() 和 {} 调用的区别</h4>
 <ol type="1">
 <li><code>int(3.14f)</code> 不会报错，但是 <code>int&#123;3.14f&#125;</code>
-会报错，因为 {} 是非强制类型转换。</li>
+会报错，因为 {} 是非强制类型转换。<br />
+</li>
 <li>假如 使用 <code>Pig pig2&#123;"jit2",4.5&#125;</code> 这就会出错了……</li>
 </ol>
 <p>by the way，现在别使用 int() 了，太蠢了，而且不安全，比如
@@ -369,23 +376,28 @@ id="编译器默认生成的构造函数无参-pod-陷阱">编译器默认生成
 <p>当一个类没有定义任何构造函数，且类成员都有无参的构造函数，编译器会自动生成一个无参构造函数，会调用每个成员的无参构造函数。</p>
 <p><strong>注意</strong>这些类型<strong>不会被初始化为0</strong>。</p>
 <ol type="1">
-<li>int, float, double 等基础类型</li>
-<li><code>void*</code>, <code>Object*</code> 等指针类型</li>
+<li>int, float, double 等基础类型<br />
+</li>
+<li><code>void*</code>, <code>Object*</code> 等指针类型<br />
+</li>
 <li>完全有这些类型组成的类</li>
 </ol>
 <ul>
-<li>这些类型称为 <strong>POD( plain-of-data )</strong> POD
+<li>这些类型称为 <strong>POD( plain-of-data )</strong><br />
+POD
 的存在是出于兼容性和性能考虑，这些类型会将其所在内存位置的数据直接作为自己的初始值。</li>
 </ul>
 <p>所以如果你打算使用编译器自动生成的初始化函数，最好对类成员用
 <code>&#123;&#125;</code> 进行一个指定初始化，这样在
-自动生成的构造函数中就会初始化为你指定的值。 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">struct</span> <span class="hljs-title class_">Pig</span><br>&#123;<br>    string p_name;<br>    <span class="hljs-type">int</span> weight&#123;<span class="hljs-number">0</span>&#125;;		<span class="hljs-comment">// 自动生成的构造函数会将其初始化为0</span><br>&#125;;<br></code></pre></td></tr></table></figure></p>
+自动生成的构造函数中就会初始化为你指定的值。<br />
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">struct</span> <span class="hljs-title class_">Pig</span><br>&#123;<br>    string p_name;<br>    <span class="hljs-type">int</span> weight&#123;<span class="hljs-number">0</span>&#125;;		<span class="hljs-comment">// 自动生成的构造函数会将其初始化为0</span><br>&#125;;<br></code></pre></td></tr></table></figure></p>
 <p>或者使用<code>=</code>也可以，但是要注意类对象其本身的构造函数是否有
-explicit 修饰 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">struct</span> <span class="hljs-title class_">Demo</span><br>&#123;<br>    <span class="hljs-function"><span class="hljs-keyword">explicit</span> <span class="hljs-title">Demo</span><span class="hljs-params">(string a, string b)</span></span><br><span class="hljs-function">    </span>&#123;<br>        <br>    &#125;<br>&#125;;<br><br><span class="hljs-keyword">struct</span> <span class="hljs-title class_">Pig</span><br>&#123;<br>    string p_name;<br>    <span class="hljs-type">int</span> weight = <span class="hljs-number">0</span>;<br>    Demo pd&#123;<span class="hljs-string">&quot;a&quot;</span>,<span class="hljs-string">&quot;b&quot;</span>&#125;;		<span class="hljs-comment">// 可以通过编译</span><br>    <span class="hljs-comment">// Demo pd = &#123;&quot;a&quot;,&quot;bb&quot;&#125;;	// 这样就不行</span><br>&#125;;<br></code></pre></td></tr></table></figure></p>
+explicit 修饰<br />
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">struct</span> <span class="hljs-title class_">Demo</span><br>&#123;<br>    <span class="hljs-function"><span class="hljs-keyword">explicit</span> <span class="hljs-title">Demo</span><span class="hljs-params">(string a, string b)</span></span><br><span class="hljs-function">    </span>&#123;<br>        <br>    &#125;<br>&#125;;<br><br><span class="hljs-keyword">struct</span> <span class="hljs-title class_">Pig</span><br>&#123;<br>    string p_name;<br>    <span class="hljs-type">int</span> weight = <span class="hljs-number">0</span>;<br>    Demo pd&#123;<span class="hljs-string">&quot;a&quot;</span>,<span class="hljs-string">&quot;b&quot;</span>&#125;;		<span class="hljs-comment">// 可以通过编译</span><br>    <span class="hljs-comment">// Demo pd = &#123;&quot;a&quot;,&quot;bb&quot;&#125;;	// 这样就不行</span><br>&#125;;<br></code></pre></td></tr></table></figure></p>
 <blockquote>
-<p><code>int x&#123;&#125;; void* p&#123;&#125;;</code></p>
+<p><code>int x&#123;&#125;;   void* p&#123;&#125;;</code></p>
 <p>和</p>
-<p><code>int x&#123;0&#125;; void* p&#123;nullptr&#125;;</code></p>
+<p><code>int x&#123;0&#125;;   void* p&#123;nullptr&#125;;</code></p>
 <p>等价，都是<strong>零初始化</strong></p>
 </blockquote>
 <h3
@@ -397,24 +409,27 @@ id="编译器默认生成的构造函数c11-初始化">编译器默认生成的�
 <p>不过这种只支持 {} 或者 = {}</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">struct</span> <span class="hljs-title class_">Pig</span><br>&#123;<br>    <span class="hljs-type">int</span> a;<br>    <span class="hljs-type">int</span> b;<br>&#125;;<br><br><span class="hljs-keyword">struct</span> <span class="hljs-title class_">Deo</span><br>&#123;<br>    Pig pig;<br>    <span class="hljs-type">int</span> a;<br>&#125;;<br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>&#123;<br>    <span class="hljs-comment">// Write C++ code here</span><br>    std::cout &lt;&lt; <span class="hljs-string">&quot;Hello world!&quot;</span>;<br>    Pig pig&#123;<span class="hljs-number">1</span>,<span class="hljs-number">2</span>&#125;;<br>    std::cout &lt;&lt; pig.a &lt;&lt; std::endl;			<span class="hljs-comment">// 1</span><br>    Deo deo&#123;&#123;<span class="hljs-number">3</span>,<span class="hljs-number">2</span>&#125;,<span class="hljs-number">1</span>&#125;;<br>    std::cout &lt;&lt; deo.pig.a &lt;&lt; std::endl;		<span class="hljs-comment">// 3</span><br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
 <p>当然这时候无参构造函数也是存在的。</p>
-<p>和默认指定结合 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">struct</span> <span class="hljs-title class_">Pig</span><br>&#123;<br>    string p_name;<br>    <span class="hljs-type">int</span> p_weight&#123;<span class="hljs-number">0</span>&#125;;<br>&#125;;<br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>    Pig pig&#123;<span class="hljs-string">&quot;kit&quot;</span>&#125;;		<span class="hljs-comment">// weight 未指定，使用 0</span><br>&#125;<br></code></pre></td></tr></table></figure></p>
+<p>和默认指定结合<br />
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">struct</span> <span class="hljs-title class_">Pig</span><br>&#123;<br>    string p_name;<br>    <span class="hljs-type">int</span> p_weight&#123;<span class="hljs-number">0</span>&#125;;<br>&#125;;<br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>    Pig pig&#123;<span class="hljs-string">&quot;kit&quot;</span>&#125;;		<span class="hljs-comment">// weight 未指定，使用 0</span><br>&#125;<br></code></pre></td></tr></table></figure></p>
 <h3
 id="有自定义构造函数时仍想用默认构造函数default">有自定义构造函数时仍想用默认构造函数：<code>=default</code></h3>
-<p>一旦我们自定义了构造函数，编译器便<strong>不会生成默认的无参构造函数</strong>
+<p>一旦我们自定义了构造函数，编译器便<strong>不会生成默认的无参构造函数</strong><br />
 但是如果我们仍然想使用，就可以用 <code>=default</code> 关键字。</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-keyword">struct</span> <span class="hljs-title class_">Pig</span><br>&#123;<br>    string pName;<br>    <span class="hljs-type">int</span> pWeight;<br>    <br>    <span class="hljs-built_in">Pig</span>() = <span class="hljs-keyword">default</span>;<br>    <br>    <span class="hljs-built_in">Pig</span>(string name, <span class="hljs-type">int</span> wei)<br>        :<span class="hljs-built_in">pName</span>(name),<span class="hljs-built_in">pWeight</span>(wei)<br>        &#123;<br>            <br>        &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
 <p><em>but 初始化列表的那个构造函数好像不能 =default 出来</em></p>
 <h3
 id="编译器默认生成的构造函数拷贝构造函数">编译器默认生成的构造函数：拷贝构造函数</h3>
-<p><code>Pig(cosnt Pig&amp; other)</code> 参数为 Pig 类型，调用如下</p>
+<p><code>Pig(cosnt Pig&amp; other)</code><br />
+参数为 Pig 类型，调用如下</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>    Pig pig&#123;<span class="hljs-string">&quot;Kit&quot;</span>,<span class="hljs-number">90</span>&#125;;<br>    <br>    Pig pig2 = pig;<br>    <span class="hljs-comment">// Pig pig2(pig);		// 与上面的一样</span><br>&#125;<br></code></pre></td></tr></table></figure>
 <p>即便我们自定义了构造函数，拷贝构造函数也不会删除。</p>
 <h3
 id="舍弃拷贝构造函数delete">舍弃拷贝构造函数：<code>=delete</code></h3>
-<p>如果不想使用拷贝构造函数可以使用 <code>delete</code> 修饰
+<p>如果不想使用拷贝构造函数可以使用 <code>delete</code> 修饰<br />
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-keyword">struct</span> <span class="hljs-title class_">Pig</span><br>&#123;<br>    string pName;<br>    <span class="hljs-type">int</span> pWeight&#123;<span class="hljs-number">0</span>&#125;;<br>    <br>    <span class="hljs-built_in">Pig</span>()=<span class="hljs-keyword">default</span>;<br>    <br>    <span class="hljs-built_in">Pig</span>(string name, <span class="hljs-type">int</span> wei):<span class="hljs-built_in">pName</span>(name),<span class="hljs-built_in">pWeight</span>(wei)<br>    &#123;&#125;<br>    <br>    <span class="hljs-built_in">Pig</span>(<span class="hljs-type">const</span> Pig&amp;) = <span class="hljs-keyword">delete</span>;		<span class="hljs-comment">// 禁止拷贝构造</span><br>    Pig&amp; operatpor=(Pig <span class="hljs-type">const</span> &amp;) = <span class="hljs-keyword">delete</span>;	<span class="hljs-comment">//  禁止拷贝赋值</span><br>&#125;<br></code></pre></td></tr></table></figure></p>
 <p><code>Pig pig2 = pig;</code></p>
-<p>这是<strong>拷贝构造</strong> <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs C++">Pig pig2;	<span class="hljs-comment">// 无参构造</span><br>pig2 = pig;	<span class="hljs-comment">// 拷贝赋值</span><br></code></pre></td></tr></table></figure></p>
+<p>这是<strong>拷贝构造</strong><br />
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs C++">Pig pig2;	<span class="hljs-comment">// 无参构造</span><br>pig2 = pig;	<span class="hljs-comment">// 拷贝赋值</span><br></code></pre></td></tr></table></figure></p>
 <p>这是<strong>拷贝赋值</strong></p>
 <h4
 id="为什么拷贝赋值函数返回值是引用">为什么拷贝赋值函数返回值是引用</h4>
@@ -424,92 +439,114 @@ id="为什么拷贝赋值函数返回值是引用">为什么拷贝赋值函数�
 <p><img src="imgs/C++RAII/35.png" srcset="/img/loading.gif" lazyload></p>
 <ol type="1">
 <li>如果定义了析构函数，为了防止 doulefree 要么 delete
-拷贝构造和拷贝赋值，要么自定义。 也就是深拷贝和浅拷贝。
-浅拷贝会导致两个对象内的指针指向同一内存，所以我们要手动实现深拷贝。
-如果定义了析构函数很有可能是因为我们类内对象有些无法被默认的析构函数销毁，
-所以可能会有深拷贝和浅拷贝问题，如果只需要浅拷贝那就删除拷贝构造和拷贝赋值函数，C++会默认生成的。</li>
+拷贝构造和拷贝赋值，要么自定义。<br />
+也就是深拷贝和浅拷贝。<br />
+浅拷贝会导致两个对象内的指针指向同一内存，所以我们要手动实现深拷贝。<br />
+如果定义了析构函数很有可能是因为我们类内对象有些无法被默认的析构函数销毁，<br />
+所以可能会有深拷贝和浅拷贝问题，如果只需要浅拷贝那就删除拷贝构造和拷贝赋值函数，C++会默认生成的。<br />
+</li>
 <li>如果不实现拷贝赋值函数，编译器可能会以 析构+拷贝构造
-的方式实现拷贝赋值的效果。</li>
+的方式实现拷贝赋值的效果。<br />
+</li>
 <li>与上面同理。</li>
 </ol>
 <h4 id="拷贝和移动">拷贝和移动</h4>
 <p>有时候我们只需要一份 data，不需要复制，我们更希望把 对象
-<strong>移动</strong>过去。 拷贝是 O(n)，移动是 O(1) 可以使用 std::move
+<strong>移动</strong>过去。<br />
+拷贝是 O(n)，移动是 O(1)<br />
+可以使用 std::move<br />
 v2 被移动到 v1 后原来的 v2 会被清空，所以一定要确保 v2
 后续不会会再被使用。</p>
 <h4 id="移动进阶swap">移动进阶：swap</h4>
-<p>我们不仅可以使用move 也可以使用 <code>std::swap</code> 交换 v1 和 v2
+<p>我们不仅可以使用move<br />
+也可以使用 <code>std::swap</code> 交换 v1 和 v2<br />
 可以利用 swap 实现双缓存技术。</p>
 <h4 id="哪些情况会触发-move">哪些情况会触发 move</h4>
 <ul>
 <li>会触发move
 <ul>
-<li><code>return v2;</code> 作为返回值</li>
-<li><code>v1 = std::vector&lt;int&gt;(200)</code> 就地构造</li>
-<li><code>v1 = std::move(v2)</code> 显式move</li>
+<li><code>return v2;</code> 作为返回值<br />
+</li>
+<li><code>v1 = std::vector&lt;int&gt;(200)</code> 就地构造<br />
+</li>
+<li><code>v1 = std::move(v2)</code> 显式move<br />
+</li>
 </ul></li>
 <li>拷贝
 <ul>
-<li><code>return std::as_const(v2)</code>，显式拷贝</li>
-<li><code>v1 =v2</code> , 默认拷贝</li>
+<li><code>return std::as_const(v2)</code>，显式拷贝<br />
+</li>
+<li><code>v1 =v2</code> , 默认拷贝<br />
+</li>
 </ul></li>
 <li>下式不会 move 也不会 copy
 <ul>
-<li><code>std::move(v2)</code></li>
-<li><code>std::as_const(v2)</code></li>
+<li><code>std::move(v2)</code><br />
+</li>
+<li><code>std::as_const(v2)</code><br />
+</li>
 <li>这两个函数只负责转换类型，不会发生实际的 copy 和 move。</li>
 </ul></li>
 </ul>
 <h3 id="移动构造函数缺省实现">移动构造函数：缺省实现</h3>
 <ul>
 <li>移动构造 ≈ 拷贝构造 + 解构他 + 他默认构造
-(这里的他是移动的源对象)</li>
+(这里的他是移动的源对象)<br />
+</li>
 <li>移动赋值 ≈ 拷贝赋值 + 他结构 + 他默认构造</li>
 </ul>
-<p>只要 我们不自己定义，编译器就会这样做 这也就是三五法则中 第4点,
-为什么定义 <strong>拷贝构造</strong> 和 <strong>拷贝赋值</strong>
-后最好定义 <strong>移动构造</strong> 和 <strong>移动赋值</strong></p>
+<p>只要 我们不自己定义，编译器就会这样做<br />
+这也就是三五法则中 第4点, 为什么定义 <strong>拷贝构造</strong> 和
+<strong>拷贝赋值</strong> 后最好定义 <strong>移动构造</strong> 和
+<strong>移动赋值</strong></p>
 <h2 id="raii-解决内存管理unique_ptr">RAII
 解决内存管理：<code>unique_ptr</code></h2>
-<p>C++11 引用 <code>unique_ptr</code> 容器，其结构函数会调用 delete p。
+<p>C++11 引用 <code>unique_ptr</code> 容器，其结构函数会调用 delete
+p。<br />
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">struct</span> <span class="hljs-title class_">C</span><br>&#123;<br>    <span class="hljs-built_in">C</span>()&#123;<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;C&quot;</span>);&#125;<br>    ~<span class="hljs-built_in">C</span>()&#123;<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;~C&quot;</span>);&#125;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>    std::unique_ptr&lt;C&gt; p = std::<span class="hljs-built_in">make_unique</span>&lt;C&gt;();<br>    <span class="hljs-keyword">if</span>(..)<br>    &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;	<span class="hljs-comment">// 自动释放 p</span><br>    &#125;<br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>; 		<span class="hljs-comment">// 自动释放 p</span><br>&#125;<br></code></pre></td></tr></table></figure></p>
-<p>而且将 C++98 的 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-keyword">delete</span> p;<br>p = <span class="hljs-literal">nullptr</span>;<br></code></pre></td></tr></table></figure></p>
-<p>封装为了一个操作： <code>p = nullptr;</code> 等价于
-<code>p.reset();</code></p>
+<p>而且将 C++98 的<br />
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-keyword">delete</span> p;<br>p = <span class="hljs-literal">nullptr</span>;<br></code></pre></td></tr></table></figure></p>
+<p>封装为了一个操作：<br />
+<code>p = nullptr;</code> 等价于 <code>p.reset();</code></p>
 <h4 id="uniqur_ptr-禁止拷贝"><code>uniqur_ptr</code>: 禁止拷贝</h4>
-<p>为什么禁止拷贝，如果拷贝了这个指针， 而 <code>unique_ptr</code>
-的析构函数使用了 delete，可能就会出现 double free 的问题。
+<p>为什么禁止拷贝，如果拷贝了这个指针，<br />
+而 <code>unique_ptr</code> 的析构函数使用了 delete，可能就会出现 double
+free 的问题。<br />
 所以，在我们写函数时，如果用 <code>unique_ptr</code>
 作为参数就会报错。</p>
 <h5 id="解决方案1获取原始指针-c">解决方案1：获取原始指针( C* )</h5>
 <ul>
-<li><p>第一种情况，我们不需要 夺走 资源的 <strong>占有权</strong>
-比如只是一个函数调用，<strong>并不需要结果掌管对象生命周期的大权</strong>。
+<li><p>第一种情况，我们不需要 夺走 资源的 <strong>占有权</strong><br />
+比如只是一个函数调用，<strong>并不需要结果掌管对象生命周期的大权</strong>。<br />
 使用 <code>p.get()</code> 获取指针，然后进行操作。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs C++"> <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">func</span><span class="hljs-params">(C* cp)</span></span><br><span class="hljs-function"> </span>&#123;<br>     <br> &#125;<br><br><span class="hljs-built_in">func</span>(p.<span class="hljs-built_in">get</span>());<br></code></pre></td></tr></table></figure></li>
-<li><p>第二种，我们需要夺走 资源的 <strong>占有权</strong>。
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs c++">std::vector&lt;std::unique_ptr&lt;C&gt;&gt; objectList;<br><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">func</span><span class="hljs-params">(std::unique_ptr&lt;C&gt; p)</span></span><br><span class="hljs-function"></span>&#123;<br>    objectList.<span class="hljs-built_in">push_back</span>(std::<span class="hljs-built_in">move</span>(p));<br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>    std::unique_ptr&lt;C&gt; p = std::<span class="hljs-built_in">make_unique</span>&lt;C&gt;();<br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;移交前:%p\n&quot;</span>,p.<span class="hljs-built_in">get</span>());		<span class="hljs-comment">// 不为null</span><br>    <span class="hljs-built_in">func</span>(std::<span class="hljs-built_in">move</span>(p));<br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;移交后:%p\n&quot;</span>,p.<span class="hljs-built_in">get</span>());		<span class="hljs-comment">// 为null</span><br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs C++"> <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">func</span><span class="hljs-params">(C* cp)</span>  </span><br><span class="hljs-function"> </span>&#123;<br>     <br> &#125;<br><br><span class="hljs-built_in">func</span>(p.<span class="hljs-built_in">get</span>());  <br></code></pre></td></tr></table></figure></li>
+<li><p>第二种，我们需要夺走 资源的 <strong>占有权</strong>。<br />
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs c++">std::vector&lt;std::unique_ptr&lt;C&gt;&gt; objectList;<br><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">func</span><span class="hljs-params">(std::unique_ptr&lt;C&gt; p)</span>  </span><br><span class="hljs-function"></span>&#123;  <br>    objectList.<span class="hljs-built_in">push_back</span>(std::<span class="hljs-built_in">move</span>(p));  <br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span>  </span><br><span class="hljs-function"></span>&#123;  <br>    std::unique_ptr&lt;C&gt; p = std::<span class="hljs-built_in">make_unique</span>&lt;C&gt;();  <br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;移交前:%p\n&quot;</span>,p.<span class="hljs-built_in">get</span>());		<span class="hljs-comment">// 不为null  </span><br>    <span class="hljs-built_in">func</span>(std::<span class="hljs-built_in">move</span>(p));  <br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;移交后:%p\n&quot;</span>,p.<span class="hljs-built_in">get</span>());		<span class="hljs-comment">// 为null  </span><br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;  <br>&#125;  <br></code></pre></td></tr></table></figure></p>
 <p>因此我们要使用 move 接过掌管对象生命周期的大权。</p></li>
 </ul>
 <h4 id="移交控制权后仍希望访问到-p-指向的对象">移交控制权后仍希望访问到
 p 指向的对象</h4>
-<p>我们移交后，原来的指针就变 nullptr，这时无法访问。 #####
-解决办法：提前获取指针</p>
-<p>使用get函数提前获取原始指针，
+<p>我们移交后，原来的指针就变 nullptr，这时无法访问。<br />
+##### 解决办法：提前获取指针</p>
+<p>使用get函数提前获取原始指针，<br />
 不用担心周期问题，这个原始指针的所有权归move后的新<code>unique_ptr</code>
-所有。 <code>C* raw_p = p.get();</code></p>
+所有。<br />
+<code>C* raw_p = p.get();</code></p>
 <p>但是要时刻注意 move 后的 <code>unique_ptr</code> 是否被删除！</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>    std::unique_ptr&lt;C&gt; p = std::<span class="hljs-built_in">make_unique</span>&lt;C&gt;();<br>	C *raw_p = p.<span class="hljs-built_in">get</span>();<br>	<span class="hljs-built_in">func</span>(std::<span class="hljs-built_in">move</span>(p));<br>    <br>    raw_p-&gt;<span class="hljs-built_in">do</span>();<br>    <br>    objlist.<span class="hljs-built_in">clear</span>();<br>    <br>    raw_p-&gt;<span class="hljs-built_in">do</span>();	<span class="hljs-comment">// !!! Error 悬空指针</span><br>&#125;<br></code></pre></td></tr></table></figure>
 <h2 id="shared_ptr"><code>shared_ptr</code></h2>
 <ul>
 <li><code>unique_ptr</code> 由于为了解决 double free
-而<strong>禁止拷贝</strong>，导致使用起来很困难，容易犯错。</li>
+而<strong>禁止拷贝</strong>，导致使用起来很困难，容易犯错。<br />
+</li>
 <li><code>shared_ptr</code>，牺牲效率换取自由度，通过
 <strong>引用计数</strong> 来解决 <strong>重复释放</strong> 的问题。</li>
 </ul>
 <ol type="1">
-<li>当 <code>shared_ptr</code> 被初始化时，将计数器设为1；</li>
-<li>当 <code>shared_ptr</code> 被拷贝时， 计数器 +1；</li>
+<li>当 <code>shared_ptr</code> 被初始化时，将计数器设为1；<br />
+</li>
+<li>当 <code>shared_ptr</code> 被拷贝时， 计数器 +1；<br />
+</li>
 <li>当一个 <code>shared_ptr</code> 被解构时，计数器 -1，直到计数器为
 0，则自动销毁其所指向的对象。</li>
 </ol>
@@ -523,46 +560,56 @@ p 指向的对象</h4>
 <h3 id="循环引用解决方案1">循环引用：解决方案1</h3>
 <ul>
 <li>将逻辑上“不具有所属权” 的那一个 <code>shared_ptr</code>，改为
-<code>weak_ptr</code> 即可。 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">struct</span> <span class="hljs-title class_">C</span><br>&#123;<br>    std:;shared_ptr&lt;C&gt; m_child;<br>    std::weak_ptr&lt;C&gt; m_parent;<br>&#125;;<br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-keyword">auto</span> parent = std::<span class="hljs-built_in">make_shared</span>&lt;C&gt;();<br>    <span class="hljs-keyword">auto</span> child = std::<span class="hljs-built_in">make_shared</span>&lt;C&gt;();<br>    <br>    parent-&gt;m_child = child;<br>    child-&gt;m_parent = parent;<br>    <span class="hljs-comment">// 这里 parent 和 child 互相引用</span><br>    <br>    parent = <span class="hljs-literal">nullptr</span>;	<span class="hljs-comment">// 释放，因为 child 指向的是其 **弱引用**</span><br>    child = <span class="hljs-literal">nullptr</span>;	<span class="hljs-comment">// 释放，因为指向 child 的 parent 已经释放了</span><br>    <br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure></li>
+<code>weak_ptr</code> 即可。<br />
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">struct</span> <span class="hljs-title class_">C</span>  <br>&#123;  <br>    std:;shared_ptr&lt;C&gt; m_child;  <br>    std::weak_ptr&lt;C&gt; m_parent;  <br>&#125;;<br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span>  </span><br><span class="hljs-function"></span>&#123;  <br>    <span class="hljs-keyword">auto</span> parent = std::<span class="hljs-built_in">make_shared</span>&lt;C&gt;();  <br>    <span class="hljs-keyword">auto</span> child = std::<span class="hljs-built_in">make_shared</span>&lt;C&gt;();<br>    <br>    parent-&gt;m_child = child;  <br>    child-&gt;m_parent = parent;  <br>    <span class="hljs-comment">// 这里 parent 和 child 互相引用</span><br>    <br>    parent = <span class="hljs-literal">nullptr</span>;	<span class="hljs-comment">// 释放，因为 child 指向的是其 **弱引用**  </span><br>    child = <span class="hljs-literal">nullptr</span>;	<span class="hljs-comment">// 释放，因为指向 child 的 parent 已经释放了</span><br>    <br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;  <br>&#125;  <br></code></pre></td></tr></table></figure></li>
 </ul>
 <h4 id="不影响-shared_ptr-计数弱引用-weak_ptr">不影响 shared_ptr
 计数：弱引用 weak_ptr</h4>
 <ul>
 <li><p>expired() 可以判断，weak_ptr 是否失效，如果 shared_ptr
-已经释放了，该 weak_ptr 就失效了。
+已经释放了，该 weak_ptr 就失效了。<br />
 <code>waek_p.expired()</code></p></li>
 <li><p>lock()，如果有需求可以随时使用 lock 函数产生一个新的
-shared_ptr。但不 lock 时 weak_ptr 不会影响计数。 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs c++">std::shared_ptr&lt;C&gt; p = std::<span class="hljs-built_in">make_shared</span>&lt;C&gt;();<br>std::weak_ptr&lt;C&gt; weak_p = p;<br>weak_p.<span class="hljs-built_in">lock</span>()-&gt;<span class="hljs-built_in">do_something</span>();	<span class="hljs-comment">// 执行完毕后 lock 出来的 shared_ptr 就销毁了，不影响 shared_ptr 的计数，我理解为 lock 返回一个 shared_ptr 的将亡值，这行结束后自动解构</span><br></code></pre></td></tr></table></figure></p></li>
+shared_ptr。但不 lock 时 weak_ptr 不会影响计数。<br />
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs c++">std::shared_ptr&lt;C&gt; p = std::<span class="hljs-built_in">make_shared</span>&lt;C&gt;();  <br>std::weak_ptr&lt;C&gt; weak_p = p;  <br>weak_p.<span class="hljs-built_in">lock</span>()-&gt;<span class="hljs-built_in">do_something</span>();	<span class="hljs-comment">// 执行完毕后 lock 出来的 shared_ptr 就销毁了，不影响 shared_ptr 的计数，我理解为 lock 返回一个 shared_ptr 的将亡值，这行结束后自动解构  </span><br></code></pre></td></tr></table></figure></p></li>
 </ul>
 <h2 id="智能指针作为类的成员变量">智能指针：作为类的成员变量</h2>
 <ol type="1">
-<li>unique_ptr，<strong>当该对象仅属于我</strong>，比如父窗口下的子窗口</li>
-<li>原始指针，<strong>当对象不属于我，但是他释放</strong><u><strong>前</strong></u><strong>我必然被释放。</strong>
-有一定风险，比如子窗口中指向父窗口的指针。</li>
+<li>unique_ptr，<strong>当该对象仅属于我</strong>，比如父窗口下的子窗口<br />
+</li>
+<li>原始指针，<strong>当对象不属于我，但是他释放</strong><u><strong>前</strong></u><strong>我必然被释放。</strong><br />
+有一定风险，比如子窗口中指向父窗口的指针。<br />
+</li>
 <li>shared_ptr：<strong>当有多个对象共享时，或虽然该对象仅属于我，但是有
-weak_ptr 的需要</strong></li>
-<li>weak_ptr：<strong>当该对象不属于我，且他释放</strong><u><strong>后</strong></u><strong>我仍可能不被释放。</strong>比如：指向窗口上一次被点击的元素。</li>
+weak_ptr 的需要</strong><br />
+</li>
+<li>weak_ptr：<strong>当该对象不属于我，且他释放</strong><u><strong>后</strong></u><strong>我仍可能不被释放。</strong>比如：指向窗口上一次被点击的元素。<br />
+</li>
 <li>初学者可多用 shard_ptr 和 weak_ptr 的组合，更加安全。</li>
 </ol>
 <h3
 id="循环引用解决方案2设置为原始指针">循环引用解决方案2：设置为原始指针</h3>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">struct</span> <span class="hljs-title class_">C</span><br>&#123;<br>	std::shared_ptr&lt;C&gt; m_child;<br>	C* m_parent;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>	<span class="hljs-keyword">auto</span> parent = std::<span class="hljs-built_in">make_shared</span>&lt;C&gt;();<br>	<span class="hljs-keyword">auto</span> child = std::<span class="hljs-built_in">make_shared</span>&lt;C&gt;();<br>	<br>	parent-&gt;m_child = child;<br>	child-&gt;m_parent = parent.<span class="hljs-built_in">get</span>();		<span class="hljs-comment">// 这里 parent.get 得到的原始指针是归属于 shared_ptr parent 的</span><br>	<br>	parent = <span class="hljs-literal">nullptr</span>;<br>	child = <span class="hljs-literal">nullptr</span>;<br>	<br>	<span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
-<p>还有更适合父窗口-子窗口的解决方案。
-刚才提到原始指针的应用场景：当一个对象不属于我，但是他释放<u>前</u>我必须释放。
+<p>还有更适合父窗口-子窗口的解决方案。<br />
+刚才提到原始指针的应用场景：当一个对象不属于我，但是他释放<u>前</u>我必须释放。<br />
 这里可以发现父窗口的释放必须导致子窗口的释放。</p>
 <h2 id="智能指针使用">智能指针使用</h2>
 <h3
 id="成员都是安全类型五大函数一个也不用声明">成员都是安全类型：五大函数，一个也不用声明</h3>
 <ul>
 <li>如果类的所有成员都是 <strong>安全</strong>
-类型，那么五大函数都无需声明，你的类型就是自动<strong>安全的</strong>。</li>
+类型，那么五大函数都无需声明，你的类型就是自动<strong>安全的</strong>。<br />
+</li>
 <li>最好的判断方式是：如果你不需要 <strong>自定义的解构函数</strong>
-这个类就无需担心。</li>
+这个类就无需担心。<br />
+</li>
 <li>如果我们需要自定义
-解构函数，往往意味着你的类成员中，包含不安全类型。</li>
+解构函数，往往意味着你的类成员中，包含不安全类型。<br />
+</li>
 <li>一般有两种情况：
 <ol type="1">
-<li><strong>类管理着资源</strong></li>
+<li><strong>类管理着资源</strong><br />
+</li>
 <li><strong>类是数据结构</strong></li>
 </ol></li>
 </ul>
@@ -582,19 +629,28 @@ id="数据结构需要深拷贝如果可以定义拷贝和移动">数据结构(�
 <h3 id="函数如何避免拷贝">函数如何避免拷贝</h3>
 <p>使用常引用：<code>Pig const &amp; pig</code></p>
 <h4 id="如何避免不经意的隐式拷贝">如何避免不经意的隐式拷贝</h4>
-<p>我们可以将 拷贝构造函数声明为 explicit
+<p>我们可以将 拷贝构造函数声明为 explicit<br />
 这样隐式拷贝就会出错，让我们发现隐式拷贝的发生。</p>
 <h2 id="后续阅读">后续阅读</h2>
 <ol type="1">
-<li>P-IMPL模式</li>
-<li>虚函数与纯虚函数</li>
-<li>拷贝如何作为虚函数</li>
-<li><code>std:unique_ptr::release()</code></li>
-<li><code>std:.enable_shared_from_this</code></li>
-<li><code>dynamic_cast</code></li>
-<li><code>std::dynamic_pointer_cast</code></li>
-<li>运算符重载</li>
-<li>右值引用&amp;&amp;</li>
+<li>P-IMPL模式<br />
+</li>
+<li>虚函数与纯虚函数<br />
+</li>
+<li>拷贝如何作为虚函数<br />
+</li>
+<li><code>std:unique_ptr::release()</code><br />
+</li>
+<li><code>std:.enable_shared_from_this</code><br />
+</li>
+<li><code>dynamic_cast</code><br />
+</li>
+<li><code>std::dynamic_pointer_cast</code><br />
+</li>
+<li>运算符重载<br />
+</li>
+<li>右值引用&amp;&amp;<br />
+</li>
 <li><code>std::shared_ptr&lt;void&gt;</code>和 <code>std:any</code></li>
 </ol>
 

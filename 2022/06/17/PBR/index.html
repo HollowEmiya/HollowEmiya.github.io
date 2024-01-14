@@ -35,7 +35,7 @@
 <meta property="og:image" content="http://example.com/imgs/PBR/math7.png">
 <meta property="og:image" content="http://example.com/imgs/PBR/math6.png">
 <meta property="article:published_time" content="2022-06-17T12:05:13.000Z">
-<meta property="article:modified_time" content="2024-01-13T12:27:18.771Z">
+<meta property="article:modified_time" content="2024-01-14T07:10:30.274Z">
 <meta property="article:author" content="Hollow Emiya">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="http://example.com/imgs/PBR/math1.png">
@@ -110,7 +110,7 @@
   <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand" href="/">
-      <strong>Emiya&#39;s Blog Home</strong>
+      <strong>Emiya&#39;s Blog</strong>
     </a>
 
     <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
@@ -288,15 +288,15 @@
             
               <div class="markdown-body">
                 
-                <p>记录一些有关<code>PBR</code>的知识，以免自己忘记了。网页居然不支持LATEX。
+                <p>记录一些有关<code>PBR</code>的知识，以免自己忘记了。网页居然不支持LATEX。<br />
 回头再看自己这篇文章写的稀烂，入门学习PBR还是看<a
 href="%5BLearnOpenGL%20-%20Theory%5D(https://learnopengl.com/PBR/Theory)">LearnOpenGL</a>吧</p>
 <span id="more"></span>
 <h1 id="几个问题">几个问题</h1>
-<p>什么是<code>PBR</code>呢？
+<p>什么是<code>PBR</code>呢？<br />
 即<code>Physicallly-Based-Rendering</code>，中文可以叫做基于物理的渲染。是一种渲染技术。</p>
-<p>为什么要有PBR呢？
-随着游戏行业的发展玩家对于画面的要求也是越来越严格，对于真实性和细节有更进一步的要求。
+<p>为什么要有PBR呢？<br />
+随着游戏行业的发展玩家对于画面的要求也是越来越严格，对于真实性和细节有更进一步的要求。<br />
 而PBR能做到的就是表现十分<strong>写实的材质</strong>，而且还可以制造出<strong>风格化</strong>迥异的资源。</p>
 <h1 id="pbr">PBR</h1>
 <h2 id="初步了解">初步了解</h2>
@@ -316,19 +316,27 @@ href="%5BLearnOpenGL%20-%20Theory%5D(https://learnopengl.com/PBR/Theory)">LearnO
 <li><p>基于物理的<code>BRDF</code></p></li>
 </ul>
 <h5 id="微平面理论">微平面理论</h5>
-<p>为了模拟现实世界的物体表面，我们认为物体表面都是由很小、随机朝向的镜面平面(发生镜面反射的小平面)。
-光滑表面的小镜面分布更加规则。 而粗糙表面的小镜面十分混沌。</p>
+<p>为了模拟现实世界的物体表面，我们认为物体表面都是由很小、随机朝向的镜面平面(发生镜面反射的小平面)。<br />
+光滑表面的小镜面分布更加规则。<br />
+而粗糙表面的小镜面十分混沌。</p>
 <h5 id="能量守恒">能量守恒</h5>
-<p>高中物理( 对于粗糙平面更多的光被转换为其他能量，反射强度低。
+<p>高中物理(<br />
+对于粗糙平面更多的光被转换为其他能量，反射强度低。<br />
 光滑平面，由于折射、散射更少，镜面反射会更强。</p>
 <h6 id="反射率方程">反射率方程</h6>
-<p>我们在模拟过程中，往往用反射率方程描述能量守恒</p>
+<p>我们在模拟过程中，往往用反射率方程描述能量守恒<br />
+<span class="math display">\[
+\begin{aligned}
+    L_0=Le+\\
+    \int_{\Omega}f_r\hspace{20px}
+\end{aligned}
+\]</span></p>
 <div style="margin:left;width:100%">
 <img src="/imgs/PBR/math1.png" srcset="/img/loading.gif" lazyload alt="math1">
 </div>
 <p>而重点就在于反射比例，它规定了光在物体表面如何反射。</p>
 <p><strong>BRDF 双向反射分布函数</strong></p>
-<p>粗糙来讲BRDF就是描述光在物体表面如何反射。
+<p>粗糙来讲BRDF就是描述光在物体表面如何反射。<br />
 <em>双向</em>：是说相机方向和光源方向调换后，他们的反射规律是一致的，即一束光打到表面分配到各个方向这个过程是可逆的，可以变成“分配出去的那些光”再汇聚成原来打进来的光，有点类似光路可逆。</p>
 <p>当光打到物体表面，会发生散射和高光反射。散射是向各个角度射出强度相近的光，高光反射就是我们常常在物体表面看到光斑。</p>
 <p>而与BRDF对应的还有BTDF，BTDF是双向透射分布函数，从名字就可以大概知道这个函数描述的是物体投射后在表面向各方向如何发射光线。</p>
@@ -338,12 +346,12 @@ href="%5BLearnOpenGL%20-%20Theory%5D(https://learnopengl.com/PBR/Theory)">LearnO
 <p>BRDF+BTDF就是BSDF，双向散射分布函数，感性来讲有了BSDF我们就知道，当一束光打到一块玻璃砖上表面时，上表面光如何发射(BRDF)，下表面如何透射(BTDF)。</p>
 <p>一般的BRDF：<span
 class="math inline">\(f_{r}(p,w_{i},w_{o})\)</span>或者<span
-class="math inline">\(f_{r}(w_{i},w_{r})\)</span>
+class="math inline">\(f_{r}(w_{i},w_{r})\)</span><br />
 即通过入射光反向和反射光方向，计算得到反射比例。</p>
 <p><strong>BRDF计算</strong></p>
 <p>我们可以把BRDF分为两个部分进行计算，即<strong>漫反射</strong>和<strong>高光反射</strong>。</p>
 <ul>
-<li><p>漫反射：可以采用经典的Lambert模型，这只是一种经验模型
+<li><p>漫反射：可以采用经典的Lambert模型，这只是一种经验模型<br />
 我们根据光与平面法线的夹角计算光强，夹角越大光强越小，可以参照太阳对于地球夏冬温度的影响。</p>
 <div style="margin:left;width:100%">
 <img src="/imgs/PBR/math2.png" srcset="/img/loading.gif" lazyload alt="math2">
@@ -351,7 +359,7 @@ class="math inline">\(f_{r}(w_{i},w_{r})\)</span>
 <li><p>高光反射：</p>
 <ul>
 <li><p>Phong模型，根据反射方向和视角方向衡量高光的强弱。</p></li>
-<li><p>Blinn-Phong：根据半角向量和法线方向，半角向量即视角方向和入射方向的“角分线”，该向量越接近法线说明反射路径越接近“<code>入射反向</code>-&gt;<code>|法线</code>-&gt;<code>视角方向</code>”，反射就越强。
+<li><p>Blinn-Phong：根据半角向量和法线方向，半角向量即视角方向和入射方向的“角分线”，该向量越接近法线说明反射路径越接近“<code>入射反向</code>-&gt;<code>|法线</code>-&gt;<code>视角方向</code>”，反射就越强。<br />
 半角向量的引入极大的节约了计算过程，由于Phong模型需要计算反射反向所以比较于Blinn-Phong效率低。而Blinn-Phong已经有很好的效果了。</p></li>
 </ul></li>
 </ul>
@@ -374,7 +382,7 @@ class="math inline">\(f_{r}(w_{i},w_{r})\)</span>
 <div style="margin:auto;width:80%">
 <img src="/imgs/PBR/jihe.png" srcset="/img/loading.gif" lazyload alt="几何遮蔽">
 </div>
-<p>左侧为几何遮蔽示意，右侧为几何阴影示意。
+<p>左侧为几何遮蔽示意，右侧为几何阴影示意。<br />
 对于几何遮蔽我们通常运用统计学(概率论)的有关知识近似计算相互遮蔽，因为我们很难一个一个去算微平面间的遮挡。</p>
 <div style="margin:auto;width:80%">
 <img src="/imgs/PBR/几何遮蔽.png" srcset="/img/loading.gif" lazyload alt="几何遮蔽公式">
@@ -383,7 +391,7 @@ class="math inline">\(f_{r}(w_{i},w_{r})\)</span>
 <img src="/imgs/PBR/math5.png" srcset="/img/loading.gif" lazyload alt="math5">
 </div>
 <h6 id="菲涅尔方程">菲涅尔方程</h6>
-<p>被反射的光线对比光线被折射部分所占的比率，描述了反射相对于折射的强度。比如我们垂直观察水面很容易看到水底，而我们远离水面水平观察时往往只能看到水面波光粼粼的样子这就是菲涅尔反射，ta描述了反射相对于折射的强度。
+<p>被反射的光线对比光线被折射部分所占的比率，描述了反射相对于折射的强度。比如我们垂直观察水面很容易看到水底，而我们远离水面水平观察时往往只能看到水面波光粼粼的样子这就是菲涅尔反射，ta描述了反射相对于折射的强度。<br />
 还有一个典型的物理例子就是在夏天时路远处的柏油会发生镜面反射。</p>
 <div style="margin:left;width:100%">
 <img src="/imgs/PBR/math7.png" srcset="/img/loading.gif" lazyload alt="math7">

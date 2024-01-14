@@ -24,7 +24,7 @@
 <meta property="og:description" content="C++11 的lambda 表达式和 function 是新引入的功能，他们的好处在于可以简化代码、使之更灵活而且在并发编程中一个 lambda 表达式或 function 对象作为线程的执行体会更安全，避免为一个线程单独写一个函数。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2023-05-01T06:20:22.000Z">
-<meta property="article:modified_time" content="2024-01-13T12:27:18.767Z">
+<meta property="article:modified_time" content="2024-01-14T07:10:30.267Z">
 <meta property="article:author" content="Hollow Emiya">
 <meta name="twitter:card" content="summary_large_image">
   
@@ -98,7 +98,7 @@
   <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand" href="/">
-      <strong>Emiya&#39;s Blog Home</strong>
+      <strong>Emiya&#39;s Blog</strong>
     </a>
 
     <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
@@ -279,14 +279,17 @@
                 <p>C++11 的lambda 表达式和 function
 是新引入的功能，他们的好处在于可以<strong>简化代码、使之更灵活</strong>而且在并发编程中一个
 lambda 表达式或 function
-对象作为线程的执行体会更安全，避免为一个线程单独写一个函数。
+对象作为线程的执行体会更安全，避免为一个线程单独写一个函数。<br />
 <span id="more"></span></p>
 <h1 id="lambda-和-function">Lambda 和 Function</h1>
 <h2 id="lambda-和-function-的好处">Lambda 和 Function 的好处</h2>
 <ol type="1">
-<li>Lambda表达式能够简化代码，使代码更加简洁。Lambda表达式相当于一个匿名函数，可以在需要的地方直接定义使用，不必再为了实现某个功能而额外定义一个函数。</li>
-<li>Lambda表达式和Function都能够实现函数对象的传递，即将函数作为参数传递给其他函数。这种方式可以让代码更加灵活，更加符合面向对象编程的思想。</li>
-<li>Function是一个通用的函数封装器，可以将任何可调用的对象（比如函数指针、成员函数指针、Lambda表达式等）转换为一个统一的函数类型。Function可以让代码更加通用，更不易出错。</li>
+<li>Lambda表达式能够简化代码，使代码更加简洁。Lambda表达式相当于一个匿名函数，可以在需要的地方直接定义使用，不必再为了实现某个功能而额外定义一个函数。<br />
+</li>
+<li>Lambda表达式和Function都能够实现函数对象的传递，即将函数作为参数传递给其他函数。这种方式可以让代码更加灵活，更加符合面向对象编程的思想。<br />
+</li>
+<li>Function是一个通用的函数封装器，可以将任何可调用的对象（比如函数指针、成员函数指针、Lambda表达式等）转换为一个统一的函数类型。Function可以让代码更加通用，更不易出错。<br />
+</li>
 <li>Lambda表达式和Function都能够简化并发编程的代码。在并发编程中，有时需要定义一个Lambda表达式或Function对象作为一个线程的执行体，这样可以避免为线程另外写一个函数。</li>
 </ol>
 <p>总结：Lambda表达式和Function的好处包括代码简洁、函数传递灵活、通用性强、并发编程简单等。</p>
@@ -295,12 +298,12 @@ lambda 表达式或 function
 <h2 id="function">function</h2>
 <p>function 是 std::function
 类型，可以用来存储任意可调用对象，包括函数指针、Lambda 表达式等等。</p>
-<p>其使用方法为 <code>function&lt;int(char)&gt;</code> , int
-为声明的返回值类型，而 char
+<p>其使用方法为<br />
+<code>function&lt;int(char)&gt;</code> , int 为声明的返回值类型，而 char
 为声明的参数类型，如果有多个参数即多个声明，如
 <code>function&lt;void(int,char)&gt;</code>。</p>
 <p>function 和函数指针有些类似，但是代码更灵活可以和 lambda
-表达式相结合使用，而没有指针带来的问题，但是因为使用了模板所以会有一定的实例化开销。
+表达式相结合使用，而没有指针带来的问题，但是因为使用了模板所以会有一定的实例化开销。<br />
 我们也可以用 auto 去指定 lambda 表达式的匿名函数。</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">auto</span> funcPtr = &amp;functionName;<br><span class="hljs-keyword">auto</span> lambda = [](<span class="hljs-type">int</span> x, <span class="hljs-type">int</span> y)&#123; <span class="hljs-keyword">return</span> x+y;&#125;;<br><span class="hljs-built_in">int</span> (*function) (<span class="hljs-type">int</span>,<span class="hljs-type">int</span>) = lambda;	<span class="hljs-comment">// 将 Lambda 表达式赋值给函数指针</span><br></code></pre></td></tr></table></figure>
 <p>int (*funcPtr)(int, int) 是一个函数指针，它可以指向一个返回类型为
@@ -312,32 +315,35 @@ int，参数列表为 (int, int) 的函数。而 lambda
 <p>其中“[&amp;]"表示的是捕获方式，Lambda 表达式有三种捕获方式：</p>
 <ol type="1">
 <li>”[&amp;]“，用引用去捕获所有外部变量，表示该 Lambda
-表达式使用一个引用以捕获所有局部变量。这意味着Lambda函数内的局部变量实际上是对外部作用域中的同名变量的别名。在Lambda函数中，对于捕获的变量的修改将直接影响外部作用域中的原始变量。</li>
+表达式使用一个引用以捕获所有局部变量。这意味着Lambda函数内的局部变量实际上是对外部作用域中的同名变量的别名。在Lambda函数中，对于捕获的变量的修改将直接影响外部作用域中的原始变量。<br />
+</li>
 <li>"[=]"：以复制方式捕获所有外部变量。Lambda
 表达式使用复制构造函数以复制传递给它们的所有数据，并在 Lambda
-函数体中使用该复制的变量副本。当然，对于复制的对象进行修改，不会影响到原始参数。</li>
+函数体中使用该复制的变量副本。当然，对于复制的对象进行修改，不会影响到原始参数。<br />
+</li>
 <li>"[cur]"：以复制方式仅捕获外部变量
 cur。这种方式只捕获指定的变量，每个指定的变量都使用复制构造函数以复制传递给它们的数据。</li>
 </ol>
 <h3 id="捕获变量例">捕获变量例</h3>
 <p>这里的捕获变量不是说 lambda
-表达式定义的函数参数，而是对函数外部变量的使用，比如 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-type">int</span> a = <span class="hljs-number">1</span>;<br><span class="hljs-keyword">auto</span> func = [=]() <span class="hljs-keyword">mutable</span><br>&#123;<br>    a += <span class="hljs-number">1</span>;<br>    <span class="hljs-keyword">return</span> a;<br>&#125;;a<br>std::cout &lt;&lt; <span class="hljs-built_in">func</span>() &lt;&lt; std::endl;	<span class="hljs-comment">// 2</span><br>std::cout &lt;&lt; a &lt;&lt; std::endl;	<span class="hljs-comment">// 1</span><br></code></pre></td></tr></table></figure></p>
-<p>这里就是对 int a，lambda表达式用那种方式使用，而非()内的参数。
+表达式定义的函数参数，而是对函数外部变量的使用，比如<br />
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-type">int</span> a = <span class="hljs-number">1</span>;<br><span class="hljs-keyword">auto</span> func = [=]() <span class="hljs-keyword">mutable</span><br>&#123;<br>    a += <span class="hljs-number">1</span>;<br>    <span class="hljs-keyword">return</span> a;<br>&#125;;a<br>std::cout &lt;&lt; <span class="hljs-built_in">func</span>() &lt;&lt; std::endl;	<span class="hljs-comment">// 2</span><br>std::cout &lt;&lt; a &lt;&lt; std::endl;	<span class="hljs-comment">// 1</span><br></code></pre></td></tr></table></figure></p>
+<p>这里就是对 int a，lambda表达式用那种方式使用，而非()内的参数。<br />
 还有一点</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-type">int</span> a = <span class="hljs-number">1</span>;<br><span class="hljs-keyword">auto</span> func = [=](<span class="hljs-type">int</span>&amp; a) <span class="hljs-keyword">mutable</span><br>&#123;<br>    a += <span class="hljs-number">1</span>;<br>    <span class="hljs-keyword">return</span> a;<br>&#125;;<br><span class="hljs-type">int</span> b = <span class="hljs-number">0</span>;<br>std::cout &lt;&lt; <span class="hljs-built_in">func</span>(b) &lt;&lt; std::endl;	<span class="hljs-comment">// 1</span><br>std::cout &lt;&lt; b &lt;&lt; std::endl;	<span class="hljs-comment">// 1</span><br></code></pre></td></tr></table></figure>
 <p>这里的(int&amp; a)对a有更高优先级，就是先匹配函数参数，外部定义的 int
 a，lambda函数是无法使用的。</p>
 <ol type="1">
 <li><p>[&amp;], 所有参数全为引用</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-type">int</span> a=<span class="hljs-number">1</span>;<br><span class="hljs-keyword">auto</span> func=[&amp;]()<br>&#123;<br>    a+=<span class="hljs-number">1</span>;<br>    <span class="hljs-keyword">return</span> a;<br>&#125;<br>std::cout &lt;&lt; <span class="hljs-built_in">func</span>()&lt;&lt;std::endl;	<span class="hljs-comment">// 2</span><br></code></pre></td></tr></table></figure></li>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-type">int</span> a=<span class="hljs-number">1</span>;  <br><span class="hljs-keyword">auto</span> func=[&amp;]()  <br>&#123;  <br>    a+=<span class="hljs-number">1</span>;  <br>    <span class="hljs-keyword">return</span> a;  <br>&#125;  <br>std::cout &lt;&lt; <span class="hljs-built_in">func</span>()&lt;&lt;std::endl;	<span class="hljs-comment">// 2  </span><br></code></pre></td></tr></table></figure></li>
 <li><p>[=], 所有变量都复制捕获</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-type">int</span> a = <span class="hljs-number">1</span>;<br><span class="hljs-keyword">auto</span> func=[=]() <span class="hljs-keyword">mutable</span><br>&#123;<br>    a+=<span class="hljs-number">1</span>;<br>    <span class="hljs-keyword">return</span> a;<br>&#125;;<br>std::cout &lt;&lt; <span class="hljs-built_in">func</span>() &lt;&lt;std::endl;	<span class="hljs-comment">// 2</span><br>std::cout &lt;&lt; a &lt;&lt;std::endl;	<span class="hljs-comment">// 1</span><br></code></pre></td></tr></table></figure></li>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-type">int</span> a = <span class="hljs-number">1</span>;  <br><span class="hljs-keyword">auto</span> func=[=]() <span class="hljs-keyword">mutable</span>  <br>&#123;  <br>    a+=<span class="hljs-number">1</span>;  <br>    <span class="hljs-keyword">return</span> a;  <br>&#125;;  <br>std::cout &lt;&lt; <span class="hljs-built_in">func</span>() &lt;&lt;std::endl;	<span class="hljs-comment">// 2  </span><br>std::cout &lt;&lt; a &lt;&lt;std::endl;	<span class="hljs-comment">// 1  </span><br></code></pre></td></tr></table></figure></li>
 <li><p>[cur], 指定某个参数的捕获方式</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-type">int</span> num1 = <span class="hljs-number">1</span>, num2 = <span class="hljs-number">2</span>;<br><span class="hljs-keyword">auto</span> func = [num1, &amp;num2]() <span class="hljs-keyword">mutable</span>&#123;<br>	num1 += <span class="hljs-number">1</span>;<br>	num2 += <span class="hljs-number">1</span>;<br>	<span class="hljs-keyword">return</span> num1 + num2;<br>&#125;;<br>std::cout &lt;&lt; <span class="hljs-built_in">func</span>() &lt;&lt; std::endl; <span class="hljs-comment">// 2+3=5</span><br>std::cout &lt;&lt; num1 &lt;&lt; num2 &lt;&lt; std::endl; <span class="hljs-comment">// 1,3</span><br></code></pre></td></tr></table></figure></li>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-type">int</span> num1 = <span class="hljs-number">1</span>, num2 = <span class="hljs-number">2</span>;  <br><span class="hljs-keyword">auto</span> func = [num1, &amp;num2]() <span class="hljs-keyword">mutable</span>&#123;  <br>	num1 += <span class="hljs-number">1</span>;  <br>	num2 += <span class="hljs-number">1</span>;  <br>	<span class="hljs-keyword">return</span> num1 + num2;  <br>&#125;;  <br>std::cout &lt;&lt; <span class="hljs-built_in">func</span>() &lt;&lt; std::endl; <span class="hljs-comment">// 2+3=5  </span><br>std::cout &lt;&lt; num1 &lt;&lt; num2 &lt;&lt; std::endl; <span class="hljs-comment">// 1,3  </span><br></code></pre></td></tr></table></figure></li>
 </ol>
 <p>4.[], 如果在 Lambda 表达式中使用了
 <code>[]</code>，而没有写任何符号，表示不捕获任何外部变量。这种情况下，<strong>Lambda
-表达式只能访问自己内部定义的变量和函数，不能访问任何外部的变量和函数。</strong>
+表达式只能访问自己内部定义的变量和函数，不能访问任何外部的变量和函数。</strong><br />
 对于之前的a，b参数覆盖问题就应该声明成[]。</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-type">int</span> a = <span class="hljs-number">1</span>;<br><span class="hljs-keyword">auto</span> func = [](<span class="hljs-type">int</span>&amp; a)<br>&#123;<br>    a += <span class="hljs-number">1</span>;<br>    <span class="hljs-keyword">return</span> a;<br>&#125;;<br><span class="hljs-type">int</span> b = <span class="hljs-number">0</span>;<br>std::cout &lt;&lt; <span class="hljs-built_in">func</span>(b) &lt;&lt; std::endl;	<span class="hljs-comment">// 1</span><br>std::cout &lt;&lt; b &lt;&lt; std::endl;	<span class="hljs-comment">// 1</span><br></code></pre></td></tr></table></figure>
 <h3 id="mutable">mutable</h3>
@@ -345,9 +351,11 @@ a，lambda函数是无法使用的。</p>
 Lambda 表达式中捕获的变量，表示这些变量是可变的，即使在 const
 或者引用等限制的情况下也可以被修改。</p>
 <p>在 Lambda 表达式中，如果想要修改按值捕获的外部变量，需要将其声明为
-<code>mutable</code>，否则会编译错误。例如： <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-type">int</span> a = <span class="hljs-number">10</span>;<br><span class="hljs-keyword">auto</span> func = [a]() <span class="hljs-keyword">mutable</span> &#123;<br>    a += <span class="hljs-number">1</span>;<br>    <span class="hljs-keyword">return</span> a;<br>&#125;;<br>std::cout &lt;&lt; <span class="hljs-built_in">func</span>() &lt;&lt; std::endl; <span class="hljs-comment">// 输出 11</span><br>std::cout &lt;&lt; a &lt;&lt; std::endl; <span class="hljs-comment">// 输出 10</span><br></code></pre></td></tr></table></figure></p>
+<code>mutable</code>，否则会编译错误。例如：<br />
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-type">int</span> a = <span class="hljs-number">10</span>;<br><span class="hljs-keyword">auto</span> func = [a]() <span class="hljs-keyword">mutable</span> &#123;<br>    a += <span class="hljs-number">1</span>;<br>    <span class="hljs-keyword">return</span> a;<br>&#125;;<br>std::cout &lt;&lt; <span class="hljs-built_in">func</span>() &lt;&lt; std::endl; <span class="hljs-comment">// 输出 11</span><br>std::cout &lt;&lt; a &lt;&lt; std::endl; <span class="hljs-comment">// 输出 10</span><br></code></pre></td></tr></table></figure></p>
 <h3 id="指定返回值类型">指定返回值类型</h3>
-<p>lambda 表达式可以指定返回值类型，只需要 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs c++">function&lt;<span class="hljs-type">int</span>(<span class="hljs-type">int</span>)&gt; dfs=[&amp;](<span class="hljs-type">int</span> cur) -&gt; <span class="hljs-type">int</span> &#123;<br>    <span class="hljs-keyword">return</span> cur;<br>&#125;;<br></code></pre></td></tr></table></figure></p>
+<p>lambda 表达式可以指定返回值类型，只需要<br />
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs c++">function&lt;<span class="hljs-type">int</span>(<span class="hljs-type">int</span>)&gt; dfs=[&amp;](<span class="hljs-type">int</span> cur) -&gt; <span class="hljs-type">int</span> &#123;<br>    <span class="hljs-keyword">return</span> cur;<br>&#125;;<br></code></pre></td></tr></table></figure></p>
 <p>这里的<code>-&gt;</code>就指定了返回值 int 类型。</p>
 
                 

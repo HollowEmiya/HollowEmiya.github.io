@@ -24,7 +24,7 @@
 <meta property="og:description" content="几天前发现自己排序算法忘光了，就从网上抄了一份，自己按照思路，C++简单敲了一遍，方便自己后续复习，下面标题放了抄袭对象。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2024-01-13T12:27:18.773Z">
-<meta property="article:modified_time" content="2024-01-13T12:27:18.773Z">
+<meta property="article:modified_time" content="2024-01-14T07:10:30.279Z">
 <meta property="article:author" content="Hollow Emiya">
 <meta name="twitter:card" content="summary_large_image">
   
@@ -98,7 +98,7 @@
   <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand" href="/">
-      <strong>Emiya&#39;s Blog Home</strong>
+      <strong>Emiya&#39;s Blog</strong>
     </a>
 
     <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
@@ -282,39 +282,48 @@
 target="_blank" rel="noopener" href="https://www.cnblogs.com/onepixel/articles/7674659.html">排序算法</a></h1>
 <h2 id="排序算法分类">排序算法分类</h2>
 <ul>
-<li><p><strong>比较类排序</strong>
-通过比较数据大小来进行排序，决定相对次序，所以其时间复杂度无法突破<code>O(nlogn)</code>，
+<li><p><strong>比较类排序</strong><br />
+通过比较数据大小来进行排序，决定相对次序，所以其时间复杂度无法突破<code>O(nlogn)</code>，<br />
 因此也称为<strong>非线性时间比较类排序</strong>。</p></li>
-<li><p><strong>非比较类排序</strong>
-不通过比较来决定元素的相对次序，可以突破基于比较排序的时间下限，
+<li><p><strong>非比较类排序</strong><br />
+不通过比较来决定元素的相对次序，可以突破基于比较排序的时间下限，<br />
 因此也被称为<strong>线性时间非比较类排序</strong>。</p></li>
 <li><p>比较排序</p>
 <ul>
 <li>交换排序
 <ul>
-<li>冒泡排序</li>
-<li>快速排序</li>
+<li>冒泡排序<br />
+</li>
+<li>快速排序<br />
+</li>
 </ul></li>
 <li>插入排序
 <ul>
-<li>简单插入排序</li>
-<li>希尔排序</li>
+<li>简单插入排序<br />
+</li>
+<li>希尔排序<br />
+</li>
 </ul></li>
 <li>选择排序
 <ul>
-<li>简单选择排序</li>
-<li>堆排序</li>
+<li>简单选择排序<br />
+</li>
+<li>堆排序<br />
+</li>
 </ul></li>
 <li>归并排序
 <ul>
-<li>二路归并排序</li>
+<li>二路归并排序<br />
+</li>
 <li>多路归并排序</li>
 </ul></li>
 </ul></li>
 <li><p>非比较排序</p>
 <ul>
-<li>计数排序</li>
-<li>桶排序</li>
+<li>计数排序<br />
+</li>
+<li>桶排序<br />
+</li>
 <li>基数排序</li>
 </ul></li>
 </ul>
@@ -425,27 +434,32 @@ target="_blank" rel="noopener" href="https://www.cnblogs.com/onepixel/articles/7
 <h2 id="暴力排序">0.暴力排序</h2>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;vector&gt;</span></span><br><br><span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;<br><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">vecCout</span><span class="hljs-params">(vector&lt;<span class="hljs-type">int</span>&gt; nums)</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; nums.<span class="hljs-built_in">size</span>() - <span class="hljs-number">1</span>; ++i)<br>    &#123;<br>        cout &lt;&lt; nums[i] &lt;&lt; <span class="hljs-string">&#x27;,&#x27;</span>;<br>    &#125;<br>    cout &lt;&lt; nums[nums.<span class="hljs-built_in">size</span>() - <span class="hljs-number">1</span>];<br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">worstSort</span><span class="hljs-params">(vector&lt;<span class="hljs-type">int</span>&gt;&amp; nums)</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-type">int</span> n = nums.<span class="hljs-built_in">size</span>();<br><br>    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; n; ++i)<br>    &#123;<br>        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j = i; j &lt; n; ++j)<br>        &#123;<br>            <span class="hljs-keyword">if</span> (nums[i] &gt; nums[j])<br>            &#123;<br>                <span class="hljs-built_in">swap</span>(nums[i], nums[j]);<br>            &#125;<br>        &#125;<br>    &#125;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>    vector&lt;<span class="hljs-type">int</span>&gt; nums;<br>    <span class="hljs-type">int</span> num;<br>    <span class="hljs-type">char</span> c;<br>    <span class="hljs-keyword">while</span> (cin &gt;&gt; num)<br>    &#123;<br>        <span class="hljs-comment">//cin &gt;&gt; c;</span><br>        nums.<span class="hljs-built_in">emplace_back</span>(num);<br>        <span class="hljs-keyword">if</span> (cin.<span class="hljs-built_in">get</span>() == <span class="hljs-string">&#x27;\n&#x27;</span>)<br>        &#123;<br>            <span class="hljs-keyword">break</span>;<br>        &#125;<br>    &#125;<br><br>    <span class="hljs-built_in">worstSort</span>(nums);<br>    <span class="hljs-built_in">vecCout</span>(nums);<br><br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
 <h2 id="冒泡排序">1.冒泡排序</h2>
-<p>重复地遍历要排序的元素，每次比较两个元素，如果顺序错误，二者进行交换。
+<p>重复地遍历要排序的元素，每次比较两个元素，如果顺序错误，二者进行交换。<br />
 重复的进行直到没有交换为止，即排序完成，因为 top/last
 元素会慢慢浮现到数组两端所以得名冒泡排序。</p>
 <h3 id="算法描述">算法描述</h3>
 <ul>
-<li>比较相邻元素，不符合比较顺序则交换。</li>
-<li>对每一对相邻元素作一样的操作，从第一对到最后一对这样最大的元素就会在末尾</li>
-<li>针对所有的元素作上述操作，除了最后一个</li>
+<li>比较相邻元素，不符合比较顺序则交换。<br />
+</li>
+<li>对每一对相邻元素作一样的操作，从第一对到最后一对这样最大的元素就会在末尾<br />
+</li>
+<li>针对所有的元素作上述操作，除了最后一个<br />
+</li>
 <li>重复1-3步骤，直到排序完成</li>
 </ul>
 <h3 id="代码实现">代码实现</h3>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">bubbleSort</span><span class="hljs-params">(vector&lt;<span class="hljs-type">int</span>&gt;&amp; nums)</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-type">int</span> n = nums.<span class="hljs-built_in">size</span>();<br><br>    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; n; ++i)<br>    &#123;<br>        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j = <span class="hljs-number">0</span>; j &lt; n; ++j)<br>        &#123;<br>            <span class="hljs-keyword">if</span> (nums[j] &gt; nums[j+<span class="hljs-number">1</span>])<br>            &#123;<br>                <span class="hljs-built_in">swap</span>(nums[j], nums[j+<span class="hljs-number">1</span>]);<br>            &#125;<br>        &#125;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
 <h2 id="选择排序">2.选择排序</h2>
-<p>Selection Sort 是一种简单直观的排序算法。
+<p>Selection Sort 是一种简单直观的排序算法。<br />
 他的工作原理是：现在序列中找到最小(大)元素，放在起始位置，再从未排序元素中寻找最小(大)元素，放在以排列元素的末尾。重复操作，指导排序完毕。</p>
 <h3 id="算法描述-1">算法描述</h3>
 <p>n 个元素可以经过 n-1 次选择排列完毕：</p>
 <ul>
-<li>初始状态，未排序区R[1……n]，有序区为空。</li>
+<li>初始状态，未排序区R[1……n]，有序区为空。<br />
+</li>
 <li>第 i 次排序，当前有序区 R[1……i-1]，无序区
-[i……n]，这次从无序区选出最小的元素R[k]，将其与无序区第一个元素互换，使R[1……i]，[i+1……n]为新区</li>
+[i……n]，这次从无序区选出最小的元素R[k]，将其与无序区第一个元素互换，使R[1……i]，[i+1……n]为新区<br />
+</li>
 <li>第 n-1 次选择结束，数组有序了</li>
 </ul>
 <h3 id="代码实现-1">代码实现</h3>
@@ -455,16 +469,22 @@ target="_blank" rel="noopener" href="https://www.cnblogs.com/onepixel/articles/7
 class="math inline">\(O(n^2)\)</span>
 的时间复杂度，所以数据规模越小越好，好处是<strong>不占用额外空间</strong>。</p>
 <h4 id="为什么不稳定">为什么不稳定</h4>
-<p>例如：4a, 4b, 4c, 1 选择排序后会变成 1, 4b, 4c, 4a</p>
+<p>例如：4a, 4b, 4c, 1<br />
+选择排序后会变成 1, 4b, 4c, 4a</p>
 <h2 id="插入排序-insertion-sort">3.插入排序 ( Insertion Sort )</h2>
 <p>构建有序序列，对于未排序数据，在已排序序列中从后向前扫描，找到相应位置并插入。</p>
 <h3 id="算法描述-2">算法描述</h3>
 <ul>
-<li>从第一个元素开始，该元素可以认为已经被排序</li>
-<li>取出下一个元素，在已排序的元素中由后至前地扫描</li>
-<li>若该排序后元素大于取出的新元素，则将该排序元素移到下一位。</li>
-<li>重复步骤3，直到找到新元素大于或等于已排序的元素</li>
-<li>将新元素插入该位置</li>
+<li>从第一个元素开始，该元素可以认为已经被排序<br />
+</li>
+<li>取出下一个元素，在已排序的元素中由后至前地扫描<br />
+</li>
+<li>若该排序后元素大于取出的新元素，则将该排序元素移到下一位。<br />
+</li>
+<li>重复步骤3，直到找到新元素大于或等于已排序的元素<br />
+</li>
+<li>将新元素插入该位置<br />
+</li>
 <li>重复2-5步骤</li>
 </ul>
 <h3 id="代码实现-2">代码实现</h3>
@@ -478,9 +498,10 @@ sort 又叫<strong>缩小增量排序</strong>。</p>
 <h3 id="算法描述-3">算法描述</h3>
 <p>将整个数组分割为若干子序列，分别进行插入排序：</p>
 <ul>
-<li><p>选择一个增量序列，t1, t2, ..., tk, 其中 ti &gt; tj, tk =
-1;</p></li>
-<li><p>按增量序列个数 k，对序列进行 k 次排序</p></li>
+<li><p>选择一个增量序列，t1, t2, ..., tk, 其中 ti &gt; tj, tk = 1;<br />
+</p></li>
+<li><p>按增量序列个数 k，对序列进行 k 次排序<br />
+</p></li>
 <li><p>每次排序，根据对应的增量ti，将待排序序列分割成若干长度为 m
 的子序列，下标为i*ti的为一组，分别对各子序列进行插入排序。仅在增量因子为
 1 时，将整个序列作为一个表来处理，表长度即为整个序列的长度。</p></li>
@@ -498,8 +519,10 @@ Divide and Conquer
 )的经典应用。将已有的子序列合并，得到完全有序的序列；即先使每个子序列有序，再使子序列段间有序。若将两个有序表合并为一个有序表，则称为2-路归并。</p>
 <h3 id="算法描述-4">算法描述</h3>
 <ul>
-<li>把长度为 n 的序列，二分两个子序列</li>
-<li>把子序列分别使用归并排序</li>
+<li>把长度为 n 的序列，二分两个子序列<br />
+</li>
+<li>把子序列分别使用归并排序<br />
+</li>
 <li>将排好的子序列合并成一个最终的排序序列</li>
 </ul>
 <h3 id="代码实现-4">代码实现</h3>
@@ -512,8 +535,10 @@ class="math inline">\(O(nlogn)\)</span> ，但是需要额外空间。</p>
 <h3 id="算法描述-5">算法描述</h3>
 <p>使用分治法分为两部分</p>
 <ul>
-<li>从序列中选择一个元素作为基准( pivot )</li>
-<li>重新排列序列，所有比其小的放在左边，比其大的放在右边。在排列后，该基准就位于中间位置，这个称为分区操作。</li>
+<li>从序列中选择一个元素作为基准( pivot )<br />
+</li>
+<li>重新排列序列，所有比其小的放在左边，比其大的放在右边。在排列后，该基准就位于中间位置，这个称为分区操作。<br />
+</li>
 <li>递归地把小于基准值元素的子数列和大于基准元素的子数列排序</li>
 </ul>
 <h3 id="代码实现-5">代码实现</h3>
@@ -524,9 +549,11 @@ class="math inline">\(O(nlogn)\)</span> ，但是需要额外空间。</p>
 <h3 id="算法描述-6">算法描述</h3>
 <ul>
 <li>将初始状态待排序序列 ( R1, R2, ..., Rn )
-构建成大根堆，此堆为初始的无序区</li>
+构建成大根堆，此堆为初始的无序区<br />
+</li>
 <li>将堆顶元素R[1]与最后一个元素R[n]互换，得到新的无序区( R1, R2, ...,
-Rn-1)和新的有序区(Rn)，且满足R[1], R[2], ..., R[n-1] &lt;= R[n]</li>
+Rn-1)和新的有序区(Rn)，且满足R[1], R[2], ..., R[n-1] &lt;= R[n]<br />
+</li>
 <li>由于交换后新的堆顶可能会违反堆的性质，因此需要对当前无序堆进行调整，然后再次将R[1]与无序区最后一个元素互换，得到新无序区(
 R1, R2, ..., Rn-2 ), 新有序区( Rn-1, Rn )不断重复，直到有序区元素个数为
 n-1，排序完成。</li>
@@ -537,9 +564,12 @@ n-1，排序完成。</li>
 <p>计数排序不是基于比较的排序算法，核心在于将输入的数据转化为键存储在额外开辟的数组空间中。作为线性时间复杂度的排序，<strong>计数排序要求输入数据必须是有确定范围的。</strong></p>
 <h3 id="算法描述-7">算法描述</h3>
 <ul>
-<li>找出待排序数列中的<em>最大</em>和<em>最小</em>元素</li>
-<li>统计数组中每个值为 i 的元素出现的次数，存入额外数组的第 i 项。</li>
-<li>对所有的次数累加, 从头到尾，这样额外数组就表示元素的实际位置</li>
+<li>找出待排序数列中的<em>最大</em>和<em>最小</em>元素<br />
+</li>
+<li>统计数组中每个值为 i 的元素出现的次数，存入额外数组的第 i 项。<br />
+</li>
+<li>对所有的次数累加, 从头到尾，这样额外数组就表示元素的实际位置<br />
+</li>
 <li>反向填充目标数组：将每个元素 i 放在新数组的第 C(i)
 项，每放入一个元素将 C(i) 减去 1</li>
 </ul>
@@ -558,9 +588,12 @@ Bucket Sort
 可能使用别的排序方法或者递归地使用桶排序 )</p>
 <h3 id="算法描述-8">算法描述</h3>
 <ul>
-<li>设置一个定量的数组作为空桶</li>
-<li>遍历输入数据放入对应桶中</li>
-<li>对每个不是空的桶进行排序</li>
+<li>设置一个定量的数组作为空桶<br />
+</li>
+<li>遍历输入数据放入对应桶中<br />
+</li>
+<li>对每个不是空的桶进行排序<br />
+</li>
 <li>从非空桶中把排好序的数据拼接起来</li>
 </ul>
 <h3 id="代码实现-8">代码实现</h3>
@@ -575,8 +608,10 @@ class="math inline">\(O(n)\)</span>
 <p>基数排序是按照低位先排序，后收集；在按照高位排序再收集；依次类推直到最高位也排序完毕。此外，有些属性是有优先级顺序的，按低优先级部分先排序，再按照高优先级排序，最后就是高优先级高的在前，高优先级相同者低优先级高的在前。在游戏开发中可能常常用这个排序？</p>
 <h3 id="算法描述-9">算法描述</h3>
 <ul>
-<li>取得数组中的最大数，并取其位数。</li>
-<li>nums 为原始数组，从最低位开始取每个位组成 radix 数组；</li>
+<li>取得数组中的最大数，并取其位数。<br />
+</li>
+<li>nums 为原始数组，从最低位开始取每个位组成 radix 数组；<br />
+</li>
 <li>对 radix 数据进行计数排序 ( 计数排序适用于小范围 )</li>
 </ul>
 <h3 id="代码实现-9">代码实现</h3>
@@ -587,9 +622,9 @@ class="math inline">\(O(n)\)</span>
 <span class="math inline">\(O(n)\)</span> 时间排序。假设待排列序列可分出
 m 关键字，其时间复杂度为 <span
 class="math inline">\(O(m*2n)\)</span>，但是 m
-远小于n，所有还是线性时间级别。 其空间复杂度为 <span
-class="math inline">\(O(n+k)\)</span> ，k 为桶的数量，一般来讲 n
-&gt;&gt; k，所有额外空间需要 n。</p>
+远小于n，所有还是线性时间级别。<br />
+其空间复杂度为 <span class="math inline">\(O(n+k)\)</span> ，k
+为桶的数量，一般来讲 n &gt;&gt; k，所有额外空间需要 n。</p>
 
                 
               </div>
@@ -652,9 +687,9 @@ class="math inline">\(O(n+k)\)</span> ，k 为桶的数量，一般来讲 n
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2024/01/13/%E7%B4%A7%E6%80%A5%E8%AF%B4%E6%98%8E/" title="">
+                      <a href="/2024/01/13/%E7%B4%A7%E6%80%A5%E8%AF%B4%E6%98%8E/" title="已修复">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile"></span>
+                        <span class="hidden-mobile">已修复</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
