@@ -4,6 +4,25 @@
   
   
   <entry>
+    <title>关于透视矫正插值</title>
+    <link href="/2024/04/14/%E5%85%B3%E4%BA%8E%E9%80%8F%E8%A7%86%E7%9F%AB%E6%AD%A3%E6%8F%92%E5%80%BC/"/>
+    <url>/2024/04/14/%E5%85%B3%E4%BA%8E%E9%80%8F%E8%A7%86%E7%9F%AB%E6%AD%A3%E6%8F%92%E5%80%BC/</url>
+    
+    <content type="html"><![CDATA[<p>把之前推导计算的透视矫正插值记录一下</p><span id="more"></span><h1 id="透视矫正插值">透视矫正插值</h1><p>首先我们要知道从 “<strong>顶点着色器</strong>” 到“<strong>片元着色器</strong>” 需要经过“<strong>光栅化(Rasterization)</strong>”而光栅化做的就是把三角形离散为一个一个片元，如果是对于一个三角形而言，我们能够通过重心坐标表示其中任意一点。</p><h2 id="重心坐标">重心坐标</h2><p>设有三角形 ABC，及内一点P</p><p>所谓重心坐标就是，三角形内一点可以写作 <span class="math display">\[P=\alpha A+\beta B+\gamma C\]</span> 如果 <span class="math inline">\((\alpha +\beta+\gamma)==1\)</span> 则点 <strong>P</strong> 在三角形内，</p>]]></content>
+    
+    
+    
+    <tags>
+      
+      <tag>图形学</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>Hexo 主题变更</title>
     <link href="/2024/01/13/Hexo%E4%B8%BB%E9%A2%98%E6%9B%B4%E6%94%B9/"/>
     <url>/2024/01/13/Hexo%E4%B8%BB%E9%A2%98%E6%9B%B4%E6%94%B9/</url>
