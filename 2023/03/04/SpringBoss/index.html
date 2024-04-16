@@ -57,7 +57,7 @@
 <meta property="og:image" content="http://example.com/imgs/SpringBoss/RayPointSpe.png">
 <meta property="og:image" content="http://example.com/imgs/SpringBoss/unityUpdate.jpg">
 <meta property="article:published_time" content="2023-03-04T07:14:23.000Z">
-<meta property="article:modified_time" content="2024-01-14T08:13:08.474Z">
+<meta property="article:modified_time" content="2024-04-14T15:28:52.872Z">
 <meta property="article:author" content="Hollow Emiya">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="http://example.com/imgs/SpringBoss/C_ambient.png">
@@ -257,7 +257,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          13k 字
+          14k 字
         
       </span>
     
@@ -268,7 +268,7 @@
         
         
         
-          111 分钟
+          113 分钟
         
       </span>
     
@@ -791,9 +791,8 @@ refDir</h4>
 <li><p>矢量/点</p>
 <p><img src="/imgs/SpringBoss/rowMatrixHC.png" srcset="/img/loading.gif" lazyload></p></li>
 <li><p>变换矩阵</p>
-<p><img src="/imgs/SpringBoss/rowMatrixHCT.png" srcset="/img/loading.gif" lazyload ></p></li>
+<p><img src="/imgs/SpringBoss/rowMatrixHCT.png" srcset="/img/loading.gif" lazyload > #### 列矩阵</p></li>
 </ul>
-<h4 id="列矩阵">列矩阵</h4>
 <p><u><strong><em>Unity就是列矩阵！</em></strong></u></p>
 <blockquote>
 <p>问题1<br />
@@ -882,12 +881,10 @@ decomposition(极分解)“，可以证明矩阵<em>M</em>的极分解为 <u>旋
 <h3 id="model">Model</h3>
 <p>把顶点坐标从局部空间变换到全局空间。</p>
 <ul>
-<li><p>行矩阵<br />
-<img src="/imgs/SpringBoss/ModelRow.png" srcset="/img/loading.gif" lazyload></p></li>
-<li><p>列矩阵<br />
-<img src="/imgs/SpringBoss/ModelCol.png" srcset="/img/loading.gif" lazyload></p></li>
+<li><p>行矩阵 <img src="/imgs/SpringBoss/ModelRow.png" srcset="/img/loading.gif" lazyload></p></li>
+<li><p>列矩阵 <img src="/imgs/SpringBoss/ModelCol.png" srcset="/img/loading.gif" lazyload></p></li>
 </ul>
-<h3 id="view-matrix-推导">view-Matrix 推导</h3>
+<h3 id="view-matrix-推导">View-Matrix 推导</h3>
 <p>在图形渲染中我们要把3D的场景渲染成一张2D的图片，而这张图片是从 Camera
 的视角出发，所以为了方便渲染我们做一个变换，把摄影机作为一个新的空间的原点，令摄影机观测方向为-z方向也就是我们常说的
 视图变换(Viewing Transform)。<br />
@@ -921,16 +918,62 @@ camera坐标系的三轴。<br />
 <code>y-&gt;t</code>,<code>-z -&gt;g</code>,<code>x-&gt;e</code>
 是很好计算的。<br />
 而我们知道了逆矩阵，就可以知道正交矩阵的原矩阵。<br />
-正交矩阵性质：<br />
-<img src="/imgs/SpringBoss/orthM.png" srcset="/img/loading.gif" lazyload style="zoom:20"></p>
-<p>所以<br />
-<img src="/imgs/SpringBoss/Rview.png" srcset="/img/loading.gif" lazyload style="zoom:80%"></p>
-<p>最后<br />
-<img src="/imgs/SpringBoss/Mview.png" srcset="/img/loading.gif" lazyload style="zoom:20"></p>
-<h3 id="projection-matrix">Projection Matrix</h3>
+正交矩阵性质:
+<img src="/imgs/SpringBoss/orthM.png" srcset="/img/loading.gif" lazyload style="zoom:80%"></p>
+<p>所以 <img src="/imgs/SpringBoss/Rview.png" srcset="/img/loading.gif" lazyload style="zoom:80%"></p>
+<p>最后 <img src="/imgs/SpringBoss/Mview.png" srcset="/img/loading.gif" lazyload style="zoom:80%"></p>
+<h3 id="projection-matrix不对重新推导一下">Projection
+Matrix(不对，重新推导一下)</h3>
 <p>我们现在已经放好了物体，也以 Camera 的角度出发了，现在我们要从
 <strong>View space( 观察空间 )</strong> 到 <strong>Clip Space(
 裁剪空间/齐次裁剪空间 )</strong></p>
+<p>我们这里先把深度归到[0,1]</p>
+<p>利用相似三角形原理， <span class="math display">\[
+\begin{aligned}
+\frac{x_{screen}}{near}=\frac{x_{view}}{z_{view}}\\
+x_{screen}=\frac{x_{view}\cdot near}{z_{view}}\\
+y_{screen}=\frac{y_{view}\cdot near}{z_{view}}\\
+\end{aligned}
+\]</span> 所以Project Matrix <span class="math display">\[
+\begin{bmatrix}
+\frac{near}{z_p}&amp;0&amp;0&amp;0\\
+0&amp;\frac{near}{z_p}&amp;0&amp;0\\
+0&amp;0&amp;A&amp;B\\
+0&amp;0&amp;C&amp;D\\
+\end{bmatrix}
+\begin{bmatrix}
+x_p\\
+y_p\\
+z_p\\
+1\\
+\end{bmatrix}
+\]</span></p>
+<p>而为了实现深度测试对于z映射到[0,1]有 因为View Space
+是右手系的所以……z值不是正的 <span class="math display">\[
+\begin{aligned}
+    -A\cdot near+B=0\\
+    -A\cdot far+B=1\\
+    A=\frac{1}{near-far}\\
+    B=\frac{near}{near-far}
+\end{aligned}
+\]</span></p>
+<p>得到 <span class="math display">\[
+\begin{bmatrix}
+\frac{near}{z_p}&amp;0&amp;0&amp;0\\
+0&amp;\frac{near}{z_p}&amp;0&amp;0\\
+0&amp;0&amp;\frac{1}{near-far}&amp;\frac{near}{near-far}\\
+0&amp;0&amp;C&amp;D\\
+\end{bmatrix}
+\]</span>
+但是我们肯定不希望每个点都单独做一个矩阵，这没办法计算的……所以我们不妨<u>把xy需要的z存到w分量，后面再用除法去除</u>
+即 齐次除法的前提。 <span class="math display">\[
+\begin{bmatrix}
+near&amp;0&amp;0&amp;0\\
+0&amp;near&amp;0&amp;0\\
+0&amp;0&amp;\frac{1}{near-far}&amp;\frac{near}{near-far}\\
+0&amp;0&amp;1&amp;0\\
+\end{bmatrix}
+\]</span> 从裁剪空间到NDC需要一次齐次除法</p>
 <h2 id="tbn-矩阵">TBN 矩阵</h2>
 <p><a
 target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/412555049">TBN矩阵不错的Blog</a></p>
@@ -1411,6 +1454,12 @@ Batcher 官方简介</a></p>
   
 
 
+  
+  
+
+
+
+
 
 
 
@@ -1602,6 +1651,49 @@ Batcher 官方简介</a></p>
 
 
   <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
 
   <script  src="/js/local-search.js" ></script>
 
