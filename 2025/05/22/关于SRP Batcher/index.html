@@ -16,24 +16,24 @@
   <meta name="author" content="Hollow Emiya">
   <meta name="keywords" content="">
   
-    <meta name="description" content="Unity 下实现的 刀光特效，但是主要是 shader，所以可以用于其他引擎。">
+    <meta name="description" content="关于 SRP Batcher 的理解和内容 关于 SRP Batcher Shader 和 Material 首先我们得对 Shader 和 Material 以及渲染过程有一个基础的了解。  Shader：运行在 GPU 上的一段程序， 将输入的 Mesh 和 Texture 以及 其他 Properties 进行计算，然后输出结果。 当然也有利用 GPU 并行能力计算的 Comp">
 <meta property="og:type" content="article">
-<meta property="og:title" content="刀光特效果">
-<meta property="og:url" content="http://example.com/2024/05/01/%E5%88%80%E5%85%89%E7%89%B9%E6%95%88/index.html">
+<meta property="og:title" content="关于 SRP Batcher">
+<meta property="og:url" content="http://example.com/2025/05/22/%E5%85%B3%E4%BA%8ESRP%20Batcher/index.html">
 <meta property="og:site_name" content="Emiya Blog">
-<meta property="og:description" content="Unity 下实现的 刀光特效，但是主要是 shader，所以可以用于其他引擎。">
+<meta property="og:description" content="关于 SRP Batcher 的理解和内容 关于 SRP Batcher Shader 和 Material 首先我们得对 Shader 和 Material 以及渲染过程有一个基础的了解。  Shader：运行在 GPU 上的一段程序， 将输入的 Mesh 和 Texture 以及 其他 Properties 进行计算，然后输出结果。 当然也有利用 GPU 并行能力计算的 Comp">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://example.com/imgs/Hexo%E4%B8%BB%E9%A2%98%E5%8F%98%E6%9B%B4/Shiki&Tsukihime.png">
-<meta property="article:published_time" content="2024-04-30T16:00:00.000Z">
-<meta property="article:modified_time" content="2024-05-10T18:33:59.677Z">
+<meta property="article:published_time" content="2025-05-21T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-02-23T08:48:04.912Z">
 <meta property="article:author" content="Hollow Emiya">
-<meta property="article:tag" content="特效">
+<meta property="article:tag" content="Unity,渲染">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="http://example.com/imgs/Hexo%E4%B8%BB%E9%A2%98%E5%8F%98%E6%9B%B4/Shiki&Tsukihime.png">
   
   
   
-  <title>刀光特效果 - Emiya Blog</title>
+  <title>关于 SRP Batcher - Emiya Blog</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -203,7 +203,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="刀光特效果"></span>
+            <span id="subtitle" data-typed-text="关于 SRP Batcher"></span>
           
         </div>
 
@@ -214,8 +214,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2024-05-01 00:00" pubdate>
-          2024年5月1日 凌晨
+        <time datetime="2025-05-22 00:00" pubdate>
+          2025年5月22日 凌晨
         </time>
       </span>
     
@@ -226,7 +226,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          492 字
+          2.4k 字
         
       </span>
     
@@ -237,7 +237,7 @@
         
         
         
-          5 分钟
+          21 分钟
         
       </span>
     
@@ -274,18 +274,189 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">刀光特效果</h1>
+            <h1 id="seo-header">关于 SRP Batcher</h1>
             
             
               <div class="markdown-body">
                 
-                <p>Unity 下实现的 刀光特效，但是主要是
-shader，所以可以用于其他引擎。</p>
-<span id="more"></span>
-<h1 id="刀光特效">刀光特效</h1>
-<h2 id="shader">shader</h2>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br></pre></td><td class="code"><pre><code class="hljs hlsl">Shader &quot;MyShader/Dao Guang&quot;<br>&#123;<br>    Properties<br>    &#123;<br>        //_CopyColorRT (&quot;Main Texture&quot;, 2D) = &quot;white&quot; &#123;&#125;<br>        _MainTex(&quot;Main Tex&quot;, 2D) = &quot;white&quot; &#123;&#125;<br>        [HDR]_MainColor(&quot;Main Color&quot;, Color) = (1,1,1,1)<br>        _Alpha(&quot;Alpha Val&quot;, Range(0,1)) = 0.1<br>        _FlowVal(&quot;Flow Val&quot;, Range(0.0,1)) = 0<br>        _FadeInTime(&quot;Fade In Time&quot;, Range(0,0.5)) = 0<br>        _FadeOutKey(&quot;Fade Out Key&quot;, Range(0.0,1)) = 1<br>        _FadeOutTime(&quot;Fade Out Time&quot;, Range(0,1)) = 0.1<br>        [HDR]_FlowSpecularColor(&quot;Flow Specular Color&quot;, Color) = (1,1,1,1)<br>        [HDR]_NoiseColor(&quot;Noise Color&quot;, Color) = (1,1,1,1)<br>        [Toggle]_ReverseDir(&quot;Reverse Dir&quot;, Int) = 0<br>        <br>        [Header(Option)]<br>        [Enum(UnityEngine.Rendering.BlendOp)]  _BlendOp  (&quot;BlendOp&quot;, Float) = 0<br>        [Enum(UnityEngine.Rendering.BlendMode)] _SrcBlend (&quot;SrcBlend&quot;, Float) = 1<br>        [Enum(UnityEngine.Rendering.BlendMode)] _DstBlend (&quot;DstBlend&quot;, Float) = 0<br>        [Enum(Off, 0, On, 1)]_ZWriteMode (&quot;ZWriteMode&quot;, float) = 1<br>        [Enum(UnityEngine.Rendering.CullMode)]_CullMode (&quot;CullMode&quot;, float) = 2<br>        [Enum(UnityEngine.Rendering.CompareFunction)]_ZTestMode (&quot;ZTestMode&quot;, Float) = 4<br>        //[Enum(UnityEngine.Rendering.ColorWriteMask)]_ColorMask (&quot;ColorMask&quot;, Float) = 15<br><br>        //[Header(Stencil)]<br>        //[Enum(UnityEngine.Rendering.CompareFunction)]_StencilComp (&quot;Stencil Comparison&quot;, Float) = 8<br>        //[IntRange]_StencilWriteMask (&quot;Stencil Write Mask&quot;, Range(0,255)) = 255<br>        //[IntRange]_StencilReadMask (&quot;Stencil Read Mask&quot;, Range(0,255)) = 255<br>        //[IntRange]_Stencil (&quot;Stencil ID&quot;, Range(0,255)) = 0<br>        //[Enum(UnityEngine.Rendering.StencilOp)]_StencilPass (&quot;Stencil Pass&quot;, Float) = 0<br>        //[Enum(UnityEngine.Rendering.StencilOp)]_StencilFail (&quot;Stencil Fail&quot;, Float) = 0<br>        //[Enum(UnityEngine.Rendering.StencilOp)]_StencilZFail (&quot;Stencil ZFail&quot;, Float) = 0<br>    &#125;<br>    SubShader<br>    &#123;<br>        Tags<br>        &#123; <br>            &quot;RenderType&quot;=&quot;Transparent&quot;<br>            &quot;Queue&quot; = &quot;Transparent&quot;<br>        &#125;<br>        <br>        ZWrite [_ZWriteMode]<br>        ZTest [_ZTestMode]<br>        BlendOp [_BlendOp]<br>        Blend [_SrcBlend] [_DstBlend]<br>        Pass<br>        &#123;<br>            Name &quot;Alpha Clip&quot;<br>            Tags <br>            &#123; <br>                //&quot;LightMode&quot; = &quot;UniversalForward&quot;<br>                &quot;LightMode&quot; = &quot;UniversalForward&quot;<br>            &#125;<br><br>            HLSLPROGRAM<br>            #pragma vertex vert<br>            #pragma fragment frag<br><br>            #include &quot;Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl&quot;<br><br>            struct appdata<br>            &#123;<br>                float4 vertex : POSITION;<br>                float2 uv : TEXCOORD0;<br>            &#125;;<br><br>            struct v2f<br>            &#123;<br>                float2 uv : TEXCOORD0;<br>                float4 vertex : SV_POSITION;<br>            &#125;;<br><br>            //SAMPLER(sampler_ScreenOffRT);<br>            //TEXTURE2D(_ScreenOffRT);<br>            //float4 _ScreenOffRT_ST;<br><br>            CBUFFER_START(UnityPerMaterial)<br>                SAMPLER(sampler_MainTex);<br>                TEXTURE2D(_MainTex);<br>                float4 _MainTex_ST, _MainColor;<br>                float4 _FlowSpecularColor, _NoiseColor;<br>                float _Alpha, _FlowVal, _FadeInTime;<br>                float _FadeOutKey, _FadeOutTime;<br>                int _ReverseDir;<br>            CBUFFER_END<br><br>            v2f vert (appdata v)<br>            &#123;<br>                v2f o;<br>                o.vertex = mul(UNITY_MATRIX_MVP,v.vertex);<br>                o.uv = TRANSFORM_TEX(v.uv,_MainTex);<br>                return o;<br>            &#125;<br><br>            half4 frag (v2f i) : SV_Target<br>            &#123;<br>                // sample the texture<br>                float flowUV = i.uv.x;<br>                if(_ReverseDir != 0)<br>                    flowUV = 1 - flowUV;<br>                //float val = i.uv.x;<br>                flowUV = flowUV + _FlowVal;<br>                float alphaFade = clamp((_FlowVal / _FadeInTime), 0 ,1);<br>                //flowUV *= _FlowVal;<br><br>                half4 mainCol = SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, float2(flowUV,i.uv.y));<br>                float alpha = alphaFade * mainCol.a;<br>                alpha *= 1 - clamp( (_FlowVal - _FadeOutKey) / _FadeOutTime, 0, 1);<br>                clip(_Alpha - mainCol.a);<br>                <br>                float3 col = _FlowSpecularColor * mainCol.g;<br>                col += mainCol.r * _MainColor;<br>                col += _NoiseColor * mainCol.b;<br>                return half4(col, alpha);<br>                //return col * flowUV * alphaValByFlow;// * _FlowSpecularColor;<br>            &#125;<br><br>            ENDHLSL<br>        &#125;<br>    &#125;<br>&#125;<br><br></code></pre></td></tr></table></figure>
-<p>主要思路就根据 uv.x 做渐入渐出和透明度的调整。</p>
+                <p>关于 SRP Batcher 的理解和内容</p>
+<h1 id="关于-srp-batcher">关于 SRP Batcher</h1>
+<h2 id="shader-和-material">Shader 和 Material</h2>
+<p>首先我们得对 Shader 和 Material 以及渲染过程有一个基础的了解。</p>
+<ul>
+<li>Shader：运行在 <strong>GPU</strong> 上的一段程序， 将输入的 Mesh 和
+Texture 以及 其他 Properties 进行计算，然后输出结果。
+<font color= #999999>当然也有利用 GPU 并行能力计算的 Computer Shader
+主要是做数据计算和处理，比如计算
+LUT，或者滤波、图像处理等等，这个不是本文重点。</font></li>
+<li>Material：描述(存储) 模型/物体 表面细节信息的资源。 定义外观属性
+Color，Tex，Smoothness……可以看作是对 Shader的实例。</li>
+</ul>
+<p>材质可以看作是一个配置Shader属性数值的面板。通过修改材质球里的属性数值，实际上就是在修改Shader的属性数值。
+当我们创建一个材质时，我们实际上是在创建一个Shader的实例。这个实例包含了Shader的所有属性，并且我们可以为这些属性提供具体的值。
+在Unity中，每个材质都关联了一个Shader。当我们将材质应用到一个物体上时，实际上是在告诉Unity使用这个材质所关联的Shader来渲染这个物体。</p>
+<h2 id="简单的渲染过程">简单的渲染过程</h2>
+<p>就现在的设计，简单来讲渲染物体主要分为四个步骤： 暂时用 DX
+举例吧，我记不得太多了……</p>
+<ol type="1">
+<li><p><strong>初始化</strong>：</p>
+<ul>
+<li><p><strong>创建设备</strong> (ID3D11Device) 和
+<strong>设备上下文</strong>(ID3D11DeviceContext)，以及交换链管理 Front
+Buffer 和 Back Buffer</p>
+<p>创建渲染视图并绑定到输出合并阶段。</p></li>
+</ul></li>
+<li><p><strong>设置渲染状态</strong>：</p>
+<ul>
+<li><strong>定义顶点格式和输入布局</strong>：根据需要渲染的几何体定义顶点结构，并创建相应的输入布局（<code>ID3D11InputLayout</code>）描述顶点数据的格式和语义。</li>
+<li><strong>创建顶点和索引缓冲区</strong>：将几何体的顶点数据存储在顶点缓冲区（<code>ID3D11Buffer</code>）中，如果有重复顶点，可以使用索引缓冲区（<code>ID3D11Buffer</code>）来优化内存使用和渲染效率。</li>
+<li><strong>创建着色器</strong>：编写顶点着色器（Vertex
+Shader）和像素着色器（Pixel
+Shader），并使用<code>D3DCompile</code>函数编译成字节码，然后创建着色器对象（<code>ID3D11VertexShader</code>和<code>ID3D11PixelShader</code>）</li>
+</ul></li>
+<li><p><strong>绘制调用</strong>：</p>
+<ul>
+<li><strong>绑定着色器和常量缓冲区</strong>：将顶点着色器、像素着色器和常量缓冲区绑定到渲染管线的相应阶段。</li>
+<li><strong>设置图元拓扑</strong>：指定要渲染的图元类型，如三角形列表、线列表等。</li>
+<li><strong>设置混合状态、深度/模板状态等</strong>：根据需要设置渲染管线的其他状态，如混合模式、深度测试和模板测试等。</li>
+<li>(可选)进行ClearRenderTargetView</li>
+<li><strong>绘制几何体</strong>：使用<code>DrawIndexed</code>或<code>Draw</code>函数绘制几何体，根据索引缓冲区（如果有）或顶点缓冲区中的数据生成图元，</li>
+<li>重复渲染过程。</li>
+</ul></li>
+<li><p><strong>结果展示</strong>：</p>
+<p>前后帧交替显示渲染结果</p></li>
+</ol>
+<h3 id="一点关于dx的概念不是很重要">一点关于dx的概念，不是很重要……</h3>
+<ul>
+<li><p><code>ID3D11Device</code>接口，它用于创建资源和枚举显示适配器的功能，用以应用程序直接与图形硬件进行交互。</p></li>
+<li><p>设备上下文<a href="#fn1" class="footnote-ref" id="fnref1"
+role="doc-noteref"><sup>1</sup></a>是设备的一个接口，用于设置管道状态、将资源绑定到图形管线和生成渲染命令。
+设备上下文在<code>ID3D11DeviceContext</code>接口中实现，它提供了对图形管线的直接控制，允许应用程序执行各种渲染操作。</p>
+<ul>
+<li><strong>即时上下文（Immediate
+Context）</strong>：即时上下文直接与图形硬件进行交互，它允许应用程序立即执行渲染命令。每个设备都有一个且只有一个即时上下文。</li>
+<li><strong>延迟上下文（Deferred
+Context）</strong>：延迟上下文将渲染命令记录到命令列表中，它主要用于多线程渲染。延迟上下文可以由工作线程使用，而即时上下文通常由主线程使用</li>
+</ul></li>
+</ul>
+<h3 id="draw-call">Draw Call</h3>
+<p><strong>Draw Call</strong> 是 CPU 调用图形 API（如 OpenGL 或
+DirectX）命令 GPU 进行渲染的操作。具体来说，Draw Call 是 CPU 向 GPU
+发送的绘制命令，告诉 GPU
+如何渲染场景的一部分，包括使用哪些顶点、纹理、着色器等。</p>
+<h3 id="draw-call-的工作原理">Draw Call 的工作原理</h3>
+<ol type="1">
+<li><strong>命令缓冲区</strong>：为了实现 CPU 和 GPU
+的并行工作，需要一个命令缓冲区（Command
+Buffer），它包含一个命令队列。CPU 向其中添加命令，GPU
+从中读取命令并执行。</li>
+<li><strong>Draw Call 命令</strong>：Draw Call 是 <strong>Command Buffer
+的一种命令</strong>，用于告诉 GPU 进行绘制操作。除了 Draw Call，Command
+Buffer 中还有其他命令，如改变渲染状态等。</li>
+<li><strong>CPU 和 GPU 的交互</strong>：CPU 通过图形 API
+向命令缓冲区添加命令，GPU 从中读取命令并执行。当 CPU
+需要渲染一个对象时，它会向命令缓冲区添加一个 Draw Call 命令，GPU
+完成上一个渲染任务后，会从命令缓冲区中取出这个命令并执行。</li>
+</ol>
+<h3 id="为什么-draw-call-多了会影响帧率">为什么 Draw Call
+多了会影响帧率？</h3>
+<ol type="1">
+<li><strong>CPU 的准备工作</strong>：在每次调用 Draw Call 之前，CPU
+需要向 GPU 发送很多内容，包括数据、状态和命令等。CPU
+需要完成很多准备工作，如数据准备，资源绑定，命令提交，检查渲染状态等。</li>
+<li><strong>GPU 的渲染能力</strong>：GPU
+的渲染能力很强，渲染速度往往快于 CPU 提交命令的速度。如果 Draw Call
+的数量太多，CPU 就会把大量时间花费在提交 Draw Call 命令上，造成 CPU
+的过载。 可以粗浅地理解为 DrawIndexed 或Draw函数就是一次 Draw Call</li>
+<li><strong>性能瓶颈</strong>：由于 CPU 的准备工作和 GPU
+的渲染能力不匹配，过多的 Draw Call 会导致 CPU
+成为性能瓶颈，影响帧率。</li>
+</ol>
+<h3 id="如何减少-draw-call">如何减少 Draw Call？</h3>
+<ol type="1">
+<li><strong>批处理（Batching）</strong>：将多个小的 Draw Call
+合并成一个大的 Draw Call，减少 CPU 提交 Draw Call 的次数和时间。
+<ul>
+<li><strong>静态批处理</strong>：适合静态物体，如不会移动的大地、石头等。将这些物体标记为静态，引擎会自动合并网格，减少
+Draw Call。</li>
+<li><strong>动态批处理</strong>：适合动态物体，引擎每帧都会重新合并网格，但限制较多，如顶点数和着色器复杂度等。</li>
+</ul></li>
+<li><strong>减少材质使用</strong>：相同的材质会方便合并网格，减少 Draw
+Call。</li>
+<li><strong>GPU 实例化（GPU Instancing）</strong>：将 mesh 信息存储在
+GPU 内存缓冲区中，并进行渲染而无需额外的 Draw Call。</li>
+<li><strong>减少渲染状态切换</strong>：改变渲染状态比渲染模型更耗时，尽量减少渲染状态切换。</li>
+</ol>
+<h4 id="渲染状态">渲染状态</h4>
+<p><strong>改变渲染状态</strong>是指在图形渲染过程中，通过设置或修改渲染器（如Direct3D或OpenGL）的各种参数，来控制渲染行为和效果的过程。这些参数通常被称为渲染状态，它们定义了渲染器在处理图形数据时的行为方式。</p>
+<h5 id="渲染状态的类型">渲染状态的类型</h5>
+<p>渲染状态有很多种，常见的包括：</p>
+<ol type="1">
+<li><strong>填充模式（Fill
+Mode）</strong>：决定多边形是被填充还是只绘制轮廓。例如，线框模式（Wireframe）只绘制多边形的边框，而实心模式（Solid）会填充整个多边形。</li>
+<li><strong>剔除模式（Cull
+Mode）</strong>：决定是否剔除（不渲染）某些面。例如，可以设置为剔除背面（Backface
+Culling），只渲染正面的三角形。</li>
+<li><strong>深度测试（Depth
+Test）</strong>：决定是否根据深度值（Z值）来决定是否更新像素的颜色。如果开启深度测试，只有当新像素的深度值小于当前像素的深度值时，才会更新像素的颜色。</li>
+<li><strong>混合模式（Blend
+Mode）</strong>：决定如何将新像素的颜色与现有像素的颜色进行混合。例如，可以设置为Alpha混合，根据新像素的Alpha值来决定如何混合颜色。</li>
+<li><strong>模板测试（Stencil
+Test）</strong>：决定是否根据模板缓冲区中的值来决定是否更新像素的颜色。模板缓冲区可以用于实现各种高级渲染效果，如阴影、轮廓等。</li>
+<li><strong>光照模式（Lighting
+Mode）</strong>：决定是否使用光照计算，以及如何计算光照。</li>
+<li><strong>纹理过滤器（Texture
+Filter）</strong>：决定如何对纹理进行采样和过滤，以获得更好的图像质量。例如，可以设置为线性过滤（Linear
+Filtering）或各向异性过滤（Anisotropic Filtering）</li>
+</ol>
+<h2 id="unity-and-material">Unity And Material</h2>
+<p><img src="/imgs/关于SRP Batcher/OldMaterial.jpg" srcset="/img/loading.gif" lazyload> CPU 收集 Material
+信息，设置 CBUFFER</p>
+<h2 id="srp-batcher">SRP Batcher</h2>
+<p><img src="/imgs/关于SRP Batcher/SRPPipeline.jpg" srcset="/img/loading.gif" lazyload>
+在渲染循环里把材质信息保留在 GPU 内存中，只有材质内容改变才会重新 setup
+material data。 在此流程中，CPU
+仅负责处理内置引擎属性（如<em>对象矩阵变换</em>）。所有材质的 CBUFFER
+均以持久化形式驻留在 GPU 内存中，随时可供调用。</p>
+<ol type="1">
+<li><strong>材质数据持久化存储于 GPU
+内存</strong>，若材质内容未发生变更，则无需重复配置和上传缓冲区至
+GPU，显著减少数据传输开销。</li>
+<li><strong>专用代码管理全局「按对象」GPU
+常量缓冲区</strong>，通过独立优化的代码路径，高效更新 GPU
+中存储大规模对象相关数据（如内置属性）的 CBUFFER，进一步降低 CPU-GPU
+通信负载。</li>
+</ol>
+<p><img src="/imgs/关于SRP Batcher/SRPPipeline2.jpg" srcset="/img/loading.gif" lazyload> 左图为标准的
+SRP（可编程渲染管线）渲染循环，右图为 SRP Batcher 的渲染循环。在 SRP
+Batcher 的机制中，一个“批次”仅由连续的
+<code>Bind</code>（绑定资源）、<code>Draw</code>（绘制）、<code>Bind</code>、<code>Draw</code>...
+等 GPU 命令序列构成。</p>
+<p><strong>SRP Batcher 的核心优化逻辑</strong>：</p>
+<ul>
+<li><strong>不减少 DrawCall 数量</strong> SRP Batcher 并不会直接降低
+DrawCall 的总数，其优化重点在于 <strong>减少 DrawCall 之间的 GPU
+资源设置开销</strong>。</li>
+<li><strong>通过持久化与批次合并降低开销</strong> 借助材质数据在 GPU
+内存中的持久化存储，以及针对同着色器变体的批次合并机制，大幅减少重复的资源绑定与状态切换操作，从而提升整体渲染效率。</li>
+</ul>
+<h3 id="补充">补充</h3>
+<h4 id="per-object-变量">“Per Object” 变量</h4>
+<p><img src="/imgs/关于SRP Batcher/SRPPerObject.jpg" srcset="/img/loading.gif" lazyload></p>
+<h2 id="关于">关于</h2>
+<ul>
+<li></li>
+</ul>
+<section id="footnotes" class="footnotes footnotes-end-of-document"
+role="doc-endnotes">
+<hr />
+<ol>
+<li id="fn1"><p><a
+target="_blank" rel="noopener" href="https://learn.microsoft.com/zh-cn/windows/win32/direct3d11/overviews-direct3d-11-devices-intro">Direct3D
+11 中的设备简介 - Win32 apps | Microsoft Learn</a><a href="#fnref1"
+class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
 
                 
               </div>
@@ -298,7 +469,7 @@ shader，所以可以用于其他引擎。</p>
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/%E7%89%B9%E6%95%88/" class="print-no-link">#特效</a>
+        <a href="/tags/Unity-%E6%B8%B2%E6%9F%93/" class="print-no-link">#Unity,渲染</a>
       
     </div>
   
@@ -310,8 +481,8 @@ shader，所以可以用于其他引擎。</p>
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>刀光特效果</div>
-      <div>http://example.com/2024/05/01/刀光特效/</div>
+      <div>关于 SRP Batcher</div>
+      <div>http://example.com/2025/05/22/关于SRP Batcher/</div>
     </div>
     <div class="license-meta">
       
@@ -323,7 +494,7 @@ shader，所以可以用于其他引擎。</p>
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2024年5月1日</div>
+          <div>2025年5月22日</div>
         </div>
       
       
@@ -355,18 +526,12 @@ shader，所以可以用于其他引擎。</p>
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2025/05/22/%E5%85%B3%E4%BA%8ESRP%20Batcher/" title="关于 SRP Batcher">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">关于 SRP Batcher</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2024/04/14/%E5%85%B3%E4%BA%8E%E9%80%8F%E8%A7%86%E7%9F%AB%E6%AD%A3%E6%8F%92%E5%80%BC/" title="关于透视矫正插值">
-                        <span class="hidden-mobile">关于透视矫正插值</span>
+                      <a href="/2024/05/01/%E5%88%80%E5%85%89%E7%89%B9%E6%95%88/" title="刀光特效果">
+                        <span class="hidden-mobile">刀光特效果</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
