@@ -24,7 +24,7 @@
 <meta property="og:description" content="在C++中有几个看上去不同，一想却有几分相同，但细究的确不同的修饰符，这里记述一下关于static,const,define这几个小伙子。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-05-02T05:11:42.000Z">
-<meta property="article:modified_time" content="2024-01-14T08:13:08.470Z">
+<meta property="article:modified_time" content="2025-08-12T15:40:12.567Z">
 <meta property="article:author" content="Hollow Emiya">
 <meta name="twitter:card" content="summary_large_image">
   
@@ -223,7 +223,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          1.8k 字
+          3.7k 字
         
       </span>
     
@@ -234,7 +234,7 @@
         
         
         
-          16 分钟
+          31 分钟
         
       </span>
     
@@ -380,7 +380,115 @@ const常量可以在函数的参数列表中出现。</p></li>
 <a
 target="_blank" rel="noopener" href="https://www.cnblogs.com/lulipro/p/5976601.html">C++头文件，预处理详解
 - lulipro - 博客园</a><br />
-<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/152046509">C++中的static</a></p>
+======= --- title: C++之static,const,define date: 2022-05-02 13:11:42
+tags:</p>
+<hr />
+<p>在C++中有几个看上去不同，一想却有几分相同，但细究的确不同的修饰符，这里记述一下关于static,const,define这几个小伙子。</p>
+<!--more-->
+<h1 id="static-1">static</h1>
+<h2 id="静态数据的存储-1">静态数据的存储</h2>
+<blockquote>
+<p>全局(静态)存储区：(狗屎机翻说的都不是人话)</p>
+<p>分为DATA段与BSS段。<br />
+DATA段(全局初始化区): 存放初始化的全局变量和静态变量。<br />
+BSS段(全局未初始化区): 存放未初始化的全局变量和静态变量。<br />
+程序结束时全局存储器自动释放，BSS段会在程序执行前被系统自动清0，即未初始化的全局变量和静态变量在程序执行之前已经为0。<br />
+在<strong>静态数据区的变量会在程序开始时，就完成初始化，也是唯一的一次初始化</strong>。</p>
+</blockquote>
+<h3 id="static对于变量-1">static对于变量</h3>
+<p><strong>1.局部变量</strong></p>
+<p>在局部变量前加上关键字<code>static</code>，其将被定义为局部静态变量。</p>
+<p>内存位置: 静态存储区<br />
+初始化: 局部的静态变量只被初始化一次<br />
+作用域:
+作用域仍为局部作用域，数据仍在局部可见，定义它的函数或者语句块结束的时候，作用域随之结束。</p>
+<blockquote>
+<p>当<code>static</code>作用于局部变量时，改变了其存储位置，从栈转存到静态存储区，也改变了生存周期，在离开作用域后变量没有被销毁，仍存储在内存中，只是保留了原有的可见性，即没改变作用域，在程序结束后释放其占用的内存。</p>
+</blockquote>
+<p><strong>2.全局变量</strong></p>
+<p>在全局变量上作用，其变为全局静态变量。</p>
+<p>内存位置: 静态存储区；<br />
+初始化: 未经初始化的全局变量自动初始化为0；<br />
+作用域:
+全局静态变量作用于当前文件，即在声明他的文件外是不可见的，只能在本文件中使用。</p>
+<blockquote>
+<p>全局变量本身就是静态存储方式，静态全局变量也是静态存储方式。但二者区别在于非静态全局变量作用域是整个源程序，当一个源程序由多个源文件组成时，非静态的全局变量在各个源文件中都是有效的
+<strong>(在其他源文件中使用时加上<code>extern</code>关键字重新声明即可)</strong>。而静态全局变量反而限制了其作用域，即限定为定义该变量的源文件中有效，在同一源程序中的其他源文件中无法使用。</p>
+</blockquote>
+<h3 id="static对于函数-1">static对于函数</h3>
+<p>修饰普通函数，表明函数的作用范围，仅仅在定义该函数的文件内才能使用。在多人开发过程中可以使用这个技巧，把函数作用域同上述的全局变量一样，限制在该文件内，防止和他人函数重名。</p>
+<h3 id="static对于类-1">static对于类</h3>
+<p><strong>1.成员变量</strong></p>
+<p>用<code>static</code>修饰类的数据成员，使其成为<strong>类的全局变量</strong>，被所有类的对象共享，<strong>包括派生类的对象！</strong><br />
+因此<code>static</code>成员必须在类外进行初始化，而不能在构造函数内进行初始化，不过也可以使用<code>const</code>修饰<code>static</code>数据成员在类内初始化。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">class</span> <span class="hljs-title class_">MyClass</span>  <br>&#123;  <br><span class="hljs-keyword">public</span>:  <br>    <span class="hljs-type">static</span> <span class="hljs-type">int</span> staticNum;  <br>    <span class="hljs-built_in">MyClass</span>();  <br>    ~<span class="hljs-built_in">MyClass</span>();      <br>&#125;<br>  <br><span class="hljs-type">int</span> MyClass::staticNum = <span class="hljs-number">1</span>;  <br></code></pre></td></tr></table></figure>
+<p><strong>2.成员函数</strong></p>
+<p>用<code>static</code>修饰成员函数，使整个类只存在一份这个函数，所有对象共享，<strong>不含<code>this</code>指针</strong>。<br />
+静态成员是可以独立访问的，无需创建任何实例就能调用。</p>
+<p><strong>不可以同时用<code>const</code>和<code>static</code>修饰<em>成员函数</em>。</strong></p>
+<h1 id="const-1">const</h1>
+<ul>
+<li><p>限定变量不可修改。</p></li>
+<li><p>限定成员函数不能修改任何数据成员。</p></li>
+</ul>
+<h2 id="const-和-指针-1">const 和 指针</h2>
+<ul>
+<li>指向常量的指针</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-comment">// 第一种  </span><br><span class="hljs-type">int</span> a = <span class="hljs-number">2</span>;  <br><span class="hljs-type">int</span> b = <span class="hljs-number">4</span>;  <br><span class="hljs-type">int</span> <span class="hljs-type">const</span> *p;  <br><span class="hljs-type">const</span> <span class="hljs-type">int</span> *p = &amp;a;  <br>cout&lt;&lt;<span class="hljs-string">&quot;a:&quot;</span>&lt;&lt;*p&lt;&lt;endl;    <span class="hljs-comment">// 2  </span><br>a++;  <br>cout&lt;&lt;<span class="hljs-string">&quot;a:&quot;</span>&lt;&lt;**p&lt;&lt;endl;    <span class="hljs-comment">// 3  </span><br>p = &amp;b;  <br>cout&lt;&lt;<span class="hljs-string">&quot;b:&quot;</span>&lt;&lt;*p&lt;&lt;endl;  <br></code></pre></td></tr></table></figure>
+<p><code>const int *p</code>和<code>int const *p</code>一样，<code>const</code>修饰<code>int</code>，在<code>p</code>看来<code>a</code>是常量，所以不能用<code>(*p)++</code>修改数据，但是可以<code>a++</code>修改，因为<code>a</code>实际就是普通变量，只是<code>cont int *p</code>一厢情愿罢了。</p>
+<ul>
+<li>指针常量</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-type">int</span> a = <span class="hljs-number">2</span>;  <br><span class="hljs-type">int</span> b = <span class="hljs-number">4</span>;  <br><span class="hljs-type">int</span>* <span class="hljs-type">const</span> p = &amp;a;  <br>cout &lt;&lt; <span class="hljs-string">&quot;a:&quot;</span> &lt;&lt; *p &lt;&lt; endl;    <span class="hljs-comment">// 2  </span><br>a++;                           <span class="hljs-comment">// 3  </span><br>(*p)++;                        <span class="hljs-comment">// 4  </span><br>cout &lt;&lt; <span class="hljs-string">&quot;a:&quot;</span> &lt;&lt; *p &lt;&lt; endl;    <span class="hljs-comment">// 4  </span><br></code></pre></td></tr></table></figure>
+<p><code>int* const</code> 的 <code>const</code> 修饰
+<code>int*</code>，表示<strong>该指针是常量，初始化后无法修改</strong>，但是<strong>其指向对象可以修改</strong>。<code>p</code>
+指向的是 <code>int</code> 类型，不是<code>const int</code>
+类型，<code>const int* const</code> 才是指向 <code>const int</code>
+类型。</p>
+<h1
+id="static和const可以同时修饰成员函数吗-1">static和const可以同时修饰成员函数吗？</h1>
+<p>不可以，C++编译器在实现<code>const</code>的成员函数时，为了确保该函数不能修改类的实例状态，会在函数中添加一个隐式的参数<code>const this*</code>。但当一个成员为<code>static</code>时，该函数是没有<code>this</code>指针的，就是说<code>const</code>和<code>static</code>冲突了，相互矛盾。<br />
+<code>static</code>是表示该函数只作用在类型的静态变量上，与类的实例没有关系；<br />
+<code>const</code>是确保函数不能修改实例的状态，与类型的静态变量没有关系。<br />
+二者一个脱离实例，一个保护实例。</p>
+<h2 id="const-和-define-定义常量的区别-1">const 和 #define
+定义常量的区别</h2>
+<ul>
+<li><p>编译器处理方式不同:<br />
+define: 是“编译时”的概念，在预处理阶段进行替换。<br />
+const: 是“运行时”的概念，在编译阶段确定其值</p></li>
+<li><p>类型检查:<br />
+define: 无类型，不进行类型安全检查，可能会产生<br />
+const: 有数据类型，编译时会检查</p></li>
+<li><p>内存空间:<br />
+define:
+不分配内存，给出立即数，使用几次就进行几次替换，内存中会有多个拷贝，消耗大。<br />
+const: 在静态存储区分配空间，程序运行中在内存中仅有一次拷贝。</p></li>
+<li><p>函数参数:<br />
+宏定义不能作为参数传递给函数。<br />
+const常量可以在函数的参数列表中出现。</p></li>
+<li><p>在编译时，编译器通常不为const分配空间而是保存在符号表中，使得成为编译期间的常量，没有存储和读内存的操作，效率高。</p></li>
+<li><p>define宏替换只做替换，不做表达式计算。</p></li>
+</ul>
+<h1 id="typedef-与-define-的区别-1">typedef 与 #define 的区别</h1>
+<h2 id="typedef-1">typedef</h2>
+<p><code>typedef</code>即类型定义的意思，就是给已有类型起别名。可以简化那些繁琐的类型名；也可以一定程度忽视不同平台的差异，不同平台见只需要修改<code>typedef</code>即可。</p>
+<h2 id="define-1">#define</h2>
+<p><code>#define</code>为宏定义语句，就是文本替换</p>
+<h2 id="区别-1">区别</h2>
+<ul>
+<li><p><code>typedef</code>关键字在编译阶段有效，由于是在编译阶段，因此<code>typedef</code>有类型检查的功能。<code>#define</code>是宏定义，发生在预处理阶段，即编译之前，只是简单的字符替换，没有进行任何检查。</p></li>
+<li><p><code>#define</code>没有作用域的限制，只要是之前预定义过的宏，在以后的程序中都可以使用，而<code>typedef</code>有自己的定义域。</p></li>
+<li><p>对指针操作不同:</p></li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">typedef</span> <span class="hljs-type">int</span> * pint  <br><span class="hljs-meta">#<span class="hljs-keyword">define</span> PINT int *</span><br>  <br><span class="hljs-type">int</span> i1 = <span class="hljs-number">2</span>, i2 = <span class="hljs-number">3</span>, i3 = <span class="hljs-number">4</span>;<br>  <br><span class="hljs-type">const</span> pint p1 = &amp;i1;    <span class="hljs-comment">// p1不可更改，相当于 int* const  </span><br><span class="hljs-type">const</span> PINT p2 = &amp;i2;    <span class="hljs-comment">// p2可以修改，因为就是 const int *  </span><br>PINT <span class="hljs-type">const</span> p3 = &amp;i3;    <span class="hljs-comment">// p3本身不可以修改，就是 int * const  </span><br></code></pre></td></tr></table></figure>
+<p>相关链接：<br />
+<a
+target="_blank" rel="noopener" href="https://www.cnblogs.com/lulipro/p/5976601.html">C++头文件，预处理详解
+- lulipro - 博客园</a><br />
+&gt;&gt;&gt;&gt;&gt;&gt;&gt; e8dca420d7048ad9484cd8252ef496504eab0a20 <a
+target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/152046509">C++中的static</a></p>
 
                 
               </div>

@@ -57,7 +57,7 @@
 <meta property="og:image" content="http://example.com/imgs/SpringBoss/RayPointSpe.png">
 <meta property="og:image" content="http://example.com/imgs/SpringBoss/unityUpdate.jpg">
 <meta property="article:published_time" content="2023-03-04T07:14:23.000Z">
-<meta property="article:modified_time" content="2025-02-23T16:47:14.676Z">
+<meta property="article:modified_time" content="2025-08-12T15:42:38.344Z">
 <meta property="article:author" content="Hollow Emiya">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="http://example.com/imgs/SpringBoss/C_ambient.png">
@@ -425,21 +425,20 @@ protected,外部不能访问，但是自己和子类可以访问。<br />
 private，表示只能自己访问，自己的子类都不能访问。<br />
 public 继承，不改变父类成员的可见性。<br />
 protected 继承，父类成员除private外，全部变为protect<br />
-private 继承全部变为private</p>
-<blockquote>
-<p>假如把父类比喻一个门派，期内对象就是武功秘籍<br />
-public 就像比较普通的武功，比如太祖长拳，大家都可以来学。<br />
-protect
+private 继承全部变为private
+&gt;假如把父类比喻一个门派，期内对象就是武功秘籍<br />
+&gt;public 就像比较普通的武功，比如太祖长拳，大家都可以来学。<br />
+&gt;protect
 就像门派内的高深强大的武功秘籍，比如降龙十八掌，只有你是下一任掌门才能学。<br />
-private
-就像掌门自己偷学了邪门歪道，比如岳不群学《辟邪剑谱》，只能自己知道，外人不能晓得。除了自己谁也不让看。</p>
-<p>public
+&gt;private
+就像掌门自己偷学了邪门歪道，比如岳不群学《辟邪剑谱》，只能自己知道，外人不能晓得。除了自己谁也不让看。<br />
+&gt;<br />
+&gt;public
 继承就像是普普通通比较开明的继承者，子承父业，原来掌门规定的哪些武功可以交给外人，哪些武功自己人学，都不变，但是掌门私底下学的歪门武功他也不知道是什么，对他而言不可见，想知道是什么得返回去用上一任掌门的去查。<br />
-protect
+&gt;protect
 继承就像垄断或者有点小心思的人继承，我不让所有人随便学了，现在你们想从我这学你得是我的关门弟子下一任掌门。<br />
-private
+&gt;private
 继承就像断代了，诶，我谁也不教，全部变成private，只有我自己看，但是无论这三种哪一种都看不到父类的private。</p>
-</blockquote>
 <h2 id="static关键字">static关键字</h2>
 <p>static关键字表示静态元素，其在程序的生存周期中仅在<strong>静态存储区</strong>分配一次存储空间，直到程序的生存周期结束。<br />
 static常用于</p>
@@ -554,8 +553,8 @@ references），如果被一个左值初始化，它就是一个左值；如果�
 为什么在 移动构造中将 f.ptr 赋值为 nullptr<br />
 因为我们的移动构造函数参数是一个右值，在完成初始化的任务后就应该消失，所以把他所指内存交给新对象，并指向了nullptr，移动赋值也是同理。<br />
 移动赋值和移动复制通常联合使用，目的是优化对象的复制和赋值操作，提高程序的性能。<br />
-移动赋值会在这时调用<code>f1=Foo()</code>，f1是之前声明过的，Foo()返回右值，匹配到<code>=(Foo&amp;&amp;)</code>函数。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Foo</span><br>&#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-type">int</span> a;<br>    <span class="hljs-type">int</span> *ptr;<br><br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-built_in">Foo</span>(Foo&amp;&amp; f):<span class="hljs-built_in">ptr</span>(f.ptr),<span class="hljs-built_in">a</span>(f.a)<br>    &#123;<br>        f.ptr = <span class="hljs-literal">nullptr</span>;<br>    &#125;<br>    <br>    Foo&amp; <span class="hljs-keyword">operator</span> =(Foo&amp;&amp; f)<br>    &#123;<br>        <span class="hljs-keyword">if</span>(<span class="hljs-keyword">this</span> != &amp;f)<br>        &#123;<br>            <span class="hljs-keyword">this</span>-&gt;ptr = f.ptr;<br>            f.ptr = <span class="hljs-literal">nullptr</span>;<br>            a = f.a;<br>        &#125;<br>        <span class="hljs-keyword">return</span> *<span class="hljs-keyword">this</span>;<br>    &#125;<br>&#125;;<br></code></pre></td></tr></table></figure>
+移动赋值会在这时调用<code>f1=Foo()</code>，f1是之前声明过的，Foo()返回右值，匹配到<code>=(Foo&amp;&amp;)</code>函数。
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Foo</span><br>&#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-type">int</span> a;<br>    <span class="hljs-type">int</span> *ptr;<br><br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-built_in">Foo</span>(Foo&amp;&amp; f):<span class="hljs-built_in">ptr</span>(f.ptr),<span class="hljs-built_in">a</span>(f.a)<br>    &#123;<br>        f.ptr = <span class="hljs-literal">nullptr</span>;<br>    &#125;<br>    <br>    Foo&amp; <span class="hljs-keyword">operator</span> =(Foo&amp;&amp; f)<br>    &#123;<br>        <span class="hljs-keyword">if</span>(<span class="hljs-keyword">this</span> != &amp;f)<br>        &#123;<br>            <span class="hljs-keyword">this</span>-&gt;ptr = f.ptr;<br>            f.ptr = <span class="hljs-literal">nullptr</span>;<br>            a = f.a;<br>        &#125;<br>        <span class="hljs-keyword">return</span> *<span class="hljs-keyword">this</span>;<br>    &#125;<br>&#125;;<br></code></pre></td></tr></table></figure></p>
 <h3 id="一些补充">一些补充</h3>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c++">vec.<span class="hljs-built_in">push</span>(<span class="hljs-built_in">Foo</span>());<br></code></pre></td></tr></table></figure>
 <p>首先，我们知道函数的返回值是右值，所以Foo() 这部分是个右值<br />
@@ -892,13 +891,13 @@ decomposition(极分解)“，可以证明矩阵<em>M</em>的极分解为 <u>旋
 Camera 为原点，Camera 上方向为 y 轴，Camera 视线为 -z 轴，Camera 右侧为
 x轴的坐标空间下物体信息。<br />
 <strong>注意这里观察空间通常为右手系！而非和世界空间/模型空间所采用的左手系！</strong><br />
-<strong>接下来推导为列矩阵运算！</strong></p>
-<p>这个变换主要分为两步一步是平移，一步是旋转。<br />
+<strong>接下来推导为列矩阵运算！</strong>
+这个变换主要分为两步一步是平移，一步是旋转。<br />
 设 Camera
 坐标为<img src="/imgs/SpringBoss/posE.png" srcset="/img/loading.gif" lazyload style="zoom:50%;" ><br />
 则平移矩阵为<br />
-<img src="/imgs/SpringBoss/viewT.png" srcset="/img/loading.gif" lazyload style="zoom:50%"></p>
-<p>现在我们把摄影机放到了原点位置，现在我们只需要把轴向调整即可。<br />
+<img src="/imgs/SpringBoss/viewT.png" srcset="/img/loading.gif" lazyload style="zoom:50%">
+现在我们把摄影机放到了原点位置，现在我们只需要把轴向调整即可。<br />
 <em>注意这里变换推导过程是先平移后旋转，和平时计算规定的 Transform 先
 scale 再 rotation最后 translate 的顺序不同。</em><br />
 我们假设 Camera up 方向矢量为 <em>t</em>，观察方向为 <em>g</em>，则其 x
