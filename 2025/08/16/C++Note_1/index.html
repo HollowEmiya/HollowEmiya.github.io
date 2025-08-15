@@ -16,24 +16,24 @@
   <meta name="author" content="Hollow Emiya">
   <meta name="keywords" content="">
   
-    <meta name="description" content="把之前推导计算的透视矫正插值记录一下">
+    <meta name="description" content="C++ Note 1 什么是面向对象？ 面向对象是相对面对过程而言，通过类和对象的设计，封装、继承、多态的特性进行开发。 即以对象为核心，通过对象封装数据和行为(函数)。 其中核心特性：封装、继承、多态。  封装： 将数据和函数封存在类内，隐藏内部细节，只暴露出必要的部分， 尽量避免外部的直接修改。 通过public 方法尽量做到安全访问。 所有类的设计都应该是一个封装的过程。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="关于透视矫正插值">
-<meta property="og:url" content="http://example.com/2024/04/14/%E5%85%B3%E4%BA%8E%E9%80%8F%E8%A7%86%E7%9F%AB%E6%AD%A3%E6%8F%92%E5%80%BC/index.html">
+<meta property="og:title" content="C++ Note 1">
+<meta property="og:url" content="http://example.com/2025/08/16/C++Note_1/index.html">
 <meta property="og:site_name" content="Emiya Blog">
-<meta property="og:description" content="把之前推导计算的透视矫正插值记录一下">
+<meta property="og:description" content="C++ Note 1 什么是面向对象？ 面向对象是相对面对过程而言，通过类和对象的设计，封装、继承、多态的特性进行开发。 即以对象为核心，通过对象封装数据和行为(函数)。 其中核心特性：封装、继承、多态。  封装： 将数据和函数封存在类内，隐藏内部细节，只暴露出必要的部分， 尽量避免外部的直接修改。 通过public 方法尽量做到安全访问。 所有类的设计都应该是一个封装的过程。">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://example.com/imgs/Hexo%E4%B8%BB%E9%A2%98%E5%8F%98%E6%9B%B4/Shiki&Tsukihime.png">
-<meta property="article:published_time" content="2024-04-14T13:28:59.442Z">
-<meta property="article:modified_time" content="2025-08-15T18:14:35.274Z">
+<meta property="article:published_time" content="2025-08-15T18:03:13.000Z">
+<meta property="article:modified_time" content="2025-08-15T18:13:30.095Z">
 <meta property="article:author" content="Hollow Emiya">
-<meta property="article:tag" content="图形学">
+<meta property="article:tag" content="C++">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="http://example.com/imgs/Hexo%E4%B8%BB%E9%A2%98%E5%8F%98%E6%9B%B4/Shiki&Tsukihime.png">
   
   
   
-  <title>关于透视矫正插值 - Emiya Blog</title>
+  <title>C++ Note 1 - Emiya Blog</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -203,7 +203,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="关于透视矫正插值"></span>
+            <span id="subtitle" data-typed-text="C++ Note 1"></span>
           
         </div>
 
@@ -214,8 +214,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2024-04-14 21:28" pubdate>
-          2024年4月14日 晚上
+        <time datetime="2025-08-16 02:03" pubdate>
+          2025年8月16日 凌晨
         </time>
       </span>
     
@@ -226,7 +226,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          876 字
+          541 字
         
       </span>
     
@@ -237,7 +237,7 @@
         
         
         
-          8 分钟
+          5 分钟
         
       </span>
     
@@ -274,113 +274,42 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">关于透视矫正插值</h1>
+            <h1 id="seo-header">C++ Note 1</h1>
             
             
               <div class="markdown-body">
                 
-                <p>把之前推导计算的透视矫正插值记录一下</p>
-<span id="more"></span>
-<h1 id="透视矫正插值">透视矫正插值</h1>
-<p>首先我们要知道从 “<strong>顶点着色器</strong>” 到
-“<strong>片元着色器</strong>” 需要经过
-“<strong>光栅化(Rasterization)</strong>”
-而光栅化做的就是把三角形离散为一个一个片元，
-如果是对于一个三角形而言，我们能够通过重心坐标表示其中任意一点。</p>
-<h2 id="重心坐标">重心坐标</h2>
-<p>设有三角形 ABC，及内一点P</p>
-<p>所谓重心坐标就是，三角形内一点可以写作 <span class="math display">\[
-P=\alpha A+\beta B+\gamma C
-\]</span> 如果 <span class="math inline">\((\alpha +
-\beta+\gamma)==1\)</span> 则点 <strong>P</strong> 在三角形内。</p>
+                <h1 id="c-note-1">C++ Note 1</h1>
+<h2 id="什么是面向对象">什么是面向对象？</h2>
+<p>面向对象是相对面对过程而言，通过类和对象的设计，封装、继承、多态的特性进行开发。<br />
+即以对象为核心，通过对象封装<strong>数据</strong>和<strong>行为(函数)</strong>。<br />
+其中核心特性：封装、继承、多态。</p>
 <ul>
-<li><p>为什么能用重心坐标表示一个点?</p></li>
-<li><p>因为假设一个点P在一条直线上，取直线上两点 AB， P点的位置一定能由
-<span class="math inline">\(P=\alpha A+\beta B\)</span> 表示，并且<span
-class="math inline">\(\alpha+\beta==1\)</span>则 P 在 AB 之间。 而
-三角形重心坐标 可以看作 先在 AB上寻找一点 <span
-class="math inline">\(D=\alpha_1 A+\beta_1 B\)</span>, 而 点P 在线 CD
-上，有 <span class="math inline">\(P = \alpha_2D+\gamma
-C\)</span>.</p></li>
+<li><p>封装：<br />
+将<strong>数据</strong>和<strong>函数</strong>封存在类内，<strong>隐藏内部细节</strong>，只暴露出必要的部分，<br />
+尽量避免外部的直接修改。<br />
+通过public 方法尽量做到安全访问。<br />
+所有类的设计都应该是一个封装的过程。</p></li>
+<li><p>继承:<br />
+子类能够复用父类方法，实现代码复用。<br />
+继承的情况：</p>
+<ul>
+<li><p>单一继承：子类只有一个父类</p></li>
+<li><p>多个继承：子类多个父类，如果父类有相同的成员，需要在子类中使用类名限定。<br />
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">class</span> <span class="hljs-title class_">A</span><br>&#123;<br>    <span class="hljs-keyword">public</span>:<br>    <span class="hljs-type">int</span> age;<br>    <span class="hljs-built_in">A</span>()<br>    &#123;<br>        age = <span class="hljs-number">1</span>;<br>    &#125;<br>&#125;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">B</span><br>&#123;<br>    <span class="hljs-keyword">public</span>:<br>    <span class="hljs-type">int</span> age;<br>    <span class="hljs-built_in">B</span>()<br>    &#123;<br>        age = <span class="hljs-number">2</span>;<br>    &#125;<br>&#125;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">C</span> : <span class="hljs-keyword">public</span> A, <span class="hljs-keyword">public</span> B<br>&#123;<br>    <span class="hljs-keyword">public</span> :<br>    <span class="hljs-type">int</span> age;<br>    <span class="hljs-built_in">C</span>()<br>    &#123;<br>        age = <span class="hljs-number">3</span>;<br>    &#125;<br>&#125;<br><br>C c = <span class="hljs-built_in">C</span>();<br><span class="hljs-comment">// c.age 3</span><br><span class="hljs-comment">// c.B::age 2</span><br><span class="hljs-comment">// c.A::age 1</span><br></code></pre></td></tr></table></figure></p></li>
+<li><p>菱形继承：1-n-1 的继承方式，通过使用虚函数进行虚继承来解决<br />
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-comment">// ERROR</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">GrandFather</span><br>&#123;<br>    <span class="hljs-keyword">public</span>:<br>        <span class="hljs-type">int</span> age;<br>        <span class="hljs-built_in">GrandFather</span>()&#123; age = <span class="hljs-number">100</span>; &#125;<br>&#125;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Father1</span> : <span class="hljs-keyword">public</span> GrandFather&#123;&#125;;<br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Father2</span> : <span class="hljs-keyword">public</span> GrandFather&#123;&#125;;<br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Son</span> : <span class="hljs-keyword">public</span> Father1, <span class="hljs-keyword">public</span> Father2&#123;&#125;<br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>    Son p;<br>    p.age = <span class="hljs-number">12</span>;<br>    cout &lt;&lt; p.age &lt;&lt; endl;<br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure></p>
+<p>这个例子会报错，因为编译器不知道age是哪个作用域下的age，不知道是Father1还是Father2的，我们可以指定作用域。<br />
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>    Son p;<br>    p.Father1::age = <span class="hljs-number">12</span>;<br>    p.Father2::age = <span class="hljs-number">23</span>;<br>    cout &lt;&lt; p.Father1::age &lt;&lt; endl;<br>    cout &lt;&lt; p.Father2::age &lt;&lt; endl;<br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure></p>
+<p>但是这种解决办法缺少实际意义，我们往往需要的是son只有一个age属性即可。
+使用<code>virtual</code></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-keyword">class</span> <span class="hljs-title class_">GrandFather</span><br>&#123;<br>    <span class="hljs-keyword">public</span>:<br>        <span class="hljs-type">int</span> age;<br>        <span class="hljs-built_in">GrandFather</span>()&#123; age = <span class="hljs-number">100</span>; &#125;<br>&#125;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Father1</span> : <span class="hljs-keyword">virtual</span> <span class="hljs-keyword">public</span> GrandFather&#123;&#125;;<br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Father2</span> : <span class="hljs-keyword">virtual</span> <span class="hljs-keyword">public</span> GrandFather&#123;&#125;;<br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Son</span> : <span class="hljs-keyword">public</span> Father1, <span class="hljs-keyword">public</span> Father2&#123;&#125;<br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>    Son p;<br>    p.Father1::age = <span class="hljs-number">12</span>;<br>    p.Father2::age = <span class="hljs-number">22</span>;<br>    cout &lt;&lt; p.age &lt;&lt; endl;                <span class="hljs-comment">// 22</span><br>    cout &lt;&lt; p.Father1::age &lt;&lt; endl;        <span class="hljs-comment">// 22</span><br>    cout &lt;&lt; p.Father2::age &lt;&lt; endl;        <span class="hljs-comment">// 22</span><br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>结果会是三个<code>22</code>，因为son中只有一个age了。 <a
+target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/395173418">l菱形继承</a><br />
+通过在子类中vbptr指向虚基类表，通过读取虚基类表存储的偏移量，计算目标地址。<br />
+<img src="/imgs/C++/虚继承.jpg" srcset="/img/loading.gif" lazyload /></p></li>
+</ul></li>
 </ul>
-<h3 id="屏幕坐标和ndc空间坐标">屏幕坐标和NDC空间坐标</h3>
-<p>如何从 MVP 的 Vertex 到 ScreenPos</p>
-<p>NDC 是GPU为了方便图像处理的空间，x-&gt;[0,1] y-&gt;[0,1]
-z-&gt;[-1,1]/[0,1] xy是线性变化，其实还好，问题关键在于z</p>
-<h3 id="mvp-变换">MVP 变换</h3>
-<p>M 是 Object 自己的变化</p>
-<p>V 是 camra forwardVec 和 UpVec，推导
-rightVec，根据正交矩阵性质，转置就是其逆</p>
-<p>P 是 View 到 ClipSpace， ClipSpace 后再经过齐次除法到 NDC 空间。</p>
-<p>再NDC空间后再进行光栅化。</p>
-<h4 id="projection-matrix">Projection Matrix</h4>
-<p><span class="math display">\[
-\begin{bmatrix}
-\frac{near}{wid}&amp;0&amp;0&amp;0\\
-0&amp;\frac{near}{height}&amp;0&amp;0\\
-0&amp;0&amp;\frac{far}{near-far}&amp;\frac{near\cdot far}{near-far}\\
-0&amp;0&amp;1&amp;0\\
-\end{bmatrix}
-\]</span></p>
-<p>其实矩阵变换是线性的，问题在于后面的齐次除法</p>
-<h2 id="screen-插值">Screen 插值</h2>
-<p>我们首先要保证的是 Screen 上的点插值是正确的<br />
-因为我们只会对顶点进行齐次除法，而我们对于点P进行重心坐标插值时，三角形ABC都是经过齐次除法的，这没有问题，但是顶点中其他数据比如UV这种是没有经过齐次除法的。<br />
-所以根据屏幕点P的重心坐标，求经过矫正的插值：</p>
-<p><span class="math display">\[
-\begin{aligned}
-    &amp;设屏幕上三角形点A_s、B_s、C_s\\
-    &amp;屏幕上三角形内一点P_s\\
-    &amp;对于点XY坐标而言有：\\
-    &amp;P_s = \alpha A_s+\beta B_s+\gamma C_s\\
-    &amp;因为屏幕空间的点都是经过齐次除法的，且 Z
-值是能够从[0,1]反向计算得到的\\
-    &amp;\frac{P_p}{z_P}= \alpha \frac{A_p}{z_A}+\beta
-\frac{B_p}{z_B}+\gamma \frac{C_p}{z_C}\\\\
-    &amp; \textbf{我们已知} A_s、B_s、C_s和点P_s;\\\\
-    &amp;也就是说P_s是Clip\;Space的P_p投影变换得到\\
-    &amp;P_p =z_p( \alpha \frac{A_p}{z_A}+\beta \frac{B_p}{z_B}+\gamma
-\frac{C_p}{z_C})
-    \\
-    &amp;且P_p,P_s \;都在\; \triangle ABC内\\
-    &amp; \alpha+\beta+\gamma=1\\
-    &amp;z_p( \frac{\alpha}{z_A}+\frac{\beta}{z_B}+\frac{\gamma
-}{z_C})=1\\
-\end{aligned}
-\]</span></p>
-<p>所以能得到根据矫正插值和屏幕XY坐标计算的插值关系</p>
-<p><span class="math display">\[
-\begin{aligned}
-    &amp;\frac{z_p\alpha}{z_A}=\alpha_p,\;\frac{z_p\beta}{z_B}=\beta_p,
-    \frac{z_p\gamma}{z_C}=\gamma_p\\
-    &amp;P_p=\alpha_pA_p+\beta_pB_p+\gamma_pC_p\\
-    &amp;但是z_p是未知的\\
-    &amp;\frac{\alpha_p}{\beta_p}=\frac{\alpha z_B}{\beta z_A}\\
-    &amp;得\;\;\alpha_p=\frac{\alpha z_B}{\beta z_A}\beta_p\\
-    &amp;所以\;\;\gamma_p=\frac{\gamma z_B}{\beta z_C}\beta_p\\
-    &amp;(\frac{\alpha z_B}{\beta z_A}+\frac{\gamma z_B}{\beta
-z_C}+1)\beta_p=1\\
-\end{aligned}
-\]</span></p>
-<p>能够得到透视矫正插值</p>
-<p><span class="math display">\[
-\begin{aligned}
-(\frac{\alpha z_Bz_C+\gamma z_Az_B + \beta z_Az_C}{\beta
-z_Az_C})\beta_p=1\\
-\beta_p=\frac{\beta z_Az_C}{\alpha z_Bz_C+\gamma z_Az_B + \beta
-z_Az_C}\\
-\alpha_p=\frac{\alpha z_Bz_C}{\alpha z_Bz_C+\gamma z_Az_B + \beta
-z_Az_C}\\
-\gamma_p=\frac{\gamma z_Az_B}{\alpha z_Bz_C+\gamma z_Az_B + \beta
-z_Az_C}\\
-\end{aligned}
-\]</span></p>
-<p>对于 屏幕点P，我们知道其 XY 坐标，但是不知道该点在 Clip
-Space的实际位置，所以对于 顶点内数据都要进行透视矫正插值。</p>
-<h2 id="参考">参考</h2>
-<p><a
-target="_blank" rel="noopener" href="https://matnoble.github.io/tech/latex/multi-line-equations/">Latex
-多行公式</a></p>
 
                 
               </div>
@@ -393,7 +322,7 @@ target="_blank" rel="noopener" href="https://matnoble.github.io/tech/latex/multi
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/%E5%9B%BE%E5%BD%A2%E5%AD%A6/" class="print-no-link">#图形学</a>
+        <a href="/tags/C/" class="print-no-link">#C++</a>
       
     </div>
   
@@ -405,8 +334,8 @@ target="_blank" rel="noopener" href="https://matnoble.github.io/tech/latex/multi
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>关于透视矫正插值</div>
-      <div>http://example.com/2024/04/14/关于透视矫正插值/</div>
+      <div>C++ Note 1</div>
+      <div>http://example.com/2025/08/16/C++Note_1/</div>
     </div>
     <div class="license-meta">
       
@@ -418,7 +347,7 @@ target="_blank" rel="noopener" href="https://matnoble.github.io/tech/latex/multi
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2024年4月14日</div>
+          <div>2025年8月16日</div>
         </div>
       
       
@@ -450,18 +379,12 @@ target="_blank" rel="noopener" href="https://matnoble.github.io/tech/latex/multi
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2024/05/01/%E5%88%80%E5%85%89%E7%89%B9%E6%95%88/" title="刀光特效果">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">刀光特效果</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2024/01/13/Hexo%E4%B8%BB%E9%A2%98%E6%9B%B4%E6%94%B9/" title="Hexo 主题变更">
-                        <span class="hidden-mobile">Hexo 主题变更</span>
+                      <a href="/2025/02/23/GPU%20Driven%20And%20Hierarchical%20Z-Buffer/" title="GPU Driven And Hierarchical Z-Bufferr">
+                        <span class="hidden-mobile">GPU Driven And Hierarchical Z-Bufferr</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
