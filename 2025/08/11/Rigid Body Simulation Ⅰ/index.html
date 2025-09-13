@@ -1,0 +1,1653 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Hollow Emiya">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Rigid Body Simulation Ⅰ Part I. Unconstrained Rigid Body Dynamics 1. Simulation Basics 模拟刚体的运动与模拟单个粒子的运动几乎是一样的，所以让我们先从粒子模拟开始。我们模拟一个粒子的方法如下。我们用函数 \(x(t)\) 来表示在时间 \(t\) 时该粒子在世界空间（即在模拟过程中所有粒子或物体所在空">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Rigid Body Simulation Ⅰ">
+<meta property="og:url" content="http://example.com/2025/08/11/Rigid%20Body%20Simulation%20%E2%85%A0/index.html">
+<meta property="og:site_name" content="Emiya Blog">
+<meta property="og:description" content="Rigid Body Simulation Ⅰ Part I. Unconstrained Rigid Body Dynamics 1. Simulation Basics 模拟刚体的运动与模拟单个粒子的运动几乎是一样的，所以让我们先从粒子模拟开始。我们模拟一个粒子的方法如下。我们用函数 \(x(t)\) 来表示在时间 \(t\) 时该粒子在世界空间（即在模拟过程中所有粒子或物体所在空">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/imgs/Rigid%20Body%20Simulation%20%E2%85%A0/Figure2.png">
+<meta property="og:image" content="http://example.com/imgs/Rigid%20Body%20Simulation%20%E2%85%A0/Figure3.png">
+<meta property="og:image" content="http://example.com/imgs/Rigid%20Body%20Simulation%20%E2%85%A0/Figure5.png">
+<meta property="og:image" content="http://example.com/imgs/Rigid%20Body%20Simulation%20%E2%85%A0/Figure6.png">
+<meta property="og:image" content="http://example.com/imgs/Rigid%20Body%20Simulation%20%E2%85%A0/Figure7.png">
+<meta property="og:image" content="http://example.com/imgs/Rigid%20Body%20Simulation%20%E2%85%A0/Figure8.png">
+<meta property="og:image" content="http://example.com/imgs/Rigid%20Body%20Simulation%20%E2%85%A0/Figure9.png">
+<meta property="og:image" content="http://example.com/imgs/Rigid%20Body%20Simulation%20%E2%85%A0/Figure10.png">
+<meta property="og:image" content="http://example.com/imgs/Rigid%20Body%20Simulation%20%E2%85%A0/Figure11.png">
+<meta property="og:image" content="http://example.com/imgs/Rigid%20Body%20Simulation%20%E2%85%A0/Figure12.png">
+<meta property="article:published_time" content="2025-08-11T09:42:17.872Z">
+<meta property="article:modified_time" content="2025-09-08T08:29:22.665Z">
+<meta property="article:author" content="Hollow Emiya">
+<meta property="article:tag" content="Math">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/imgs/Rigid%20Body%20Simulation%20%E2%85%A0/Figure2.png">
+  
+  
+  
+  <title>Rigid Body Simulation Ⅰ - Emiya Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null},"woyaola":null,"cnzz":null},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Emiya&#39;s Blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Rigid Body Simulation Ⅰ"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-08-11 17:42" pubdate>
+          2025年8月11日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          8.5k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          71 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">Rigid Body Simulation Ⅰ</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="rigid-body-simulation-ⅰ">Rigid Body Simulation Ⅰ</h1>
+<h2 id="part-i.-unconstrained-rigid-body-dynamics">Part I. Unconstrained
+Rigid Body Dynamics</h2>
+<h3 id="simulation-basics">1. Simulation Basics</h3>
+<p>模拟刚体的运动与模拟单个粒子的运动几乎是一样的，所以让我们先从粒子模拟开始。我们模拟一个粒子的方法如下。我们用函数
+<span class="math inline">\(x(t)\)</span> 来表示在时间 <span
+class="math inline">\(t\)</span>
+时该粒子在世界空间（即在模拟过程中所有粒子或物体所在空间）中的位置。函数
+<span class="math inline">\(v(t) = \dot{x}(t) =
+\frac{\mathrm{d}}{\mathrm{d}t}x(t)\)</span> 表示该粒子在时间 <span
+class="math inline">\(t\)</span> 时的速度。粒子在时间 <span
+class="math inline">\(t\)</span>
+的状态就是其位置和速度。我们通过定义一个状态向量 <span
+class="math inline">\(\textbf{Y}(t)\)</span>
+来对整个系统进行这一概念的推广：对于单个粒子，<br />
+<span class="math display">\[
+\textbf{Y}(t)=
+\begin{pmatrix}
+x(t)\\
+v(t)
+\end{pmatrix}\tag{1-1}
+\]</span> 当我们讨论实际的实现时，必须将 <span
+class="math inline">\(\textbf{Y}(t)\)</span>
+“展平”成一个数组。对于单个粒子， <span
+class="math inline">\(\textbf{Y}(t)\)</span>
+可以描述为一组六个数字：通常，我们会让数组的前三个元素代表 <span
+class="math inline">\(x(t)\)</span>，最后三个元素代表 <span
+class="math inline">\(v(t)\)</span>。之后，当我们谈论包含矩阵以及向量的状态向量
+<span class="math inline">\(Y(t)\)</span> 时，也会采用同样的操作将 <span
+class="math inline">\(Y(t)\)</span>
+展平成一个数组。当然，我们还得反过来进行这个过程，将一组数字转换回状态向量
+<span
+class="math inline">\(Y(t)\)</span>。总的来说，这都是相当简单的，所以，我们将假定我们知道如何将任何类型的状态向量
+<span class="math inline">\(Y(t)\)</span>
+转换为一个适当长度的数组，反之亦然。（对于涉及粒子的简单示例，请查看这些笔记中的“粒子系统动力学”部分。）<br />
+对于一个有着 n 粒子的系统，我们将 <span
+class="math inline">\(\textbf{Y}(t)\)</span> 拓展为：<br />
+<span class="math display">\[
+\textbf{Y}(t)=
+\begin{pmatrix}
+x_1(t)\\
+v_1(t)\\
+\vdots\\
+x_n(t)\\
+v_n(t)
+\end{pmatrix}\tag{1-2}
+\]</span> <span class="math inline">\(x_i(t),v_i(t)\)</span> 是第 i
+个粒子的位置和速度。处理 n
+个粒子与处理单个粒子的难度是一样的，所以目前我们暂且将 Y(t)
+设为单个粒子的状态向量（稍后当我们讨论单个刚体时，它将代表单个刚体的状态）。<br />
+要真正模拟我们的粒子的运动，我们还需要知道另外一件事——在时刻 <span
+class="math inline">\(t\)</span>
+时作用在该粒子上的力。我们将把作用在粒子上的力在时刻 <span
+class="math inline">\(t\)</span> 时的大小定义为 <span
+class="math inline">\(F(t)\)</span>。函数 <span
+class="math inline">\(F(t)\)</span>
+就是作用在该粒子上的所有力的总和：重力、风力、弹簧力等等。若该粒子的质量为
+<span class="math inline">\(m\)</span> ，那么其随时间变化的 <span
+class="math inline">\(\textbf{Y}\)</span> 值可由以下公式表示：<br />
+<span class="math display">\[
+\frac{\mathrm{d}}{\mathrm{d}t}\textbf{Y}(t)=
+\frac{\mathrm{d}}{\mathrm{d}t}
+\begin{pmatrix}
+x(t)\\
+v(t)
+\end{pmatrix}=
+\begin{pmatrix}
+v(t)\\
+F(t)/m
+\end{pmatrix}.
+\tag{1-3}
+\]</span> 给定任意时刻 <span
+class="math inline">\(\textbf{Y}(t)\)</span> 值，等式 1-3 描述了 <span
+class="math inline">\(\textbf{Y}(t)\)</span> 的瞬时变化率。模拟过程以
+<span class="math inline">\(Y(0)\)</span> 为初始条件 (即<span
+class="math inline">\(x(0),v(0)\)</span>) 并通过数值微分方程求解器跟踪
+<span class="math inline">\(\textbf{Y}\)</span> 随着时间流动。<br />
+求解器使用何种数值方法其实我们不关心，让我们看一下在 C++
+如何实现数组求解器，假设我们访问一个数值求解器，通常该 ODE
+函数应该是：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-keyword">typedef</span> <span class="hljs-title">void</span> <span class="hljs-params">(*dydt_func)</span><span class="hljs-params">(<span class="hljs-type">double</span> t[], <span class="hljs-type">double</span> t[], <span class="hljs-type">double</span> ydot[])</span></span>;<br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">ode</span><span class="hljs-params">(<span class="hljs-type">double</span> y0[], <span class="hljs-type">double</span> yend[], <span class="hljs-type">int</span> len, <span class="hljs-type">double</span> t0,</span></span><br><span class="hljs-params"><span class="hljs-function">        <span class="hljs-type">double</span> t1, dydt_func dydt)</span></span>;<br></code></pre></td></tr></table></figure>
+<p>我们将初始状态向量数组 y0 传到 ode 函数。求解器对 y
+的内部并不关心，由于求解器可以解决任意维度的问题，我们还必须传 y0 的长度
+len。对于一个有 n 个粒子的系统，len = 6n。此外要提供开始和结束时间 t0,t1
+求解器的目标是计算 t1 时刻的状态向量并返回到 yend 中。<br />
+我们也提供了函数 dydt 给 ode 函数。状态向量 <span
+class="math inline">\(\textbf{Y}(t)\)</span> 和 时间 <span
+class="math inline">\(t\)</span> 编码成一个数组 y，dydt 必须计算并返回
+<span
+class="math inline">\(\frac{\mathrm{d}}{\mathrm{d}t}\textbf{Y}(t)\)</span>
+于数组 ydot。必须把 t 传递给 dydt 是因为系统中可能会有
+随时间变化的力，这种情况下，dydt 必须知道 时间 来确定力。在跟踪从 t0 到
+t1 <span class="math inline">\(\textbf{Y}(t)\)</span>
+的变化中，求解器可以随时调用 dydt。假设我们有一个 ode
+的例子，我们需要做的就是编写 dydt 将它作为参数传给 ode。<br />
+模拟刚体与模拟粒子遵循完全相同的模式。唯一的区别是刚体的状态向量 <span
+class="math inline">\(\textbf{Y}(t)\)</span> 包含了更多的信息，而导数
+<span
+class="math inline">\(\frac{\mathrm{d}}{\mathrm{d}t}\textbf{Y}(t)\)</span>
+则稍微复杂一些。然而，我们将使用完全相同的范例，使用求解器ode来跟踪刚体的运动，同样我们将提供一个函数
+dydt。</p>
+<h3 id="rigid-body-concepts">2. Rigid Body Concepts</h3>
+<h4 id="position-and-orientation">2.1 Position and Orientation</h4>
+<p>粒子在 <span class="math inline">\(t\)</span>
+时刻在空间中的位置可以被描述为向量 <span
+class="math inline">\(x(t)\)</span>，表示距离原点的位移。刚体比粒子复杂，在位移的基础上要添加旋转。为了定位一个在世界坐标中的刚体，我们用向量
+<span class="math inline">\(x(t)\)</span>
+表示刚体的位移，同时必须描述刚体的旋转，暂时用一个 3x3 的旋转矩阵 <span
+class="math inline">\(R(t)\)</span> 表示，<span
+class="math inline">\(x(t),R(t)\)</span> 为一个刚体的控件变量。<br />
+刚体和粒子不同，其占据一定的空间具有一定的形状。因为刚体不会形变只会位移和旋转，所以我们用一个固定的大小不会变化的空间定义刚体的形状，称之为
+<strong>体空间</strong>。给定体空间的几何描述，然后用 <span
+class="math inline">\(x(t),R(t)\)</span>
+变换体空间的描述至世界空间(figure
+1)。为了简化使用的一些方程、等式，我们规定刚体在体空间的质心为原点 (0,
+0,
+0)。后面会更准确地定义质心，这里可以先认为物体的几何中心就是质心。在描述物体形状时，需要保证物体的几何中心位于
+物体空间的 (0, 0, 0)。我们定义 <span class="math inline">\(R(t)\)</span>
+表示物体绕质心的旋转，一个在 物体空间 固定的向量 <span
+class="math inline">\(r\)</span> 在时刻 <span
+class="math inline">\(t\)</span> 将被旋转至 <span
+class="math inline">\(R(t)r\)</span>。则刚体上任意一点在物体空间的 <span
+class="math inline">\(p_0\)</span> 先绕原点旋转后位移的结果是 <span
+class="math inline">\(p(t)\)</span>：<br />
+<span class="math display">\[
+p(t)=R(t)p_0+x(t)\tag{2-1}
+\]</span> <img
+src="/imgs/Rigid%20Body%20Simulation%20Ⅰ/Figure1.png" srcset="/img/loading.gif" lazyload /><br />
+由于质心位于原点，所以我们可以从 <span
+class="math inline">\(x(t)\)</span> 直接获得质心的世界坐标，所以 <span
+class="math inline">\(x(t)\)</span> 是时刻 <span
+class="math inline">\(t\)</span>
+质心的位置。对于旋转矩阵也有类似的物理意义，想象 物体空间的 x 轴，(1, 0,
+0) ，在时间 <span class="math inline">\(t\)</span>
+有世界空间向量：<br />
+<span class="math display">\[
+R(t)\begin{pmatrix}
+1\\
+0\\
+0\\
+\end{pmatrix}\\
+\]</span> <span class="math display">\[
+R(t)=\begin{pmatrix}
+r_{xx}\;r_{yx}\;r_{zx}\\
+r_{xy}\;r_{yy}\;r_{zy}\\
+r_{xz}\;r_{yz}\;r_{zz}
+\end{pmatrix},\tag{2-2}
+\]</span></p>
+<p><span class="math display">\[
+\begin{aligned}
+R(t)
+\begin{pmatrix}
+1\\
+0\\
+0\\
+\end{pmatrix}=
+\begin{pmatrix}
+r_{xx}\\
+r_{xy}\\
+r_{xz}\\
+\end{pmatrix}
+\end{aligned}\tag{2-3}
+\]</span></p>
+<p>可以看到就是第一列，<span class="math inline">\(R(t)\)</span>
+的物理意义即(1, 2, 3)列 为 刚体(x, y, z) 轴在时间 <span
+class="math inline">\(t\)</span> 变换到世界空间时所指示方向。<br />
+<img src="/imgs/Rigid%20Body%20Simulation%20Ⅰ/Figure2.png" srcset="/img/loading.gif" lazyload /></p>
+<h4 id="linear-velocity">2.2 Linear Velocity</h4>
+<p>为了简化，我们称 <span class="math inline">\(x(t),R(t)\)</span> 为
+位置 和 朝向。接下来要做的就是定义 位置 和 朝向 如何随时间变化。我们需要
+<span class="math inline">\(\dot{x}(t),\dot{R}(t)\)</span>。因为 <span
+class="math inline">\(x(t)\)</span> 是质心在世界空间的坐标，<span
+class="math inline">\(\dot{x}(t)\)</span> 即质心在世界空间的速度。</p>
+<h4 id="angular-velocity">2.3 Angular Velocity</h4>
+<p>除了为位移外，物体还可以旋转，我们先不考虑位移，将其固定。那么，物体空间各点的任何移动都必定是由于刚体绕着通过质心的某根轴旋转所致。定义该自旋为
+<span class="math inline">\(\omega(t)\)</span>
+，其方向决定了物体<strong>旋转轴</strong>的方向 (figure 3)。<span
+class="math inline">\(\omega(t)\)</span> 的大小 <span
+class="math inline">\(|\omega(t)|\)</span> 表示物体旋转的快慢。 <span
+class="math inline">\(|\omega(t)|\)</span> 的量纲是
+[转/单位时间],因此它关联了物体在<strong>角速度保持恒定</strong>的前提下，给定时间内将转过的角度，物理量
+<span class="math inline">\(\omega(t)\)</span> 称之为角速度。<br />
+<img src="/imgs/Rigid%20Body%20Simulation%20Ⅰ/Figure3.png" srcset="/img/loading.gif" lazyload /><br />
+对于线速度我们可以对 <span class="math inline">\(x(t)\)</span>
+在时间上求导 <span
+class="math inline">\(v(t)=\frac{\mathrm{d}}{\mathrm{d}t}x(t)\)</span>。物体旋转
+<span class="math inline">\(R(t)\)</span> 如何与角速度 <span
+class="math inline">\(\omega(t)\)</span> 关联？尤其是 <span
+class="math inline">\(R(t)\)</span> 是矩阵 而 <span
+class="math inline">\(\omega(t)\)</span> 是向量。<br />
+我们知道 <span class="math inline">\(R(t)\)</span> 的列表示 物体 x,y,z
+轴在时刻 t 变换后的方向。这意味着 <span class="math inline">\(\dot
+R(t)\)</span> 的列一定分布表示 x,y,z 轴被变换的速度。为了解决 <span
+class="math inline">\(R(t)\)</span> 和 <span
+class="math inline">\(\omega(t)\)</span>
+的关联，需要观测刚体中任意矢量变化和角速度 <span
+class="math inline">\(\omega(t)\)</span> 的关系。<br />
+Figure 4 展示了角速度为 <span class="math inline">\(\omega(t)\)</span>
+的刚体，思考在世界空间中指定时刻 <span class="math inline">\(t\)</span>
+的向量 <span
+class="math inline">\(r(t)\)</span>。假设该向量固定在刚体上，即 <span
+class="math inline">\(r(t)\)</span> 会随着刚体在世界空间在运动。由于
+<span class="math inline">\(r(t)\)</span>
+是一个方向向量，是不受平移影响的也就是说 <span
+class="math inline">\(\dot r(t)\)</span> 和 <span
+class="math inline">\(v(t)\)</span> 无关。为了研究 <span
+class="math inline">\(\dot r(t)\)</span>，将其分解为向量a, b，其中 a
+平行于 <span class="math inline">\(\omega(t)\)</span> ，b 垂直于 <span
+class="math inline">\(\omega(t)\)</span> 。假设刚体保持恒定的角速度，使
+<span class="math inline">\(r(t)\)</span> 的尖端绕 <span
+class="math inline">\(\omega (t)\)</span> 轴画了一个圆(figure
+4)。圆的半径即为 <span class="math inline">\(|b|\)</span>，因为向量
+<span class="math inline">\(r(t)\)</span> 的尖端是瞬时沿着圆运动的，所以
+<span class="math inline">\(r(t)\)</span> 的瞬时变化率即 <span
+class="math inline">\(\dot{r}(t)\)</span> 是同时垂直于 <span
+class="math inline">\(b,\omega(t)\)</span>。又因为 <span
+class="math inline">\(r(t)\)</span> 端点做绕半径 <span
+class="math inline">\(b\)</span> 的圆周运动，<span
+class="math inline">\(r(t)\)</span> 的瞬时速度大小为 <span
+class="math inline">\(|b|\cdot|\omega(t)|\)</span>，由于 <span
+class="math inline">\(b,\omega(t)\)</span> 垂直则有<br />
+<span class="math display">\[
+|\omega(t)\times b|=|\omega(t)|\cdot|b|\tag{2-5}
+\]</span> <img
+src="/imgs/Rigid%20Body%20Simulation%20Ⅰ/Figure4.png" srcset="/img/loading.gif" lazyload /><br />
+整理后我们能得到 <span
+class="math inline">\(\dot{r}(t)=\omega(t)\times(b)\)</span>。因为 <span
+class="math inline">\(r(t)=a+b\)</span> 但是 <span
+class="math inline">\(a\)</span> 和 <span
+class="math inline">\(\omega(t)\)</span> 垂直<br />
+<span class="math display">\[
+\dot r(t)=\omega(t)\times b=\omega(t)\times b+\omega(t)\times
+a=\omega(t)\times (b+a)\tag{2-6}
+\]</span></p>
+<p><span class="math display">\[
+\dot r(t)=\omega(t)\times r(t)\tag{2-7}
+\]</span></p>
+我们知道时刻 <span class="math inline">\(t\)</span> 刚体在世界空间的 x
+轴是 旋转矩阵的第一列，其导数就是该向量的变化率，利用刚才的式子： <span
+class="math display">\[
+\omega(t)\times
+\begin{pmatrix}
+r_{xx}\\
+r_{xy}\\
+r_{xz}
+\end{pmatrix}
+\]</span> 对于其他轴向也有： $$ R=
+<span class="math display">\[\begin{pmatrix}
+
+\omega(t)\times\begin{pmatrix}
+r_{xx}\\
+r_{xy}\\
+r_{xz}
+\end{pmatrix}
+\;\;
+\omega(t)\times\begin{pmatrix}
+r_{yx}\\
+r_{yy}\\
+r_{yz}
+\end{pmatrix}
+\;\;
+\omega(t)\times\begin{pmatrix}
+r_{zx}\\
+r_{zy}\\
+r_{zz}
+\end{pmatrix}
+
+\end{pmatrix}\tag{2-8}\]</span>
+<span class="math display">\[
+这样写很麻烦，我们可以简化，因 a，b 都是三维向量，则 $a\times b$
+亦是：  
+\]</span> ab=
+<span class="math display">\[\begin{pmatrix}
+a_yb_z-b_ya_z\\
+a_zb_x-b_za_x\\
+a_xb_y-b_xa_y
+\end{pmatrix}\]</span>
+<span class="math display">\[
+我们定义一个矩阵 $a^*$:   
+\]</span> { a^*=
+<span class="math display">\[\begin{pmatrix}
+&amp;0 &amp;-a_z &amp;a_y\\
+&amp;a_z &amp;0 &amp;-a_x\\
+&amp;0 &amp;-a_z &amp;a_y
+\end{pmatrix}\]</span>
+} <span class="math display">\[
+\]</span> { a^*b=
+<span class="math display">\[\begin{pmatrix}
+a_yb_z-b_ya_z\\
+a_zb_x-b_za_x\\
+a_xb_y-b_xa_y
+\end{pmatrix}\]</span>
+=ab } <span class="math display">\[
+\]</span> (t)=
+<span class="math display">\[\begin{pmatrix}
+\omega(t)^*
+\begin{pmatrix}
+r_{xx}\\
+r_{xy}\\
+r_{xz}
+\end{pmatrix}
+
+&amp;\omega(t)^*
+\begin{pmatrix}
+r_{yx}\\
+r_{yy}\\
+r_{yz}
+\end{pmatrix}
+
+&amp;\omega(t)^*
+\begin{pmatrix}
+r_{zx}\\
+r_{zy}\\
+r_{zz}
+\end{pmatrix}
+\end{pmatrix}\tag{2-10}\]</span>
+<p>$$</p>
+$$ (t)= (t)^*
+<span class="math display">\[\begin{pmatrix}
+
+\begin{pmatrix}
+r_{xx}\\
+r_{xy}\\
+r_{xz}
+\end{pmatrix}
+
+&amp;
+\begin{pmatrix}
+r_{yx}\\
+r_{yy}\\
+r_{yz}
+\end{pmatrix}
+
+&amp;
+\begin{pmatrix}
+r_{zx}\\
+r_{zy}\\
+r_{zz}
+\end{pmatrix}
+\end{pmatrix}\tag{2-11}\]</span>
+<p><span class="math display">\[
+\]</span> (t)= (t)^*{R}(t) $$</p>
+<h4 id="mass-of-a-body">2.4 Mass of a Body</h4>
+<p>为了做一些推导，我们需要对刚体进行一些理论上的积分，我们暂时认为刚体是由很多微小粒子组成的，编号为1
+到 N，第 i 个粒子的质量为 <span class="math inline">\(m_i\)</span>
+每个粒子在空间中有起始位置 <span class="math inline">\(r_{0i}\)</span>
+。在 t 时刻：<br />
+<span class="math display">\[
+r_i(t)=R(t)r_{0i}+x(t)\tag{2-13}
+\]</span> 刚体的质量 <span class="math inline">\(M\)</span> 为：<br />
+<span class="math display">\[
+M=\sum^N_{i=1}m_i\tag{2-14}
+\]</span></p>
+<h4 id="velocity-of-particle">2.5 Velocity of Particle</h4>
+<p>第 i 个粒子的速度 <span class="math inline">\(\dot{r}_i(t)\)</span>
+是对 等式2-13 的求导，记得 <span
+class="math inline">\(\dot{R}(t)=\omega^*R(t)\)</span>：<br />
+<span class="math display">\[
+\dot{r}_i(t)=\omega^*R(t)r_{0i}+v(t)\tag{2-15}
+\]</span> 可以重写为：<br />
+<span class="math display">\[
+\begin{aligned}
+\dot{r}_i(t)&amp;=\omega^*R(t)r_{0i}+v(t)\\
+&amp;=\omega^*(R(t)r_{0i}+x(t)-x(t))+v(t)\\
+&amp;=\omega^*(r_i(t)-x(t))+v(t)
+\end{aligned}\tag{2-16}
+\]</span> 这里写成叉乘：<br />
+<span class="math display">\[
+\dot{r}_i(t)=\omega(t)\times(r_i(t)-x(t))+v(t)\tag{2-17}
+\]</span> 所以刚体上一点粒子的速度有两个分量，一个是线性分量 <span
+class="math inline">\(v(t)\)</span> 及一个角速度分量 <span
+class="math inline">\(\omega(t)\times(r_i(t)-x(t))\)</span><br />
+<img src="/imgs/Rigid%20Body%20Simulation%20Ⅰ/Figure5.png" srcset="/img/loading.gif" lazyload /></p>
+<h4 id="center-of-mass">2.6 Center of Mass</h4>
+<p>我们对质心的定义将使我们能够同样，地将物体的动力学分解为 线性分量 和
+角分量。<br />
+<span class="math display">\[
+\frac{\sum m_ir_i(t)}{M}\tag{2-18}
+\]</span> 其中 <span class="math inline">\(M\)</span>
+是物体的质量，当我们说我们正在使用质心坐标系时，意思是在物体空间中，以质心为原点:<br />
+<span class="math display">\[
+\frac{\sum m_ir_{0i}}{M}=\textbf{0}=
+\begin{pmatrix}
+0\\0\\0
+\end{pmatrix}\tag{2-19}
+\]</span> 关于 <span class="math inline">\(x(t)\)</span> 是 <span
+class="math inline">\(t\)</span> 时刻的质心位置：<br />
+<span class="math display">\[
+\begin{aligned}
+\frac{\sum m_ir_i(t)}{M}&amp;=
+\frac{\sum m_i(R(t)r_{0i}+x(t))}{M}\\
+&amp;=\frac{R(t)\sum m_ir_{0i}+\sum m_ix(t)}{M}\\
+&amp;=R(t)\textbf{0}+x(t)\frac{\sum m_i}{M}\\
+&amp;=x(t)
+\end{aligned}
+\]</span></p>
+<p><span class="math display">\[
+\begin{aligned}
+&amp;\sum m_i(r_i(t)-x(t))=\\
+&amp;\sum m_i(R(t)r_{0i}+x(t)-x(t))=R(t)\sum m_ir_{0i}=\textbf{0}
+\end{aligned}\tag{2-20}
+\]</span></p>
+<h4 id="force-and-torque">2.7 Force and Torque</h4>
+<p>当我们想象由于外部因素导致一个力施加在刚体上，比如重力、风、或接触力，我们想象这个力恰巧作用在刚体一个特定的粒子上。作用力的作用位置决定了力所施加的位置。我们用
+<span class="math inline">\(F_i(t)\)</span> 表示 <span
+class="math inline">\(t\)</span> 时刻作用在第 i 个粒子上的力。定义第 i
+个粒子的外力矩为 <span class="math inline">\(\tau_i(t)\)</span><br />
+<em>(记住，我们的粒子模型只是概念性质的，我们可以在任何几何位置去想象一个力不论是物体表面上或者物体内部的，因为我们都可以随意想象那恰好有个粒子)</em><br />
+<span class="math display">\[
+\tau_i(t)=(r_i(t)-x(t))\times F_i(t)\tag{2-21}
+\]</span>
+扭矩与力不同在于，作用于粒子上的扭矩取决于粒子相对质心的位置，我们可以直观的发现
+<span class="math inline">\(\tau_i(t)\)</span>
+的方向就是当质心被固定时，由于 <span
+class="math inline">\(F_i(t)\)</span>
+作用，物体将会绕其旋转的轴。(figure 6)<br />
+<img src="/imgs/Rigid%20Body%20Simulation%20Ⅰ/Figure6.png" srcset="/img/loading.gif" lazyload /><br />
+作用在物体上的力为作用在粒子上的总和：<br />
+<span class="math display">\[
+F(t)=\sum F_i(t)\tag{2-22}
+\]</span> 外力矩：<br />
+<span class="math display">\[
+\tau(t)=\sum\tau_i(t)=\sum(r_i(t)-x(t))\times F_i(t)\tag{2-23}
+\]</span> 可以注意到 <span class="math inline">\(F(t)\)</span>
+没有包含作用于物体的各个力的位置信息。然而 <span
+class="math inline">\(\tau(t)\)</span> 的确能告知我们 <span
+class="math inline">\(F_i(t)\)</span> 在物体上的分布情况。</p>
+<h4 id="linear-momentum">2.8 Linear Momentum</h4>
+<p><span class="math display">\[
+p=mv\tag{2-24}
+\]</span></p>
+<p><span class="math display">\[
+P(t)=\sum m_i\dot{r}(t)\tag{2-25}
+\]</span></p>
+<p>根据等式 2-17，<span
+class="math inline">\(\dot{r}_i(t)=\omega(t)\times(r_i(t)-x(t))+v(t)\)</span>，因此物体的线性动量为：<br />
+<span class="math display">\[
+\begin{aligned}
+P(t)&amp;=\sum m_i\dot{r}_i(t)\\
+&amp;=\sum[m_iv(t)+m_i\omega(t)\times(r_i(t)-x(t))]\\
+&amp;=\sum m_iv(t)+\omega(t)\sum m_i(r_i(t)-x(t)).
+\end{aligned}\tag{2-26}
+\]</span> 因为我们以质心为原点所以能够应用 2-20，得<br />
+<span class="math display">\[
+P(t)=\sum m_iv(t)=v(t)\sum m_i=Mv(t)\tag{2-27}
+\]</span> 刚体的线性动量就像一个粒子的线性动量简单，所以我们能得到<br />
+<span class="math display">\[
+\dot{v}(t)=\frac{\dot{P}(t)}{M}\tag{2-28}
+\]</span> 我们知道 <span
+class="math inline">\(p=mv,\dot{p}=ma=f\)</span>，所以能够有<br />
+<span class="math display">\[
+\dot{P}(t)=F(t)\tag{2-29}
+\]</span> 就是说，线性动量的变换等于作用在刚体上的总力。<span
+class="math inline">\(P(t)\)</span> 不包含旋转速度，同样 <span
+class="math inline">\(F(t)\)</span> 也不包含。<br />
+由于 <span class="math inline">\(P(t)\)</span> 和 <span
+class="math inline">\(v(t)\)</span> 的关系简单，我们使用 <span
+class="math inline">\(P(t)\)</span> 来表示刚体的状态，而非 <span
+class="math inline">\(v(t)\)</span>。如果使用 <span
+class="math inline">\(v(t)\)</span> 可以使用下面的关系<br />
+<span class="math display">\[
+\dot v(t)=\frac{F(t)}{M}\tag{2-30}
+\]</span> 不过使用 <span class="math inline">\(P(t)\)</span>
+更符合我们处理角速度和加速度的形式。</p>
+<h4 id="angular-momentum">2.9 Angular Momentum</h4>
+<p>虽然线性动量非常直观 ( <span
+class="math inline">\(P(t)=Mv(t)\)</span>
+)，但角动量不是。在刚体中引入角动量唯一的好处就是能够写成比执着于角速度更简洁的等式。因此或许不必纠结给角动量附加直观的物理解释——毕竟，它本质上是<strong>极为反直觉</strong>的概念。角动量最终能简化方程，源于<strong>自然界中角动量守恒</strong>，而角速度不守恒：若刚体在无外力矩的太空漂浮，其角动量恒定；但即使刚体的角动量恒定，角速度也可能变化！正因如此，刚体的角速度<strong>即便不受力也可能改变</strong>。由此，“选择角动量作为状态变量”比角速度更合理——最终在数学处理上更简便。<br />
+从线性动量我们知道 <span
+class="math inline">\(P(t)=Mv(t)\)</span>，相似的我们定义刚体总角动量
+<span class="math inline">\(L(t)=I(t)\omega(t)\)</span>，其中 <span
+class="math inline">\(I(t)\)</span> 是一个 3x3
+的矩阵，严格而言是二阶张量，称之为
+<strong>惯性张量</strong>。惯性张量表述了刚体相对于其质心的质量分布，该张量决定物体的朝向，但是不依赖物体的平动。<br />
+要注意的是无论线性还是角度，动量都是一个速度的线性函数，区别仅在于角动量的
+“缩放因子” 是矩阵——惯性张量，而平动动量的 “缩放因子”
+是标量——质量。此外，角动量不受平动影响，平动动量也不受转动影响。<br />
+角动量 <span class="math inline">\(L(t)\)</span> 和 外力矩 <span
+class="math inline">\(\tau(t)\)</span> 的关系非常简单：<br />
+<span class="math display">\[
+\dot{L}(t)=\tau(t)\tag{2-31}
+\]</span> 类似 <span class="math inline">\(\dot{P}(t)=F(t)\)</span>.</p>
+<h4 id="the-inertia-tensor">2.10 The Inertia Tensor</h4>
+惯性张量是角速度和角动量之间的缩放系数。在给定时刻 <span
+class="math inline">\(t\)</span> ，令 <span
+class="math inline">\(r_i&#39;\)</span> 表示第 i 个粒子距离 <span
+class="math inline">\(x(t)\)</span> 的位移 <span
+class="math inline">\(r_i&#39;=r_i(t)-x(t)\)</span>……不就是 <span
+class="math inline">\(r_i&#39;=R(t)r_{0i}\)</span><br />
+$$
+<span class="math display">\[\begin{aligned}
+I(t)=\sum
+\begin{pmatrix}
+m_i(r_{iy}^{&#39;2}+r_{iz}^{&#39;2})
+&amp; -m_ir_{ix}^{&#39;}r_{iy}^{&#39;}
+&amp; -m_ir_{iz}^{&#39;}r_{ix}^{&#39;}\\
+
+-m_ir_{ix}^{&#39;}r_{iy}^{&#39;}
+&amp; m_i(r_{iz}^{&#39;2}+r_{ix}^{&#39;2})
+&amp; -m_ir_{iy}^{&#39;}r_{iz}^{&#39;}\\
+
+-m_ir_{iz}^{&#39;}r_{ix}^{&#39;}
+&amp; m_ir_{iy}^{&#39;}r_{iz}^{&#39;}
+&amp; m_i(r_{ix}^{&#39;2}+r_{iy}^{&#39;2})
+\end{pmatrix}
+\end{aligned}\tag{2-32}\]</span>
+<p>$$
+在<strong>实际实现</strong>中，我们会将<strong>有限求和</strong>替换为对刚体体积的<strong>积分</strong>（在世界坐标系中进行）。质量项
+<span class="math inline">\(m_i\)</span>
+会被<strong>密度函数</strong>取代。</p>
+乍看之下，似乎每当刚体的朝向 <span class="math inline">\(R(t)\)</span>
+变化时，都需要重新计算积分来求解惯性张量 <span
+class="math inline">\(I(t)\)</span>。除非刚体形状极其简单（例如球形或立方体，这类形状的积分可解析求解），否则在仿真过程中执行这种计算会<strong>代价过高</strong>。<br />
+幸运的是，通过使用物体坐标系，我们可以基于<strong>预计算积分</strong>（在体坐标系中完成），低成本地计算任意朝向
+<span class="math inline">\(R(t)\)</span>
+下的惯性张量。（该积分通常在仿真启动前完成，应被视为描述刚体物理属性的输入参数之一。）使用式子
+<span
+class="math inline">\(r_i^{&#39;T}r_i^{&#39;}=r_{ix}^{&#39;2}+r_{iy}^{&#39;2}+r_{iz}^{&#39;2}\)</span>，可以重写<br />
+$$ I(t)=m_ir_i<sup>{'T}r_i</sup>{'}
+<span class="math display">\[\begin{pmatrix}
+1&amp;0&amp;0\\
+0&amp;1&amp;0\\
+0&amp;0&amp;1
+\end{pmatrix}\]</span>
+<ul>
+<li>\begin{pmatrix} m_ir_{ix}^{'2} &amp;
+m_ir_{ix}<sup>{'}r_{iy}</sup>{'} &amp;
+m_ir_{ix}<sup>{'}r_{iz}</sup>{'}\</li>
+</ul>
+<p>m_ir_{iy}<sup>{'}r_{ix}</sup>{'} &amp; m_ir_{iy}^{'2} &amp;
+m_ir_{iy}<sup>{'}r_{iz}</sup>{'}\</p>
+<p>m_ir_{iz}<sup>{'}r_{ix}</sup>{'} &amp;
+m_ir_{iz}<sup>{'}r_{iy}</sup>{'} &amp; m_ir_{iz}^{'2} \end{pmatrix}
+$$</p>
+$$
+<span class="math display">\[\begin{aligned}
+r_i^{&#39;}r_i^{&#39;T}&amp;=
+\begin{pmatrix}
+r_{ix}^{&#39;}\\
+r_{iy}^{&#39;}\\
+r_{iz}^{&#39;}
+\end{pmatrix}
+\begin{pmatrix}
+r_{ix}^{&#39;}&amp;
+r_{iy}^{&#39;}&amp;
+r_{iz}^{&#39;}
+\end{pmatrix}\\
+&amp;=
+\begin{pmatrix}
+r_{ix}^{&#39;2}
+&amp; r_{ix}^{&#39;}r_{iy}^{&#39;}
+&amp; r_{ix}^{&#39;}r_{iz}^{&#39;}\\
+
+r_{iy}^{&#39;}r_{ix}^{&#39;}
+&amp; r_{iy}^{&#39;2}
+&amp; r_{iy}^{&#39;}r_{iz}^{&#39;}\\
+
+r_{iz}^{&#39;}r_{ix}^{&#39;}
+&amp; r_{iz}^{&#39;}r_{iy}^{&#39;}
+&amp; r_{iz}^{&#39;2}
+\end{pmatrix}
+\end{aligned}\tag{2-34}\]</span>
+<p>$$</p>
+<p>设 <span class="math inline">\(\textbf{1}\)</span> 是一个 3x3
+的单位矩阵：<br />
+<span class="math display">\[
+I(t)=\sum
+m_i(r_i^{&#39;T}r_i^{&#39;}\textbf{1}-r_i^{&#39;}r_i^{&#39;T})\tag{2-35}
+\]</span> 因为 <span
+class="math inline">\(r_i(t)=R(t)r_{0i}+x(t),\;r&#39;_i=R(t)r_{0i},\;R(t)R(t)^T=\textbf{1}\)</span><br />
+<span class="math display">\[
+\begin{aligned}
+I(t)&amp;=
+\sum m_i(r_i^{&#39;T}r_i^{&#39;}\textbf{1}-r_i^{&#39;}r_i^{&#39;T})\\
+&amp;=\sum m_i
+\bigg(\Big(R(t)r_{0i}\Big)^T
+\Big(R(t)r_{0i}\Big)\textbf{1}-
+\Big(R(t)r_{0i}\Big)\Big(R(t)r_{0i}\Big)^T\bigg)\\
+&amp;=\sum
+m_i\Big(r_{0i}^TR(t)^TR(t)r_{0i}\textbf{1}-R(t)r_{0i}r_{0i}^TR(t)^T\Big)\\
+&amp;=\sum m_i(r_{0i}^Tr_{0i}\textbf{1}-R(t)r_{0i}r_{0i}^TR(t)^T)
+\end{aligned}\tag{2-36}
+\]</span> 由于 <span class="math inline">\(r_{0i}^Tr_{0i}\)</span>
+是标量，所以可以有：<br />
+<span class="math display">\[
+\begin{aligned}
+I(t)&amp;=\sum m_i(r_{0i}^Tr_{0i}\textbf{1}-R(t)r_{0i}r_{0i}^TR(t)^T)\\
+&amp;=\sum
+m_i(R(t)r_{0i}^Tr_{0i}R(t)^T\textbf{1}-R(t)r_{0i}r_{0i}^TR(t)^T)\\
+&amp;=R(t)\bigg(\sum
+m_i\Big((r_{0i}^Tr_{0i})\textbf{1}-r_{0i}r_{0i}^T)\Big)\bigg)R(t)^T
+\end{aligned}\tag{2-37}
+\]</span> 定义 <span class="math inline">\(I_{body}\)</span>
+矩阵：<br />
+<span class="math display">\[
+I_{body}=\sum m_i((r_{0i}^Tr_{0i}\textbf{1}-r_{0i}r_{0i}^T))\tag{2-38}
+\]</span></p>
+<p><span class="math display">\[
+I(t)=R(t)I_{body}R(t)^T\tag{2-39}
+\]</span></p>
+<p>幸运的是，由于 <span class="math inline">\(I_{body}\)</span>
+是在<strong>体坐标系</strong>中定义的，因此在仿真过程中它是<strong>恒定不变</strong>的。正因如此，我们可以在仿真开始前预计算刚体的
+<span class="math inline">\(I_{body}\)</span>
+再结合当前的<strong>朝向矩阵</strong> <span
+class="math inline">\(R(t)\)</span>，就能轻松计算出任意时刻 <em>t</em>
+的惯性张量 <span class="math inline">\(I(t)\)</span>。第 5.1
+节将基于“对刚体在体坐标系中体积的积分”，推导<strong>矩形物体</strong>的体坐标系惯性张量。<br />
+<span class="math inline">\(I(t)\)</span> 的逆由下面给出： <span
+class="math display">\[
+\begin{aligned}
+I^{-1}(t)&amp;=(R(t)I_{body}R(t)^T)^{-1}\\
+&amp;=(R(t)^T)^{-1}I_{body}^{-1}R(t)^{-1}\\
+&amp;=R(t)I_{body}^{-1}R(t)^T
+\end{aligned}\tag{2-40}
+\]</span></p>
+<p>因为 <span
+class="math inline">\(R(t)^T=R(t)^{-1},\Big(R(t)\Big)^T=R(t).\)</span>
+显然，<span class="math inline">\(I_{body}^{-1}\)</span>
+也是固定的。</p>
+<h4 id="rigid-body-equations-of-motion">2.11 Rigid Body Equations of
+Motion</h4>
+<p>对于一个刚体我们定义 <span
+class="math inline">\(\textbf{Y}(t)\)</span>:<br />
+<span class="math display">\[
+\textbf{Y}(t)=
+\begin{pmatrix}
+x(t)\\
+R(t)\\
+P(t)\\
+L(t)
+\end{pmatrix}\tag{2-41}
+\]</span>
+刚体的状态由<strong>空间信息</strong>（位置与朝向）和<strong>速度信息</strong>（线动量与角动量）共同构成。刚体的质量
+<span class="math inline">\(M\)</span>
+与<strong>体坐标系惯性张量</strong> <span
+class="math inline">\(I_{body}\)</span>
+是常量——我们假设在仿真启动时，这两个物理属性已预先确定。<br />
+在任意给定时刻，辅助量 <span
+class="math inline">\(I(t)\)</span>（世界坐标系惯性张量）、<span
+class="math inline">\(\omega (t)\)</span>（角速度）与 <span
+class="math inline">\(v(t)\)</span>（线速度）需通过计算得到:<br />
+<span class="math display">\[
+\begin{aligned}
+&amp; v(t)=\frac{P(t)}{M}\\
+&amp; I(t)=R(t)I_{body}R(t)^T\\
+&amp; \omega(t)=I(t)^{-1}L(t)
+\end{aligned}\tag{2-42}
+\]</span> 导数 <span
+class="math inline">\(\frac{\mathrm{d}}{\mathrm{d}t}\textbf{Y}(t)\)</span>:<br />
+<span class="math display">\[
+\begin{aligned}
+\frac{\mathrm{d}}{\mathrm{d}t}\textbf{Y}(t)=
+\frac{\mathrm{d}}{\mathrm{d}t}\begin{pmatrix}
+x(t)\\
+R(t)\\
+P(t)\\
+L(t)
+\end{pmatrix}=
+\begin{pmatrix}
+v(t)\\
+w(t)^*R(t)\\
+F(t)\\
+\tau(t)
+\end{pmatrix}
+\end{aligned}\tag{2-43}
+\]</span> 最后一点：与其用 <span
+class="math inline">\(\textbf{Y}(t)\)</span> 中的矩阵 <span
+class="math inline">\(R(t)\)</span> 来表示物体的朝向，不如使用四元数。第
+4
+节讨论了用四元数代替旋转矩阵。简单来说，四元数是一种包含四个元素的向量，可用于表示旋转。如果我们将
+<span class="math inline">\(\textbf{Y}(t)\)</span> 中的 <span
+class="math inline">\(R(t)\)</span> 替换为四元数 <span
+class="math inline">\(q(t)\)</span>，就可以将 <span
+class="math inline">\(R(t)\)</span> 视为一个辅助变量，从 <span
+class="math inline">\(q(t)\)</span> 直接计算 <span
+class="math inline">\(R(t)\)</span>，就像从 <span
+class="math inline">\(L(t)\)</span> 直接计算 <span
+class="math inline">\(\omega(t)\)</span> 的方式。第 4
+节会推导出一个类似于 <span class="math inline">\(\dot R(t) =
+\omega(t)^*R(t)\)</span> 的公式，该公式根据 <span
+class="math inline">\(q(t)\)</span> 和 <span
+class="math inline">\(\omega(t)\)</span> 表示 <span
+class="math inline">\(\dot q(t)\)</span>。</p>
+<h3 id="computeing-fracmathrmdmathrmdttextbfyt">3. Computeing <span
+class="math inline">\(\frac{\mathrm{d}}{\mathrm{d}t}\textbf{Y}(t)\)</span></h3>
+<p>让我们考虑刚体的 dydt
+函数的实现。代码是用c++编写的，我们假设我们有称为 matrix 和 triple
+的数据类型（类），它们分别实现3 × 3矩阵和3空间中的点。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-comment">/// 3x3</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">matrix</span><br>&#123;<br>    <br>&#125;<br><br><span class="hljs-comment">/// 3</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">triple</span><br>&#123;<br>    <br>&#125;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">RigidBody</span><br>&#123;<br>    <span class="hljs-comment">// constant quantities</span><br>    <span class="hljs-type">double</span> mass;<br>    matrix Ibody;<br>    matrix IbodyInv;<br>    <br>    <span class="hljs-comment">// state variables</span><br>    triple x;<br>    matrix R;<br>    triple P;<br>    triple L;<br>    <br>    <span class="hljs-comment">// derived quantities</span><br>    matrix Iinv;<br>    triple v;<br>    triple omega;<br>    <br>    <span class="hljs-comment">// computed quantities</span><br>    triple force;<br>    triple torque;<br>&#125;<br><br>RigidBody Bodies[NBODIES];<br></code></pre></td></tr></table></figure>
+<p>假设在模拟开始之前，已经为数组<code>Bodies</code>的每个成员计算了常量<code>mass</code>，
+<code>Ibody</code>和<code>IbodyInv</code>。同样，每个刚体的初始条件通过赋值给的
+<code>Bodies</code>
+每个成员的状态变量<code>x</code>、<code>R</code>、<code>P</code>和<code>L</code>来指定。本节中的实现用旋转矩阵表示方向；第4节描述了用四元数表示方向所必需的更改。我们通过传递实数数组与微分方程求解器进行通信。<br />
+需要几个函数：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-comment">// copy body state information to an array</span><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">State_to_Array</span><span class="hljs-params">(RigidBody *rb, <span class="hljs-type">double</span> *y)</span></span><br><span class="hljs-function"></span>&#123;<br>    *y++ = rb-&gt;x[<span class="hljs-number">0</span>];<br>    *y++ = rb-&gt;x[<span class="hljs-number">1</span>];<br>    *y++ = rb-&gt;x[<span class="hljs-number">2</span>];<br>    <br>    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">3</span>; i++)<br>    &#123;<br>        <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> j = <span class="hljs-number">0</span>; j &lt; <span class="hljs-number">3</span>; j++)<br>        &#123;<br>            *y++ = rb-&gt;R[i,j];<br>        &#125;<br>    &#125;<br>    *y++ = rb-&gt;P[<span class="hljs-number">0</span>];<br>    *y++ = rb-&gt;P[<span class="hljs-number">1</span>];<br>    *y++ = rb-&gt;P[<span class="hljs-number">2</span>];<br>    <br>    *y++ = rb-&gt;L[<span class="hljs-number">0</span>];<br>    *y++ = rb-&gt;L[<span class="hljs-number">1</span>];<br>    *y++ = rb-&gt;L[<span class="hljs-number">2</span>];<br>&#125;<br><br><span class="hljs-comment">// Copy information from an array to RigidBody</span><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">Array_to_State</span><span class="hljs-params">(RigidBody *rb, <span class="hljs-type">double</span> *y)</span></span><br><span class="hljs-function"></span>&#123;<br>    rb-&gt;x[<span class="hljs-number">0</span>] = *y++;<br>    rb-&gt;x[<span class="hljs-number">1</span>] = *y++;<br>    rb-&gt;x[<span class="hljs-number">2</span>] = *y++;<br>    <br>    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">3</span>; i++)<br>    &#123;<br>        <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> j = <span class="hljs-number">0</span>; j &lt; <span class="hljs-number">3</span>; j++)<br>        &#123;<br>            rb-&gt;R[i,j] = *y++;<br>        &#125;<br>    &#125;<br>    rb-&gt;P[<span class="hljs-number">0</span>] = *y++;<br>    rb-&gt;P[<span class="hljs-number">1</span>] = *y++;<br>    rb-&gt;P[<span class="hljs-number">2</span>] = *y++;<br>    <br>    rb-&gt;L[<span class="hljs-number">0</span>] = *y++;<br>    rb-&gt;L[<span class="hljs-number">1</span>] = *y++;<br>    rb-&gt;L[<span class="hljs-number">2</span>] = *y++;<br>    <br>    <span class="hljs-comment">// 原文就这么写的，我也不知道哪来的，伪代码看一乐吧</span><br>    rb-&gt;v = rb-&gt;P / mass;<br>    <br>    rb-&gt;Iinv = R * IbodyInv * <span class="hljs-built_in">Transpose</span>(R);<br>    <br>    rb-&gt;omega = rb-&gt;Iinv * rb-&gt;L;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>检查这些例程，我们看到每个刚体的状态由3+9+3+3 = 18个数字(<span
+class="math inline">\(mass\; and\;
+I_{body}:\textbf{fxxk}\)</span>)表示。body的所有成员和大小为18·NBODIES的数组y之间的传输。<br />
+Compute_Force_and_Torque考虑了所有的力和扭矩：重力，风，与其他物体的相互作用等。</p>
+<p>开摆了这部分都是程序设计没什么好说的</p>
+<h3 id="quaternions-vs.-rotation-matrix">4. Quaternions vs. Rotation
+Matrix</h3>
+<p>对于刚体模拟，避免使用旋转矩阵的最重要原因是数值漂移问题。假设我们根据公式跟踪刚体的方向<span
+class="math inline">\(\dot R(t)=\omega^*R(t)\)</span><br />
+当我们用这个公式更新 <span class="math inline">\(R(t)\)</span>
+时（也就是说，当我们对这个方程积分时），我们将不可避免地遇到数值漂移。数值误差将在R(t)的系数中建立，因此<span
+class="math inline">\(R(t)\)</span>
+将不再是精确的旋转矩阵。从图形上看，效果是将 <span
+class="math inline">\(R(t)\)</span> 应用于物体会导致扭曲效果。<br />
+在刚体模拟中，使用单位四元数表示旋转可缓解数值漂移问题。四元数仅需四个参数，仅需一个额外变量即可描述旋转的三个自由度。相比之下，旋转矩阵用九个参数描述三个自由度，冗余度显著高于四元数。因此，四元数的漂移程度远低于旋转矩阵。若必须修正四元数的漂移，那是因为它已失去单位幅值特性。可通过将四元数重新归一化为单位长度轻松修正。由于这两大特性，直接用单位四元数
+<span class="math inline">\(q(t)\)</span>
+表示物体方向最为理想。我们仍将角速度表示为向量 ω(t)。计算惯性张量 <span
+class="math inline">\(I^{-1}(t)\)</span> 所需的方向矩阵 <span
+class="math inline">\(R(t)\)</span>，将作为辅助变量由 <span
+class="math inline">\(q(t)\)</span> 直接推导得出。<br />
+我们把四元数 <span class="math inline">\(s+v_xi+v_yj+v_zk\)</span>
+写成数对: <span class="math inline">\([s,v]\)</span><br />
+<span class="math display">\[
+[s_1,v_1][s_2,v_2]=[s_1s_2-v_1\cdot v_2,s_1v_2+s_2v_1+v_1\times
+v_2]\tag{4-1}
+\]</span> 绕单位轴 <span class="math inline">\(u\)</span> 旋转 <span
+class="math inline">\(\theta\)</span> 表示为: <span
+class="math inline">\([\cos(\frac{\theta}{2}),\sin(\frac{\theta}{2})u].\)</span><br />
+在刚元数表示旋转时，若 <span class="math inline">\(q_1\)</span> 和 <span
+class="math inline">\(q_2\)</span> 分别表示旋转，则 <span
+class="math inline">\(q-2q_1\)</span> 表示先执行 <span
+class="math inline">\(q_1\)</span> 旋转、再执行 <span
+class="math inline">\(q_2\)</span>
+旋转的复合旋转。稍后我们将展示如何修改第 3
+节的例程以适配四元数的方向表示。但在修改前，需先推导 <span
+class="math inline">\(\dot q(t)\)</span> 的公式，附录 B
+推导了该公式：<br />
+<span class="math display">\[
+\dot q(t)=\frac{1}{2}\omega(t)q(t)\tag{4-2}
+\]</span> 这里 <span class="math inline">\(\omega(t)q(t)\)</span> 是
+四元数 <span class="math inline">\([0, \omega(t)]\)</span> 和 <span
+class="math inline">\(q(t)\)</span> 相乘的简写。<br />
+这个等式看着有些眼熟，不是吗？<br />
+<span class="math inline">\(\dot R(t)=\omega(t)^*R(t)\)</span><br />
+使用四元数我们需要重新设计 RigidBody：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">class</span> <span class="hljs-title class_">RigidBody</span><br>&#123;<br>    <span class="hljs-comment">// constant quantities</span><br>    <span class="hljs-type">double</span> mass;<br>    matrix Ibody;<br>    matrix IbodyInv;<br>    <br>    <span class="hljs-comment">// state variables</span><br>    triple x;<br>    quaternion q;<br>    triple P;<br>    triple L;<br>    <br>    <span class="hljs-comment">// derived quantities</span><br>    matrix Iinv;<br>    matrix R;<br>    triple v;<br>    triple omega;<br>    <br>    <span class="hljs-comment">// computed quantities</span><br>    triple force;<br>    triple torque;<br>&#125;<br><br>rb-&gt;R = <span class="hljs-built_in">quaternion_to_matrix</span>(<span class="hljs-built_in">normalize</span>(rb-&gt;q));<br></code></pre></td></tr></table></figure>
+函数 <code>normalize</code> 返回被 <span
+class="math inline">\(q\)</span> 除以 长度
+的归一化结果。单位长度的四元数再传给 <code>quaternion_to_matrix</code>
+，返回 3x3 矩阵，如 <span class="math inline">\(q=[s,v]\)</span>
+则返回的矩阵为<br />
+$$
+<span class="math display">\[\begin{pmatrix}
+1-2v_y^2-2v_z^2
+&amp; 2v_xv_y-2sv_z
+&amp; 2v_xv_z+2sv_y\\
+
+2v_xv_y+2sv_z
+&amp; 1-2v_x^2-2v_z^2
+&amp; 2v_yv_z-2sv_x\\
+
+2v_xv_z-2sv_y
+&amp; 2v_yv_z+2sv_x
+&amp; 1-2v_x^2-2v_y^2
+\end{pmatrix}\]</span>
+<p>$$ 从旋转矩阵到四元数<br />
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-function">quaternion <span class="hljs-title">matrix_to_quaternion</span><span class="hljs-params">(<span class="hljs-type">const</span> matrix &amp;m)</span></span><br><span class="hljs-function"></span>&#123;<br>    quaternion q;<br>    <span class="hljs-type">double</span> tr,s;<br>    <br>    tr = m[<span class="hljs-number">0</span>,<span class="hljs-number">0</span>] + m[<span class="hljs-number">1</span>,<span class="hljs-number">1</span>]+m[<span class="hljs-number">2</span>,<span class="hljs-number">2</span>];<br>    <span class="hljs-keyword">if</span>(tr &gt;= <span class="hljs-number">0</span>)<br>    &#123;<br>        s = <span class="hljs-built_in">sqrt</span>(tr + <span class="hljs-number">1</span>);<br>        q.r = <span class="hljs-number">0.5</span> * s;<br>        s = <span class="hljs-number">0.5</span> / s;<br>        q.i = (m[<span class="hljs-number">2</span>,<span class="hljs-number">1</span>] - m[<span class="hljs-number">1</span>,<span class="hljs-number">2</span>]) * s;<br>        q.j = (m[<span class="hljs-number">0</span>,<span class="hljs-number">2</span>] - m[<span class="hljs-number">2</span>,<span class="hljs-number">0</span>]) * s;<br>        q.k = (m[<span class="hljs-number">1</span>,<span class="hljs-number">0</span>] - m[<span class="hljs-number">0</span>,<span class="hljs-number">1</span>]) * s;<br>    &#125;<br>    <span class="hljs-keyword">else</span><br>    &#123;<br>        <span class="hljs-type">int</span> i = <span class="hljs-number">0</span>;<br>        <span class="hljs-keyword">if</span>(m[<span class="hljs-number">1</span>,<span class="hljs-number">1</span>] &gt; m[<span class="hljs-number">0</span>,<span class="hljs-number">0</span>])<br>            i = <span class="hljs-number">1</span>;<br>        <span class="hljs-keyword">if</span>(m[<span class="hljs-number">2</span>,<span class="hljs-number">2</span>] &gt; m[i,i])<br>            i = <span class="hljs-number">2</span>;<br>        <br>        <span class="hljs-keyword">switch</span>(i)<br>        &#123;<br>            <span class="hljs-keyword">case</span> <span class="hljs-number">0</span>:<br>                s = <span class="hljs-built_in">sqrt</span>((m[<span class="hljs-number">0</span>,<span class="hljs-number">0</span>]-(m[<span class="hljs-number">1</span>,<span class="hljs-number">1</span>] + m[<span class="hljs-number">2</span>,<span class="hljs-number">2</span>])) + <span class="hljs-number">1</span>);<br>                q.i = <span class="hljs-number">0.5</span> * s;<br>                s = <span class="hljs-number">0.5</span> / s;<br>                q.j = (m[<span class="hljs-number">0</span>,<span class="hljs-number">1</span>] + m[<span class="hljs-number">1</span>,<span class="hljs-number">0</span>]) * s;<br>				q.k = (m[<span class="hljs-number">2</span>,<span class="hljs-number">0</span>] + m[<span class="hljs-number">0</span>,<span class="hljs-number">2</span>]) * s;<br>				q.r = (m[<span class="hljs-number">2</span>,<span class="hljs-number">1</span>] - m[<span class="hljs-number">1</span>,<span class="hljs-number">2</span>]) * s;<br>                <span class="hljs-keyword">break</span>;<br>            <span class="hljs-keyword">case</span> <span class="hljs-number">1</span>:<br>				s = <span class="hljs-built_in">sqrt</span>((m[<span class="hljs-number">1</span>,<span class="hljs-number">1</span>] - (m[<span class="hljs-number">2</span>,<span class="hljs-number">2</span>] + m[<span class="hljs-number">0</span>,<span class="hljs-number">0</span>])) + <span class="hljs-number">1</span>);<br>				q.j = <span class="hljs-number">0.5</span> * s;<br>				s = <span class="hljs-number">0.5</span> / s;<br>				q.k = (m[<span class="hljs-number">1</span>,<span class="hljs-number">2</span>] + m[<span class="hljs-number">2</span>,<span class="hljs-number">1</span>]) * s;<br>				q.i = (m[<span class="hljs-number">0</span>,<span class="hljs-number">1</span>] + m[<span class="hljs-number">1</span>,<span class="hljs-number">0</span>]) * s;<br>				q.r = (m[<span class="hljs-number">0</span>,<span class="hljs-number">2</span>] - m[<span class="hljs-number">2</span>,<span class="hljs-number">0</span>]) * s;<br>				<span class="hljs-keyword">break</span>;<br>			<span class="hljs-keyword">case</span> <span class="hljs-number">2</span>:<br>				s = <span class="hljs-built_in">sqrt</span>((m[<span class="hljs-number">2</span>,<span class="hljs-number">2</span>] - (m[<span class="hljs-number">0</span>,<span class="hljs-number">0</span>] + m[<span class="hljs-number">1</span>,<span class="hljs-number">1</span>])) + <span class="hljs-number">1</span>);<br>                q.k = <span class="hljs-number">0.5</span> * s;<br>                s = <span class="hljs-number">0.5</span> / s;<br>                q.i = (m[<span class="hljs-number">2</span>,<span class="hljs-number">0</span>] + m[<span class="hljs-number">0</span>,<span class="hljs-number">2</span>]) * s;<br>                q.j = (m[<span class="hljs-number">1</span>,<span class="hljs-number">2</span>] + m[<span class="hljs-number">2</span>,<span class="hljs-number">1</span>]) * s;<br>                q.r = (m[<span class="hljs-number">1</span>,<span class="hljs-number">0</span>] - m[<span class="hljs-number">0</span>,<span class="hljs-number">1</span>]) * s;<br>        &#125;<br>    &#125;<br>    <span class="hljs-keyword">return</span> q;<br>&#125;<br></code></pre></td></tr></table></figure></p>
+<p>矩阵m的结构使m[0,0], m[0,1]和m[0,2]构成m的第一行（而不是列）。<br />
+例程Array_to_Bodies和Bodies_to_Array根本不需要任何更改，但请注意常量STATE_SIZE从18更改为13，因为四元数需要的元素比旋转矩阵少5个。我们只需要在ddt_State_to_Array中进行其他更改</p>
+<h3 id="examples">5. Examples</h3>
+<h4 id="inertia-tensor-of-a-block">5.1 Inertia Tensor of a Block</h4>
+<img src="/imgs/Rigid%20Body%20Simulation%20Ⅰ/Figure7.png" srcset="/img/loading.gif" lazyload /><br />
+计算图中 <span class="math inline">\(x_0\times y_0\times z_0\)</span>
+的长方形的惯性张量 <span class="math inline">\(I_{body}\)</span>
+我们将质心设为原点，因此长方体的 x 轴 <span
+class="math inline">\([-\frac{x_0}{2},\frac{x}{2}]\)</span>，yz同理。<br />
+我们需要知道质量才能计算，<span
+class="math inline">\(\rho(x_i,y_i,z_i)dxdydz=m_i\)</span>
+因为物体密度恒定，所以质量就是 <span class="math inline">\(M=\rho
+x_0y_0z_0\)</span><br />
+<span class="math display">\[
+\begin{aligned}
+I_{xx}&amp;=\int_{-\frac{x_0}{2}}^{\frac{x_0}{2}}
+\int_{-\frac{y_0}{2}}^{\frac{y_0}{2}}
+\int_{-\frac{z_0}{2}}^{\frac{z_0}{2}}
+\rho(x,y,z)(y^2+z^2)
+\mathrm{d}z\mathrm{d}y\mathrm{d}x\\
+&amp;=\frac{M}{12}(y_0^2+z_0^2)\\
+I_{yy}&amp;=\frac{M}{12}(x_0^2+z_0^2)\\
+I_{zz}&amp;=\frac{M}{12}(x_0^2+y_0^2)
+\end{aligned}\tag{5-1}
+\]</span> 计算 <span class="math inline">\(I_{xy}\)</span>(根据 2-32
+式)<br />
+<span class="math display">\[
+\begin{aligned}
+I_{xy}&amp;=\int_{-\frac{x_0}{2}}^{\frac{x_0}{2}}
+\int_{-\frac{y_0}{2}}^{\frac{y_0}{2}}
+\int_{-\frac{z_0}{2}}^{\frac{z_0}{2}}
+-\rho(x,y,z)(xy)
+\mathrm{d}z\mathrm{d}y\mathrm{d}x\\
+&amp;=0
+\end{aligned}\tag{5-2}
+\]</span> 有<br />
+$$
+<span class="math display">\[\begin{aligned}
+I_{body}=
+\frac{M}{12}
+\begin{pmatrix}
+y_0^2+z_0^2
+&amp; 0
+&amp; 0\\
+
+0
+&amp; x_0^2+z_0^2
+&amp; 0\\
+
+0
+&amp; 0
+&amp; x_0^2+y_0^2
+\end{pmatrix}
+\end{aligned}\tag{5-3}\]</span>
+<p>$$</p>
+<h4 id="a-uniform-force-field">5.2 A Uniform Force Field</h4>
+<p>假设一个均匀的力作用在物体的每一个粒子上。例如，我们通常将引力场描述为对刚体的每个粒子施加一个力，其中
+<span class="math inline">\(g\)</span>
+是指向向下的矢量。重力作用在物体上的合力 <span
+class="math inline">\(F_g\)</span> 是<br />
+<span class="math display">\[
+F_g=\sum m_ig=Mg\tag{5-4}
+\]</span> 扭矩：<br />
+<span class="math display">\[
+\sum(r_i(t)-x(t))\times m_ig=\textbf{0}\tag{5-5}
+\]</span> 这里用了一个式子
+2-20。由此可见，均匀的重力场对物体的角动量没有影响。这里引力场可以被视为一个<strong>单一合力</strong>，作用于物体的<strong>质心</strong>处，大小等于
+<span class="math inline">\(Mg\)</span>(其中 <span
+class="math inline">\(M\)</span> 是物体质量，<span
+class="math inline">\(g\)</span> 是重力加速度)。</p>
+<h4 id="rotation-free-movement-of-a-body">5.3 Rotation Free Movement of
+a Body</h4>
+让我考虑一下图中所示的两个力<br />
+<img src="/imgs/Rigid%20Body%20Simulation%20Ⅰ/Figure8.png" srcset="/img/loading.gif" lazyload /> 外力 <span
+class="math inline">\(F=(0,0,f)\)</span>分别作用在 <span
+class="math inline">\(x(t)+(-3,0,-2)\;,\;x(t)+(3,0,-2)\)</span><br />
+我们直观的想到这只会有线性加速度，而非角加速度。<br />
+合力为 <span class="math inline">\((0,0,2f)\)</span>，加速度 <span
+class="math inline">\(\frac{2f}{M}\)</span> 沿着 z 轴<br />
+有两力矩<br />
+$$
+<span class="math display">\[\begin{aligned}
+&amp;(x(t)+
+\begin{pmatrix}
+-3\\0\\-2
+\end{pmatrix}-x(t))\times F=
+\begin{pmatrix}
+-3\\0\\-2
+\end{pmatrix}\times F\\
+
+&amp;(x(t)+
+\begin{pmatrix}
+3\\0\\-2
+\end{pmatrix}-x(t))\times F=
+\begin{pmatrix}
+3\\0\\-2
+\end{pmatrix}\times F\\
+
+&amp;\tau=
+\begin{pmatrix}
+-3\\0\\-2
+\end{pmatrix}\times F +
+\begin{pmatrix}
+3\\0\\-2
+\end{pmatrix}\times F=
+\begin{pmatrix}
+0\\0\\-2
+\end{pmatrix}\times F\\
+&amp;=
+\begin{pmatrix}
+0\\0\\-2
+\end{pmatrix}\times
+\begin{pmatrix}
+0\\0\\f
+\end{pmatrix}
+=\textbf{0}
+\end{aligned}\]</span>
+<p>$$</p>
+<h4 id="translation-free-movement-of-a-body">5.4 Translation Free
+Movement of a Body</h4>
+<p>现在假设外力 <span
+class="math inline">\(F_1=(0,0,f)\)</span>作用在物体的点 <span
+class="math inline">\(x(t)+(-3,0, -2)\)</span>上，外力 <span
+class="math inline">\(F_2=(0,0,-f)\)</span> 作用在物体的点 <span
+class="math inline">\(x(t)+(3,0,2)\)</span>上。由于F1
+=−F2，作用在物体上的合力是 <span
+class="math inline">\(F_1+F_2=0\)</span>​，所以没有质心加速度。<br />
+<img src="/imgs/Rigid%20Body%20Simulation%20Ⅰ/Figure9.png" srcset="/img/loading.gif" lazyload />
+另一方面，扭矩合是<br />
+<span class="math display">\[
+&amp;(x(t)+
+\begin{pmatrix}
+-3\\0\\-2
+\end{pmatrix}-x(t))\times F_1
++
+(x(t)+
+\begin{pmatrix}
+3\\0\\-2
+\end{pmatrix}-x(t))\times F_2
+=&amp;\\
+&amp;\begin{pmatrix}
+-3\\0\\-2
+\end{pmatrix}\times
+\begin{pmatrix}
+0\\0\\f
+\end{pmatrix}
++
+\begin{pmatrix}
+3\\0\\-2
+\end{pmatrix}\times
+\begin{pmatrix}
+0\\0\\-f
+\end{pmatrix}
+=\\
+&amp;
+\begin{pmatrix}
+0\\3f\\0
+\end{pmatrix}
++
+\begin{pmatrix}
+0\\3f\\0
+\end{pmatrix}=
+\begin{pmatrix}
+0\\6f\\0
+\end{pmatrix}
+\]</span> 因此，合扭矩为<span
+class="math inline">\((0,6f,0)\)</span>，与y轴平行。最终的结果是，作用在物体上的力使物体沿
+y轴 呈角加速。</p>
+<h4 id="force-vs.-torque-puzzle">5.5 Force vs. Torque Puzzle</h4>
+<p>在分析一个力作用于物体某点所产生的影响时，有时会觉得这个力<strong>仿佛被重复考量了两次</strong>。也就是说，若力
+<span class="math inline">\(F\)</span> 作用于空间中某点 <span
+class="math inline">\(r+x(t)\)</span>
+处的物体，我们会先将其视为<strong>加速质心</strong>的力，再将其视为<strong>赋予物体自旋</strong>的力。<br />
+<img src="/imgs/Rigid%20Body%20Simulation%20Ⅰ/Figure10.png" srcset="/img/loading.gif" lazyload /><br />
+这催生出一个看似矛盾的情境：观察上图中的长水平木块（初始静止）。假设力
+<span class="math inline">\(F\)</span>
+作用于木块的<strong>质心</strong>并持续一段时间（比如10秒)。由于力作用于质心，<strong>对物体不产生力矩</strong>。10秒后，物体将获得一定<strong>线速度</strong>
+<em>v</em>；但物体不会获得任何<strong>角速度</strong>，因此木块的<strong>动能</strong>为
+<span class="math inline">\(\frac{1}{2}M|v|^2\)</span>。<br />
+<img src="/imgs/Rigid%20Body%20Simulation%20Ⅰ/Figure11.png" srcset="/img/loading.gif" lazyload />
+现在假设相同的力 <span class="math inline">\(F\)</span>
+<strong>偏置</strong>作用于物体（如图11所示）。由于作用于物体的力大小未变，<strong>质心的加速度也相同</strong>。因此，10秒后，物体将再次获得线速度
+<span class="math inline">\(v\)</span>。然而，由于力 F
+偏置作用，此时会对物体<strong>产生力矩</strong>，10秒后，物体将获得一定的<strong>角速度</strong>
+<span
+class="math inline">\(\omega\)</span>。此时物体的动能（见附录C)为:<br />
+<span class="math display">\[
+\frac{1}{2}M|v|^2+\frac{1}{2}\omega^TI\omega
+\]</span>
+木块的动能<strong>比力作用于质心时更高</strong>。但若两次作用的是<strong>完全相同的力</strong>，木块的动能为何会不同？
+提示：能量（或功）是<strong>力对位移的积分</strong>（即力沿作用路径累积的效果）。<br />
+<img src="/imgs/Rigid%20Body%20Simulation%20Ⅰ/Figure12.png" srcset="/img/loading.gif" lazyload />
+图12展示了<strong>偏置力为何会产生更高的动能</strong>：木块的动能等于<strong>力所做的功</strong>，而功是<strong>力对位移的积分</strong>（即力沿作用路径累积的效果）。<br />
+在图11中，力<strong>偏置作用于质心外</strong>时，需关注<strong>力作用点的运动轨迹</strong>——该轨迹明显长于图10中<strong>质心的运动轨迹</strong>。因此，当力偏置作用时，<strong>力作用点（记为p点）描出的路径更长</strong>，导致力做的功更多（因为功的本质是力对作用点位移的累积)。</p>
+<h2 id="reference">Reference</h2>
+<p><a
+target="_blank" rel="noopener" href="https://www.cs.cmu.edu/~baraff/sigcourse/index.html">Physically
+Based Modeling</a><br />
+<a
+target="_blank" rel="noopener" href="https://www.cs.cmu.edu/~baraff/sigcourse/notesd1.pdf">Unconstrained
+Rigid Body Dynamics</a></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Math/" class="print-no-link">#Math</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Rigid Body Simulation Ⅰ</div>
+      <div>http://example.com/2025/08/11/Rigid Body Simulation Ⅰ/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Hollow Emiya</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年8月11日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/08/16/C++Note_1/" title="C++ Note 1">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">C++ Note 1</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/08/09/Differential%20Equation%20Basics/" title="Differential Equation Basics">
+                        <span class="hidden-mobile">Differential Equation Basics</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

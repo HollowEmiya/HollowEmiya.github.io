@@ -1,0 +1,1053 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Hollow Emiya">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="RayMarching:Atmospheric Scattering-RayleighScattering Rayleigh Scattering 一般的渲染都是在物体的一个表面上进行计算，而诸如半透明物体是光线和其内部结构相互作用造成的，还有比如皮肤的渲染，可以用 次表面散射去模拟这种效果。但是大气散射不是在表面上计算，是模拟光线透过大气会发生什么，也就是体积渲染。这里是学习 体积单散">
+<meta property="og:type" content="article">
+<meta property="og:title" content="大气散射">
+<meta property="og:url" content="http://example.com/2023/11/05/%E5%A4%A7%E6%B0%94%E6%95%A3%E5%B0%84/index.html">
+<meta property="og:site_name" content="Emiya Blog">
+<meta property="og:description" content="RayMarching:Atmospheric Scattering-RayleighScattering Rayleigh Scattering 一般的渲染都是在物体的一个表面上进行计算，而诸如半透明物体是光线和其内部结构相互作用造成的，还有比如皮肤的渲染，可以用 次表面散射去模拟这种效果。但是大气散射不是在表面上计算，是模拟光线透过大气会发生什么，也就是体积渲染。这里是学习 体积单散">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/imgs/%E5%A4%A7%E6%B0%94%E6%95%A3%E5%B0%84/Res01.png">
+<meta property="article:published_time" content="2023-11-04T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-08-19T02:21:06.289Z">
+<meta property="article:author" content="Hollow Emiya">
+<meta property="article:tag" content="图形学">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/imgs/%E5%A4%A7%E6%B0%94%E6%95%A3%E5%B0%84/Res01.png">
+  
+  
+  
+  <title>大气散射 - Emiya Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null},"woyaola":null,"cnzz":null},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Emiya&#39;s Blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/imgs/%E5%A4%A7%E6%B0%94%E6%95%A3%E5%B0%84/Res02.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="大气散射"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-11-05 00:00" pubdate>
+          2023年11月5日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          3.7k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          31 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">大气散射</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1
+id="raymarchingatmospheric-scattering-rayleighscattering">RayMarching:Atmospheric
+Scattering-RayleighScattering</h1>
+<h2 id="rayleigh-scattering">Rayleigh Scattering</h2>
+<p>一般的渲染都是在物体的一个表面上进行计算，而诸如半透明物体是光线和其内部结构相互作用造成的，还有比如皮肤的渲染，可以用
+次表面散射去模拟这种效果。但是大气散射不是在表面上计算，是模拟光线透过大气会发生什么，也就是体积渲染。这里是学习
+<strong>体积单散射</strong>，渲染实体半透明物体。 ## Single Scattering
+大多数游戏引擎的光线都是在真空传播，散射需要做的就是模拟光在空气介质中传播。
+## Out Scattering &amp; In Scattering
+光和粒子最显著的现象就是粒子偏转光的方向，当一束光偏离 Camera
+也就是外散射，偏离到 Camera 方向就是 <strong>内散射</strong>。</p>
+<p><img src="/imgs/大气散射/OutScattering.png" srcset="/img/loading.gif" lazyload></p>
+<h2 id="volumetric-signle-scattering"><strong>Volumetric Signle
+Scattering</strong></h2>
+<p>实际上光可以反射/散射很多次，但是这需要大量计算，这里只是计算
+<strong>光的单次散射事件</strong>。</p>
+<p>关键在于如何模拟光线穿过大气。 即从 A 到 B
+的光如何受到散射的影响，因为 AB 上任一点 P 都可能会发生散射。</p>
+<figure>
+<img src="/imgs/大气散射/SingleScattering.PNG" srcset="/img/loading.gif" lazyload alt="SingleScattering" />
+<figcaption aria-hidden="true">SingleScattering</figcaption>
+</figure>
+<p>所以在计算每个点 P 有多少 Out Scattering时，第一步要先知道 P点
+有多少光。假设所有光都来自太阳，一些会发生
+in-Scattering，转向摄像机:</p>
+<figure>
+<img src="/imgs/大气散射/InScattering.PNG" srcset="/img/loading.gif" lazyload alt="InScattering" />
+<figcaption aria-hidden="true">InScattering</figcaption>
+</figure>
+<p>内散射到 P，从 P 到 A 散射，能够描述大部分散射情况，但实际上 P
+点接收的光，是太阳射向P并经过 CP 路径的 out-scattering后的。</p>
+<figure>
+<img src="/imgs/大气散射/OutScattering2.PNG" srcset="/img/loading.gif" lazyload alt="OutScattering2" />
+<figcaption aria-hidden="true">OutScattering2</figcaption>
+</figure>
+<h2
+id="需要做的可公开的情报"><strong>[需要做的]可公开的情报</strong></h2>
+<ul>
+<li>摄像机的视线，从 A 出发，进入大气，并从 B 点离开。</li>
+<li>我们需要考虑每个点 P∈AB 的 in-scattering 和 out-scattering
+贡献/影响。</li>
+<li>P 点从太阳接收的光线</li>
+<li>P 点经路径CP接受光，收到 out-scattering 的影响</li>
+<li>P 点发生多少 in-scattering，使光线向相机方向。</li>
+<li>从 P 射向摄像机的光受到 out-scattering 影响偏离相机的视线。</li>
+</ul>
+<h2 id="transmittance-function"><strong>Transmittance
+Function</strong></h2>
+<p>要计算传播到 Camera
+的有多少光，那么所有的计算应该在光线从太阳出发开始；</p>
+<p>上图中光经过真空到达C点，其路径上没有其他物体影响，C点的光还没有散射；
+设 C点的光量为 Ic，全部从太阳接收，从太阳真空传播过来，无散射影响。
+经过路径CP，光线进入大气，和大气中的粒子发生散射，到达P的光量为
+Ip(肯定小于Ic) 则 Ip和Ic的比率为 <strong>transmittance</strong>:</p>
+<p><span class="math display">\[ T(\overline{CP})=\frac{I_P}{I_C}
+\]</span></p>
+<figure>
+<img src="/imgs/大气散射/Trasmittance.png" srcset="/img/loading.gif" lazyload alt="Trasmittance" />
+<figcaption aria-hidden="true">Trasmittance</figcaption>
+</figure>
+<p>可以用 transmittance 表示在 CP 路径上为散射的光量百分比，也就是经过
+CP 后能到得到的光量。这个函数我们后面会进行更详细的推导。</p>
+<p><span class="math display">\[ I_P=I_CT(\overline{CP}) \]</span></p>
+<h2 id="scattering-function"><strong>Scattering Function</strong></h2>
+<p>假设我们先不考虑 <strong>Transmittance Function</strong>
+<em>T</em>，然后我们得到了
+P点的光量，我们现在需要考虑的就是在P点有多少光因为 scattering 偏转到
+camera 方向。 也就是 <strong>Scattering Function</strong>
+<em>S</em>，目的是描述某点处，有多少光沿某个角度发生偏转。</p>
+<p>这里光的偏转角度为 θ，<em>S</em>(λ,θ,h)
+的值表示沿theta偏转的光量比率。
+受到波长，角度，高度的影响，高度是因为大气密度会随高度而改变。</p>
+<p><span class="math display">\[
+I_{PA}=I_P*S(\lambda,\theta,h)*T(\overline{PA})\\
+I_{PA}=I_C*T(\overline{CP})*S(\lambda,\theta,h)*T(\overline{PA})\\
+=\underbrace{
+I_C*S(\lambda,\theta,h)}_{in-scattering}*\underbrace{T(\overline{CP})*T(\overline{PA})}_{out-scattering}\\
+\]</span></p>
+<figure>
+<img src="/imgs/大气散射/ScatteringFunc.png" srcset="/img/loading.gif" lazyload alt="ScatteringFunc" />
+<figcaption aria-hidden="true">ScatteringFunc</figcaption>
+</figure>
+<p>S 计算折射到视线，T算的沿路径的损失，就是in-scattering 和
+out-scattering</p>
+<h2 id="numerical-integration"><strong>Numerical
+Integration</strong></h2>
+<p>看起来挺好，但可能你已经意识到了，这不太对吧，用 Ipa 表示 点P 传输到
+A 的光量，但是刚才的公式并不能描述 A 所有接受到的光。 A接收的光应该是
+P∈AB 所有点的累加贡献，我们应该计算 AB
+上所有的点，这需要用到积分的思想，将AB划分为无数的微小段——ds，再进行累加，就是数值积分。</p>
+<p><span class="math display">\[ I_A=\sum_{P\in\overline{AB}}I_{PA}ds
+\]</span></p>
+<figure>
+<img src="/imgs/大气散射/NumericalIntegration.png" srcset="/img/loading.gif" lazyload
+alt="NumericalIntegration" />
+<figcaption aria-hidden="true">NumericalIntegration</figcaption>
+</figure>
+<ul>
+<li>为什么要乘 ds 因为用 ds 中一个点 P0
+代表所有这段上所有点的光线如何散射</li>
+</ul>
+<blockquote>
+<p>假设不划分，以 E 为 AB 每个点的光照散射结果，那么 IA = E * dis_AB</p>
+</blockquote>
+<h2 id="direcation-light"><strong>Direcation Light</strong></h2>
+<p>如果离太阳近可以建模点光源解决，不过通常我们都离太阳很远，而且这里最终目的是做山麓之间的那种大气散射，所有还是以
+direction light 建模。 因此每个点接收相同数量的光，且方向保持不变。</p>
+<p>现在可以对 IC 进行简化。</p>
+<p><span class="math display">\[ I_A=\sum_{P\in\overline{AB}}I_{PA}ds\\\
+=\sum_{P\in\overline{AB}}I_C*S(\lambda,\theta,h)*T(\overline{CP})*T(\overline{PA})ds\\
+=I_S\sum_{P\in\overline{AB}}S(\lambda,\theta,h)*T(\overline{CP})*T(\overline{PA})ds\\
+\]</span></p>
+<figure>
+<img src="/imgs/大气散射/DirectionLight.png" srcset="/img/loading.gif" lazyload alt="DirectionLight" />
+<figcaption aria-hidden="true">DirectionLight</figcaption>
+</figure>
+<blockquote>
+<p>如果这里阳光和camera 都不动，theta 固定，甚至还可以优化</p>
+</blockquote>
+<h2 id="absorption-coefficient"><strong>Absorption
+Coefficient</strong></h2>
+<blockquote>
+<p>在描述光和空气分子之间相互作用的可能结果时，我们只介绍了两个。直接通过，或偏转。还有第三种可能。一些化合物吸收光。地球上的大气中有很多具有这种特性的化学物质。例如，臭氧存在于高等大气中，并且已知对紫外线有强烈反应。然而，它的存在对天空的颜色几乎没有影响，因为它吸收了可见光谱之外的光。在地球上，吸光化学物质的贡献往往被忽视。
+在地球上，吸光化学物质的贡献往往被忽视。其他行星不能这样做。例如，海王星和天王星的典型颜色是由大气中大量存在的甲烷引起的。甲烷以吸收红光而闻名，导致蓝色色调。在本教程的其余部分，我们将忽略吸收系数，尽管我们将添加一种为大气着色的方法。</p>
+</blockquote>
+<h2 id="scattering-model"><strong>Scattering Model</strong></h2>
+<p>模拟大气散射现象是十分复杂的，几乎没有一个完美的模型去描述。
+通常使用两种模型 : <strong>Rayleigh scattering</strong> 和 <strong>Mie
+scattering</strong>. Rayleigh Scattering
+描述光和微小粒子的散射，比如空气，氧、氮分子。 Mie Scattering
+描述的是光的波长和粒子大小相近的散射情况，比如用 Mie scattering
+画太阳，花粉、粉尘、污染物。</p>
+<p>Rayleigh Scattering 导致天空是蓝的，日落是红的，Mie Scattering
+导致云是白的。</p>
+<h2 id="rayleigh-scattering-1"><strong>Rayleigh Scattering</strong></h2>
+<p>需要明确的一点是 Rayleigh Scattering 只能描述粒子小于光的波长。
+当光子撞击到粒子后，因为粒子足够小，主要有两部分光，一部分不受影响继续传播，一部分以相反方向反射回来，其他可能沿其他方向传播，不过因为光的方向导致其不太可能沿
+90° 。</p>
+<blockquote>
+<p>可以想象一个胖人去撞一个比较瘦的人，或者撞一根很细的柱子</p>
+</blockquote>
+<figure>
+<img src="/imgs/大气散射/RayleighScattering.png" srcset="/img/loading.gif" lazyload
+alt="RayleighScattering" />
+<figcaption aria-hidden="true">RayleighScattering</figcaption>
+</figure>
+<p>其 <strong>Rayleigh scattering equation</strong></p>
+<p><span class="math display">\[ I=I_0S(\lambda,\theta,h)\\
+S(\lambda,\theta,h)=\frac{\pi^2(n^2-1)^2}{2}\underbrace{\frac{\rho(h)}{N}}_{density}\overbrace{\frac{1}{\lambda^4}}^{wavelength}\underbrace{(1+\cos^2\theta)}_{geometry}
+\]</span></p>
+<ul>
+<li>λ: the <strong>wavelength</strong> of the incoming light;</li>
+<li>θ : the <strong>scattering angle</strong>;</li>
+<li>h : the <strong>altitude</strong> of the point;</li>
+<li>n=1.00029 : the <strong>refractive index</strong> of
+air;(空气的<strong>折射率</strong>)</li>
+<li>: the <strong>molecular number density</strong> of the standard
+atmosphere. This is the number of molecules per cubic
+metre;(标准大气的<strong>分子数密度</strong>。这是每立方米的分子数;)</li>
+<li>: the <strong>density ratio</strong>. This number is equal to</li>
+<li>at sea level, and decreases exponentially with</li>
+<li>. There is a lot to say about this function, and we will do it in a
+future post of this series.(<strong>密度比</strong>。
+此数字等于海平面1时的数字，后面细嗦)</li>
+</ul>
+<p>该方程来自：<a
+target="_blank" rel="noopener" href="http://nishitalab.org/user/nis/cdrom/sig93_nis.pdf">nishitalab.org/user/nis/cdrom/sig93_nis.pdf</a></p>
+<figure>
+<img src="/imgs/大气散射/chart.png" srcset="/img/loading.gif" lazyload alt="chart" />
+<figcaption aria-hidden="true">chart</figcaption>
+</figure>
+<ul>
+<li>某些方向比其他方向接收更多光</li>
+<li>散射的光量多少受光波长的影响，波长越长越少，红少蓝多(所以天是蓝的)</li>
+</ul>
+<h2 id="rayleigh-scattering-coefficient"><strong>Rayleigh Scattering
+Coefficient</strong></h2>
+<p>前面的Rayleigh
+只描述了散射的方向，但是没有描述某一点散射现象的能量衰减。要考虑能量的损失，我们得考虑各个方向上的光能的散射。
+很简单对相位函数做积分即可，不过记得这是一个三维空间，不是二维的可别在
+[0,2pi] 积分。</p>
+<p><span class="math display">\[
+\beta(\lambda,h)=\int_0^{2\pi}\int_0^\pi S(\lambda,\theta,h)\sin\theta
+d\theta d\phi\\
+=\int_0^{2\pi}\int_0^\pi\frac{\pi^2(n^2-1)^2}{2}\frac{\rho(h)}{N}\frac{1}{\lambda^4}(1+\cos^2\theta)\sin\theta
+d\theta
+d\phi\\  =\frac{\pi^2(n^2-1)^2}{2}\frac{\rho(h)}{N}\frac{1}{\lambda^4}\int_0^{2\pi}\int_0^\pi(1+\cos^2\theta)\sin\theta
+d\theta
+d\phi\\  =\frac{\pi^2(n^2-1)^2}{2}\frac{\rho(h)}{N}\frac{1}{\lambda^4}\int_0^{2\pi}\int_0^\pi(\sin\theta+\sin\theta\cos^2\theta)
+d\theta
+d\phi\\  =\frac{\pi^2(n^2-1)^2}{2}\frac{\rho(h)}{N}\frac{1}{\lambda^4}\int_0^{2\pi}(\cos0+\frac{\cos0}{3}-\cos\pi-\frac{\cos^3\pi}{3})d\phi\\
+=\frac{\pi^2(n^2-1)^2}{2}\frac{\rho(h)}{N}\frac{1}{\lambda^4}\int_0^{2\pi}\frac{8\pi}{3}d\phi\\
+=\frac{\pi^2(n^2-1)^2}{2}\frac{\rho(h)}{N}\frac{1}{\lambda^4}\frac{16\pi}{3}\\
+=\frac{8\pi^3(n^2-1)^2}{3}\frac{\rho(h)}{N}\frac{1}{\lambda^4}\\
+\\  \beta(\lambda,h)  =\frac{8\pi^3(n^2-1)^2}{3}\frac{\rho(h)}{N}\frac{1}{\lambda^4}\\\]</span></p>
+<p>所以能量的散射受波长和海拔高度的影响。</p>
+<figure>
+<img src="/imgs/大气散射/chart2.png" srcset="/img/loading.gif" lazyload alt="chart2" />
+<figcaption aria-hidden="true">chart2</figcaption>
+</figure>
+<p>所以地球大气分子会更多反射蓝光，所以当傍晚时，光线要经过更多大气，传播时间更长，所有的蓝光基本都被散射，我们观察到的就是红色的天空。
+而白天天空为什么是蓝色的，首先，白天我们观察时日光方向基本固定，因为蓝色更容易发生散射，在空中蓝色光波被散射到四面八方，我们观察天空接收到的自然也就是蓝光。</p>
+<h2 id="rayleigh-phase-function"><strong>Rayleigh Phase
+Function</strong></h2>
+<p>关于 Rayleigh Scattering Equation 可以分解为两个部分，一部分是
+Rayleig Scattering Coefficient，也就是刚刚推导的；另一部分是 Geometry of
+Scattering，并控制其反射方向。</p>
+<p><span class="math display">\[
+S(\lambda,\theta,h)=\beta(\lambda,h)\gamma(\theta)\\
+\gamma(\theta)=\frac{S(\lambda,\theta,h)}{\beta(\lambda,h)}=\\
+\frac{\pi^2(n^2-1)^2}{2}\frac{\rho(h)}{N}\frac{1}{\lambda^4}(1+\cos^2\theta)\frac{3}{8\pi^3(n^2-1)^2}\frac{N}{\rho(h)}\lambda^4=\\
+\frac{3}{16\pi}(1+\cos^2\theta) \]</span></p>
+<h2 id="可公开的情报"><strong>[可公开的情报]</strong></h2>
+<ul>
+<li><strong>Rayleigh Scattering Equation</strong>
+描述在某方向的光偏转比率</li>
+</ul>
+<p><span class="math display">\[
+S(\lambda,\theta,h)=\frac{\pi^2(n^2-1)^2}{2}\frac{\rho(h)}{N}\frac{1}{\lambda^4}(1+\cos^2\theta)\\
+S(\lambda,\theta,h)=\beta(\lambda,h)\gamma(\theta) \]</span></p>
+<ul>
+<li><strong>Rayleigh Scattering Coefficient</strong>
+在某点发生散射后，多少比例的能量损失情况</li>
+</ul>
+<p><span class="math display">\[
+\beta(\lambda,h)=\frac{8\pi^3(n^2-1)^2}{3}\frac{\rho(h)}{N}\frac{1}{\lambda^4}\\
+\]</span></p>
+<ul>
+<li><p><strong>Rayleigh Scattering Coefficient in Sea
+level</strong></p></li>
+<li><p><span class="math display">\[
+\beta(\lambda,0)=\frac{8\pi^3(n^2-1)^2}{3}\frac{1}{N}\frac{1}{\lambda^4}\\
+\]</span></p></li>
+<li><p><strong>Rayleigh Scattering Phase Function</strong>
+描述散射的形状，在特定方向光的损失相对比率。</p></li>
+<li><p><span class="math display">\[
+\gamma(\theta)=\frac{3}{16\pi}(1+\cos^2\theta) \]</span></p></li>
+<li><p><strong>Density ratio</strong> 模拟大气密度的函数</p></li>
+<li><p><span class="math display">\[ \rho(h)=\exp(\frac{h}{H})
+\]</span></p></li>
+</ul>
+<p>H = 8500 是 scale heigh</p>
+<h2 id="atmospheric-density-ratio"><strong>Atmospheric Density
+Ratio</strong></h2>
+<p>当大气密度越大时大气中粒子越多，会有更多的散射现象发生。
+大气密度和高度示意图：</p>
+<figure>
+<img src="/imgs/大气散射/height.png" srcset="/img/loading.gif" lazyload alt="height" />
+<figcaption aria-hidden="true">height</figcaption>
+</figure>
+<p>H 为 Scale Height，通常取 8500</p>
+<h2 id="exponential-decay"><strong>Exponential Decay</strong></h2>
+<p>我们前面的得到了 <strong>scattering coefficient</strong>
+<em>β</em>，我们有能求得解析解的 close form 函数</p>
+<p><span class="math display">\[
+\beta(\lambda,h)=\frac{8\pi^3(n^2-1)^2}{3}\frac{\rho(h)}{N}\frac{1}{\lambda^4}\\
+\]</span></p>
+<p>上式描述了<strong>光和粒子单次散射后</strong>光量损失的比例。</p>
+<p>现在假设如果初始光量为
+I0，然后以衰减系数为β，经过大气中粒子的一次散射后所剩的光量会是：<strong>(这里的β不是<em>β(λ,h)</em>,而是鉴定穿过一部分大气后的衰减系数)</strong></p>
+<p><span class="math display">\[
+I_1=\underbrace{I_0}_{initial\;energy}-\underbrace{I_0\beta}_{energy\;lost}=(1-\beta)I_0
+\]</span></p>
+<p>但这只适用于一次散射/单次散射碰撞，我们希望求得<strong>在一均匀介质中</strong>，传播一定距离后光的衰减：
+假设我们将这个过程分为两次散射看待，考虑两次散射：<strong>(这里的β不是<em>β(λ,h)</em>,而是鉴定穿过一部分大气后的衰减系数)</strong></p>
+<p><span class="math display">\[
+First\;Scattering\;:\;I_1=I_0(1-\beta\frac{S}{2})\\
+Second\;Scattering\;:\;I_2=I_1(1-\beta\frac{S}{2})=I_0(1-\beta\frac{S}{2})^2\\
+About\;N\;Scattering\;:\;I=\lim_{n\rightarrow\infty}I_0(1-\beta\frac{S}{n})^n=\exp\{-\beta
+S\} \]</span></p>
+<h2 id="uniform-transmittance"><strong>Uniform
+Transmittance</strong></h2>
+<p><strong>transmittance</strong> T
+描述了光量穿越大气时经过散射所剩余的光量比例。</p>
+<figure>
+<img src="/imgs/大气散射/OutScattering2.PNG" srcset="/img/loading.gif" lazyload alt="OutScattering2" />
+<figcaption aria-hidden="true">OutScattering2</figcaption>
+</figure>
+<p>根据刚才的欧拉数推导我们能写出一个 P位置光量</p>
+<p><span class="math display">\[ I_P=I_S\exp\{-\beta\overline{CP}\}\\
+\overline{CP}:\;distance \; of \; CP \]</span></p>
+<p>但实际上CP中的散射系数β不是一个均匀值
+我们延续前面类似的思路，将CP分为两段CQ，QP</p>
+<figure>
+<img src="/imgs/大气散射/Trasmittance2.png" srcset="/img/loading.gif" lazyload alt="Trasmittance2" />
+<figcaption aria-hidden="true">Trasmittance2</figcaption>
+</figure>
+<p><span class="math display">\[
+I_Q=I_S\exp\{-\beta(\lambda,h_0)\overline{CQ}\}\\
+I_P=I_Q\exp\{-\beta(\lambda,h_1)\overline{QP}\}\\
+I_P=I_S\exp\{-\beta(\lambda,h_0)\overline{CQ}\}\exp\{-\beta(\lambda,h_1)\overline{QP}\}\\
+I_P=I_S\exp\{-\beta(\lambda,h_0)\overline{CQ}-\beta(\lambda,h_1)\overline{QP}\}
+\]</span></p>
+<p>如果CQ和QP长度相同还可以再次简化，那不妨设其相同且为
+<strong><em>ds</em></strong> (方便后面采用积分思想推导)</p>
+<p><span class="math display">\[
+I_P=I_S\exp\{-(\beta(\lambda,h_0)+\beta(\lambda,h_1))ds\} \]</span></p>
+<p>延续该思路我们可以将 CP
+段化为无数等长的小段，累加这个过程,也就是数值积分</p>
+<p><span class="math display">\[
+I_P=I_S\exp\{-\sum_{Q\in\overline{CP}}\beta(\lambda,h_Q)ds\}
+\]</span></p>
+<p>将 Rayleigh Scattering 带入</p>
+<p><span class="math display">\[
+T(\overline{CP})=I_S\exp\{-\sum_{Q\in\overline{CP}}\frac{8\pi^3(n^2-1)^2}{3}\frac{\rho(h_Q)}{N}\frac{1}{\lambda^4}ds\}\\
+=\underbrace{-\frac{8\pi^3(n^2-1)^2}{3}\frac{1}{N}\frac{1}{\lambda^4}}_{constant\;\beta(\lambda)}\overbrace{\sum_{Q\in\overline{CP}}\rho(h_Q)ds}^{optical\;depth\;D(\overline{CP})}\\
+\]</span></p>
+<p>求和部分为 Optical Depth ，需要我们在 shader
+中计算，其他都是常数。</p>
+<p><span class="math display">\[
+T(\overline{CP})=\exp\{-\beta(\lambda)D(\overline{CP})\} \]</span></p>
+<h2 id="intersecting-the-atmosphere"><strong>Intersecting the
+Atmosphere</strong></h2>
+<blockquote>
+<p>这个教程是渲染星球的</p>
+</blockquote>
+<p>所以其要求 AB 的 optical depth，其中 O 点是大气层表面一点也就是我们的
+fragment</p>
+<figure>
+<img src="/imgs/大气散射/math.png" srcset="/img/loading.gif" lazyload alt="math" />
+<figcaption aria-hidden="true">math</figcaption>
+</figure>
+<p>D 是 camera 的视线方向，L外壳半径，R大气半径</p>
+<p><span class="math display">\[ A=O+D\overline{OA}\\
+B=O+D\overline{OB}\\ \overline{OA}=\overline{OT}-\overline{AT}\\
+\overline{OB}=\overline{OT}+\overline{TB}\\
+\overline{AT}=\overline{TB}\\ \overline{OT}=(C-O)\cdot D=L\cdot D\\
+R^2=(\overline{CT})^2+(\overline{AT})^2\\
+(\overline{CT})^2=L^2-(\overline{OT})^2\\
+(\overline{AT})^2=R^2-(\overline{CT})^2 \]</span></p>
+<p>如果 CT 大于 R 则无解</p>
+<h3 id="colliding-with-the-planet"><strong>Colliding with the
+Planet</strong></h3>
+<p>和 plant 相交 只需要按和大气球求交点再求一次和plant球的交点即可
+如果有解则 大气的 B点要改为 plant 的A点</p>
+<figure>
+<img src="/imgs/大气散射/math2.png" srcset="/img/loading.gif" lazyload alt="math2" />
+<figcaption aria-hidden="true">math2</figcaption>
+</figure>
+<h2 id="sampling-the-view-ray"><strong>Sampling the View
+Ray</strong></h2>
+<p><span class="math display">\[ I=I_S\sum_{P\in
+AB}S(\lambda,\theta,h)T(\overline{CP})T(\overline{PA})ds\\\\ Decompose
+\;S(\lambda,\theta,h):\\
+S(\lambda,\theta,h)=\beta(\lambda,h)\gamma(\theta)=\beta(\lambda)\rho(h)\gamma(\theta)\\
+\beta(\lambda)=\frac{8\pi^3(n^2-1)^2}{3N\lambda^4}\\
+\rho(h)=\exp\{-\frac{h}{H}\}\\
+\gamma(\theta)=\frac{3}{16\pi}(1+\cos^2(\theta))\\
+We\;get:I=I_S\beta(\lambda)\gamma(\theta)\sum_{P\in
+AB}\underbrace{T(\overline{CP})T(\overline{PA})\rho(h_P)ds}_{light\;contribution\;of\;L(P)}\\
+\]</span></p>
+<p><span class="math display">\[ For\;T(\overline{Dis}):\\
+T(\overline{CP})T(\overline{PA})=\exp\{-\beta(\lambda)D(\overline{CP})\}\exp\{-\beta(\lambda)D(\overline{PA})\}\\
+=\exp\{-\beta(\lambda)(D(\overline{CP})+D(\overline{PA}))\}\\
+D(\overline{CP})=\sum_{Q\in CP}\exp\{-\frac{h_Q}{H}\}dt\\
+D(\overline{PA})=\sum_{Q\in AP}\exp\{-\frac{h_P}{H}\}dx\\\\
+I=I_S\beta(\lambda)\gamma(\theta)\sum_{P\in
+AB}\underbrace{T(\overline{CP})T(\overline{PA})\rho(h)ds}_{light\;contribution\;of\;L(P)}\\
+\]</span></p>
+<p><span class="math display">\[ \sum_{P\in
+AB}T(\overline{CP})T(\overline{PA})\rho(h_P)ds=\sum_{P\in
+AB}\rho(h_P)\exp\{-\beta(\lambda)(D(\overline{CP})+D(\overline{PA}))\}ds\\
+实际上 D(\overline{PA}) 可以在最外层循环\sum_{P\in AB}做累加,\\
+不必每次在里面的循环做，即不必每次从A开始累加 \]</span></p>
+<h2 id="to-domie-scattering"><strong>[To Do]Mie Scattering</strong></h2>
+<p>和波长无关，只和粒子大小相干</p>
+<p><span class="math display">\[ phase\;function:\\ S(\theta)=
+\frac{1}{4\pi}\frac{3(1-g^2)}{(1-2g\cos\theta+g^2)^{\frac{3}{2}}}\\
+or:S(\theta)=\frac{3}{8\pi}\frac{1-g^2}{2+g^2}\frac{1+\cos^2\theta}{(1-2g\cos\theta+g^2)^{\frac{3}{2}}}
+\]</span></p>
+<h1 id="待更新">待更新</h1>
+<p>我们知道了基本的计算思路，但是实际实现还有所不同，后面陆续更新</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E5%9B%BE%E5%BD%A2%E5%AD%A6/" class="print-no-link">#图形学</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>大气散射</div>
+      <div>http://example.com/2023/11/05/大气散射/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Hollow Emiya</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2023年11月5日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2023/11/14/LearnPBR/" title="Learn PBR">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Learn PBR</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/08/28/VisualStudioPro/" title="Visual Studio 解决项目默认的配置奇奇怪怪的问题">
+                        <span class="hidden-mobile">Visual Studio 解决项目默认的配置奇奇怪怪的问题</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

@@ -1,0 +1,1857 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Hollow Emiya">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="对 CMake 粗浅的学习，之前看一个up的讲的一般，后来看了小彭老师，的确不错，因为官方文档看起来有点吃力，所以就…… 学习过程中把知识点做了一点笔记方便后续复习">
+<meta property="og:type" content="article">
+<meta property="og:title" content="我的CMake学习">
+<meta property="og:url" content="http://example.com/2023/03/10/CMake%20Note/index.html">
+<meta property="og:site_name" content="Emiya Blog">
+<meta property="og:description" content="对 CMake 粗浅的学习，之前看一个up的讲的一般，后来看了小彭老师，的确不错，因为官方文档看起来有点吃力，所以就…… 学习过程中把知识点做了一点笔记方便后续复习">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/imgs/CMake%20Note/Qt5Error.png">
+<meta property="og:image" content="http://example.com/imgs/CMake%20Note/Qt5CannotFound.png">
+<meta property="og:image" content="d:\Book\C++\MyC++Note\CMake.png">
+<meta property="article:published_time" content="2023-03-10T05:15:23.000Z">
+<meta property="article:modified_time" content="2025-08-19T02:21:06.285Z">
+<meta property="article:author" content="Hollow Emiya">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/imgs/CMake%20Note/Qt5Error.png">
+  
+  
+  
+  <title>我的CMake学习 - Emiya Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null},"woyaola":null,"cnzz":null},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Emiya&#39;s Blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="我的CMake学习"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-03-10 13:15" pubdate>
+          2023年3月10日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          11k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          95 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">我的CMake学习</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>对 CMake
+粗浅的学习，之前看一个up的讲的一般，后来看了小彭老师，的确不错，因为官方文档看起来有点吃力，所以就……<br />
+学习过程中把知识点做了一点笔记方便后续复习</p>
+<span id="more"></span>
+<h1 id="cmake">CMake</h1>
+<p>本文档为学习笔记，该部分内容来源<a
+target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1vR4y1u77h/?p=2&amp;spm_id_from=pageDriver&amp;vd_source=1fa1b82383f6efb8a2632316da9afad0">b站Up刘贝斯的CMake教学</a>。</p>
+<h2 id="what-is-cmake">What is CMake?</h2>
+<p>CMake 是一种高级编译配置工具。</p>
+<p>当多人使用一种或不同种语言、编译器开发一个项目时，最终需要输出一个<strong>可执行文件</strong>或者<strong>共享库</strong>(dll,
+so等等)，此时——CMake就可以帮助到我们，不必用G++或GCC逐个编译我们所写过的代码。<br />
+所有操作都是通过编译CMakeLists.txt完成的。<br />
+使用CMake来处理大型的C/C++/Java等项目。</p>
+<h2 id="cmake-安装">CMake 安装</h2>
+<ul>
+<li>Linux大多都有安装。<br />
+</li>
+<li>Windows, 下载网站(https://cmake.org/download/)</li>
+</ul>
+<h2 id="cmake-hello-world">CMake: Hello World</h2>
+<p>1.首先写一个C/C++的hello world</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span><br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>    std::cout &lt;&lt; <span class="hljs-string">&quot;Hello World!&quot;</span> &lt;&lt; std::endl;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>2.编写<code>CmakeLists.txt</code></p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs cmake"><span class="hljs-keyword">PROJECT</span> (HELLOW)<br><br><span class="hljs-keyword">SET</span>(SRC_LIST main.cpp)<br><br><span class="hljs-keyword">MESSAGE</span>(STATUS <span class="hljs-string">&quot;This is BINARY dir &quot;</span> <span class="hljs-variable">$&#123;HELLO_BINAR_DIR&#125;</span>)<br><br><span class="hljs-keyword">MESSAGE</span>(STATUS <span class="hljs-string">&quot;This is SOURCE dir &quot;</span> <span class="hljs-variable">$&#123;HELLO_SOURCE_DIR&#125;</span>)<br><br><span class="hljs-keyword">ADD_EXECUTABLE</span>&#123;hello $(SRC_LIST)&#125;<br></code></pre></td></tr></table></figure>
+<p>3.使用CMake，生成<code>makefile</code>文件</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs cmake">cmake .  <br></code></pre></td></tr></table></figure>
+<h3 id="cmake-hello-world语法介绍">CMake: Hello World语法介绍</h3>
+<h4 id="project关键字-简书cmake命令之project"><code>PROJECT</code>关键字
+—— <a
+target="_blank" rel="noopener" href="https://www.jianshu.com/p/cdd6e56c2422">简书CMake命令之project</a></h4>
+<p>可以用来<strong>指定工程的名字和支持的语言</strong>，默认支持所有语言。<br />
+PROJECT (HELLO) 指定了工程的名字——HELLO，并且支持所有语言。</p>
+<h1 id="cmake教程"><a
+target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV16P4y1g7MH"><strong>CMake教程</strong></a></h1>
+<h2 id="第一章-添加源文件">第一章 添加源文件</h2>
+<ul>
+<li>第一种，添加名为 <em>main</em> 的 <em>executable</em> ，源文件为
+<em>main.cpp</em> 。</li>
+</ul>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs cmake"><span class="hljs-keyword">add_executable</span>(main main.cpp)<br></code></pre></td></tr></table></figure>
+<ul>
+<li>第二种，先创建 <strong>目标( executable
+)</strong>，稍后再添加源文件。</li>
+</ul>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs cmake"><span class="hljs-keyword">add_executable</span>(main)<br><span class="hljs-keyword">target_sources</span>(main PUBLIC main.cpp)<br></code></pre></td></tr></table></figure>
+<h3 id="若有多个源文件呢">若有多个源文件呢？</h3>
+<p>逐个添加即可</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs cmake"><span class="hljs-keyword">add_executable</span>(main)<br><span class="hljs-keyword">target_sources</span>(main PUBLIC main.cpp other.cpp)<br></code></pre></td></tr></table></figure>
+<p>或者使用<strong>变量</strong>来存储</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs cmake"><span class="hljs-keyword">add_executable</span>(main)<br><span class="hljs-keyword">set</span>(sources main.cpp other.cpp)<br><span class="hljs-keyword">target_sources</span>(main PUBLIC <span class="hljs-variable">$&#123;sources&#125;</span>)<br></code></pre></td></tr></table></figure>
+<p>建议把头文件也加上，这样在VS中可以出现在 "Header Flies" 一栏</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs cmake"><span class="hljs-keyword">add_executable</span>(main)<br><span class="hljs-keyword">set</span>(sources main.cpp other.cpp other.h)<br><span class="hljs-keyword">target_sources</span>(main PUBLIC <span class="hljs-variable">$&#123;sources&#125;</span>)<br></code></pre></td></tr></table></figure>
+<p>我们还可以使用 <strong>GLOB</strong>
+自动查找当前目录下指定拓展名的文件，实现批量添加源文件</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs cmake"><span class="hljs-keyword">add_executable</span>(main)<br><span class="hljs-keyword">file</span>(GLOB sources *.cpp *.h)<br><span class="hljs-keyword">target_sources</span>(main PUBLIC <span class="hljs-variable">$&#123;sources&#125;</span>)<br></code></pre></td></tr></table></figure>
+<p>但是使用 <strong>GLOB</strong>
+需要注意，如果我们增添新的源文件时，CMake可能不会更新，所以要启用
+<strong>CONFIGURE_DEPENDS</strong> 选项，当添加新文件时，<strong>在
+Build 时进行检测</strong>，自动更新变量</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs cmake"><span class="hljs-keyword">add_executable</span>(main)<br><span class="hljs-keyword">file</span>(GLOB sources CONFIGURE_DEPENDS *.cpp *.h)<br><span class="hljs-keyword">target_sources</span>(main PUBLIC <span class="hljs-variable">$&#123;sources&#125;</span>)<br></code></pre></td></tr></table></figure>
+<h3 id="源码在子文件夹中">源码在子文件夹中？</h3>
+<h4 id="例子">例子：</h4>
+<ul>
+<li>mylib
+<ul>
+<li>other.cpp<br />
+</li>
+<li>other.h<br />
+</li>
+</ul></li>
+<li>CMakeLists.txt<br />
+</li>
+<li>main.cpp</li>
+</ul>
+<p>将<strong>路径名、后缀名全部</strong>写出来</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs cmake"><span class="hljs-keyword">add_executable</span>(main)<br><span class="hljs-keyword">file</span>(GLOB sources CONFIGURE_DEPENDS *.cpp *.h mylib/*.cpp mylib/*.h)<br><span class="hljs-keyword">target_sources</span>(main PUBLIC <span class="hljs-variable">$&#123;sources&#125;</span>)<br></code></pre></td></tr></table></figure>
+<p>然鹅，dark不必，我们可以使用 <strong>aux_source_directory</strong> ,
+自动搜集需要的文件后缀名<br />
+本例中<code>aux_source_directory(. sources)</code>和<code>aux_source_directory(mylib sources)</code>
+表示<strong>当前目录</strong>和 <strong>mylib 目录</strong>
+全部加入项目中。</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs cmake"><span class="hljs-keyword">add_executable</span>(main)<br><span class="hljs-keyword">aux_source_directory</span>(. sources)<br><span class="hljs-keyword">aux_source_directory</span>(mylib sources)<br><span class="hljs-keyword">target_sources</span>(main PUBLIC <span class="hljs-variable">$&#123;sources&#125;</span>)<br></code></pre></td></tr></table></figure>
+<p>更进一步：<strong>GLOB_RECURES</strong>
+能够自动包含所有子文件夹下的文件<br />
+但是注意，<strong>GLOB_RECURES</strong> 会把 <strong>build
+目录</strong>下的临时 .cpp 文件( 这些临时文件是 CMake 为了测试编译器
+)也加进来。<br />
+解决办法：一种，可以把源码统一放到 src 目录下。二种，要求使用者不要把
+build 放到和源码同一个目录里。这两种之间前者好一点。</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs cmake"><span class="hljs-keyword">add_executable</span>(main)<br><span class="hljs-keyword">file</span>(GLOB_RECURES sources CONFIGURE_DEPENDS *.cpp *.h)<br>target_source(main PUBLIC <span class="hljs-variable">$&#123;sources&#125;</span>)<br></code></pre></td></tr></table></figure>
+<h2 id="第二章-项目配置变量build_type">第二章
+项目配置变量——BUILD_TYPE</h2>
+<h3
+id="cmake_build_type-构建的类型调试模式-or-发布模式">CMAKE_BUILD_TYPE
+构建的类型，调试模式 or 发布模式</h3>
+<ul>
+<li>CMAKE_BUILD_TYPE 是 CMake 中一个特殊的变量，
+用于控制构建类型，他的值可以是：
+<ul>
+<li>Debug 调试模式，完全不进行优化，生成调试信息，方便调试程序<br />
+</li>
+<li>Release 发布模式，优化程度最高，性能最佳，但是编译比 Debug 慢<br />
+</li>
+<li>MinsizeRel 最小体积发布，生成的文件比 Release
+更小，不完全优化，减少二进制体积。<br />
+</li>
+<li>RelWithDebInfo 带调试信息发布，生成的文件比 Release
+更大，因为带有调试的符号信息。<br />
+</li>
+</ul></li>
+<li>默认情况下，CMAKE_BUILD_TYPE 为空字符，这时相当于 Debug。</li>
+</ul>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs cmake">cmake_minimun_required(VERSION <span class="hljs-number">3.15</span>)<br><span class="hljs-keyword">project</span>(hellowcmake LANGUAGES CXX)<br><br><span class="hljs-keyword">set</span>(CMAKE_BUILD_TYPE Release)<br><br><span class="hljs-keyword">add_executable</span>(main main.cpp)<br></code></pre></td></tr></table></figure>
+<p>各种构建模式在编译器选项上的区别</p>
+<ul>
+<li>在 Release
+模式下，追求的是程序最佳的性能表现，在此情况下编译器会对程序做最大的代码优化以达到最快的运行速度。另一方面，由于代码优化后不与源代码一致，此模式下一般会丢失大量的调试信息。</li>
+</ul>
+<p>在编译器上各种构建类型的体现：</p>
+<ul>
+<li>Debug : '-O0 -g'<br />
+</li>
+<li>Release : '-O3 -DNDEBUG'<br />
+</li>
+<li>MinSizeRel : '-Os -DNDEBUG'<br />
+</li>
+<li>RelWithDebInfo : '-O2 -g -DNDEBUG'</li>
+</ul>
+<p>此外，定义 NDEBUG 宏会使 assert 被去除掉。</p>
+<p>因为默认情况下是 Debug 导致生成程序的效率很低。<br />
+小技巧：设定一个变量的默认值</p>
+<p>如何让 CMAKE_BUILD_TYPE 在用户没有指定的情况时为
+Release，指定的时候保持用户的指定的值不变？<br />
+即 CMake 默认情况下 CMAKE_BUILD_TYPE 是一个空字符串。<br />
+因此可以通过
+<code>if( NOT CMAKE_BUILD_TYPE )</code>判断是否为空，空则自动设置为
+Release 模式。<br />
+大多数 CMakeLists.txt
+开头都会有这样三行，目的是让默认的构建类型为发布模式 (高度优化)
+而不是默认的调试模式 (不会优化) 。</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs cmake"><span class="hljs-keyword">if</span>( <span class="hljs-keyword">NOT</span> CMAKE_BUILD_TYPE )<br>	<span class="hljs-keyword">set</span>(CMAKE_BUILD_TYPE Release)<br><span class="hljs-keyword">endif</span>()<br></code></pre></td></tr></table></figure>
+<h3 id="project">Project</h3>
+<p>project : 初始化项目信息，并把当前 CMakeLists.txt
+所在位置作为根目录</p>
+<p>这里初始化名为 hellocmake 的项目；为什么一定需要项目名？<br />
+因为对于 MSVC，他会在 build 里生成 hellocmake.sln 作为 IDE
+眼中的项目。<br />
+CMAKE_CURRENT_SOURCE_DIR 表示<strong>当前源码目录</strong>的位置，例如
+~/hellocmake<br />
+CMAKE_CURRENT_BINARY_DIR 表示<strong>当前输出目录</strong>的位置，例如
+~/hellocmake/build</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs cmake">cmake_minumum_required(VERSION <span class="hljs-number">3.15</span>)<br><span class="hljs-keyword">project</span>(hellocmake)<br><br><span class="hljs-keyword">message</span>(<span class="hljs-string">&quot;PROJECT_NAME: $&#123;PROJECT_NAME&#125;&quot;</span>)<br><span class="hljs-keyword">message</span>(<span class="hljs-string">&quot;PROJECT_SOURCE_DIR: $&#123;PROECJR_SOURCE_DIR&#125;&quot;</span>)<br><span class="hljs-keyword">message</span>(<span class="hljs-string">&quot;PROJECT_BINARY_DIR: $&#123;PROJECT_BINARY_DIR&#125;&quot;</span>)<br><span class="hljs-keyword">message</span>(<span class="hljs-string">&quot;CMAKE_CURRENT_SOURCE_DIR: $&#123;CMAKE_CURRENT_SOURCE_DIR&#125;&quot;</span>)<br><span class="hljs-keyword">message</span>(<span class="hljs-string">&quot;CMAKE_CURRENT_BINARY_DIR: $&#123;CMAKE_CURRENT_BINARY_DIR&#125;&quot;</span>)<br><span class="hljs-keyword">add_executable</span>(main main.cpp)<br></code></pre></td></tr></table></figure>
+<h4
+id="和子模块的关系project_x_dir-和-cmake_current_x_dir">和子模块的关系：PROJECT_X_DIR
+和 CMAKE_CURRENT_x_DIR</h4>
+<p>PROJECT_SOURCE_DIR 表示最近一次调用 project 的 CMakeLists.txt
+所在的源码目录。<br />
+CMAKE_CURRENT_SOURCE_DIR 表示当前 CMakeLists.txt 所在的源码目录。<br />
+CMAKE_SOURCE_DIR 表示最为外层 CMakeLists.txt 的源码根目录。<br />
+利用 PROJECT_SOURCE_DIR 可以实现从子模块直接获取项目最外层的路径。<br />
+<strong>不建议使用 CMAKE_SOURCE_DIR ,
+那样会让你的项目无法被人作为子模块使用。</strong></p>
+<blockquote>
+<p>mylib got PORJECT_SOURCE_DIR: /home/bate/Codes/course/11/template</p>
+<p>mylib got CMAKE_CURRENT_SOURCE_DIR:
+/home/bate/Codes/course/11/template/mylib</p>
+</blockquote>
+<h4 id="其他相关变量">其他相关变量</h4>
+<ul>
+<li>PROJECT_SOURCE_DIR : 当前项目源码路径( 存放 main.cpp 的地方)<br />
+</li>
+<li>PROJECT_BINARY_DIR : 当前项目输出路径 ( 存放 main.exe 的地方 )<br />
+</li>
+<li>CMAKE_SOURCE_DIR : 根项目源码路径 ( 存放 main.cpp 的地方 )<br />
+</li>
+<li>CMAKE_BINARY_DIR : 根项目输出路径 ( 存放 main.cpp 的地方 )<br />
+</li>
+<li>PROJECT_IS_TOP_LEVEL : BOOL 类型，表示当前项目是否是 ( 最顶层的 )
+根项目<br />
+</li>
+<li>PROJECT_NAME : 当前项目名<br />
+</li>
+<li>CMAKE_PROJECT_NAME : 根项目的项目名<br />
+</li>
+<li>详见 : <a
+target="_blank" rel="noopener" href="https://cmake.org/cmake/help/latest/command/project.html">CMake之Project</a></li>
+</ul>
+<h4
+id="子模块也可使用-project-命令将当前目录作为一个独立的子项目">子模块也可使用
+project 命令，将当前目录作为一个独立的子项目</h4>
+<p>这样 PROJECT_SOURCE_DIR 就会是子模块的源码目录而不是外层了。<br />
+这时候 CMake
+会认为这个子模块是一个独立的项目，会额外做一些初始化。<br />
+他的构建目录 PROJECR_BINARY_DIR 也会变成 build/<源码相对路径><br />
+这样在 MSVC 上也会看见 build/mylib.vcxproj 的生成</p>
+<blockquote>
+<p>PORJECT_NAME : hellowcmake</p>
+<p>PROJECT_SOURCE_DIR : /home/bate/Codes/course/11/template</p>
+<p>PROJECT_BINARY_DIR : /home/bate/Codes/course/11/template/build</p>
+<p>CMAKE_CURRENT_SOURCE_DIR : /home/bate/Codes/course/11/template</p>
+<p>CMAKE_CURRENT_BINARY_DIR :
+/home/bate/Codes/course/11/template/build</p>
+<p>mylib got PROJECT_NAME : mylib</p>
+<p>mylib got CMAKE_SOURCE_DIR : /home/bate/Codes/course/11/template</p>
+<p>mylib got CMAKE_BINARY_DIR :
+/home/bate/Codes/course/11/template/build</p>
+<p>mylib got PROJECT_SOURCE_DIR :
+/home/bate/Codes/course/11/template/mylib</p>
+<p>mylib got PROJECT_BINARY_DIR :
+/home/bate/Codes/course/11/build/mylib</p>
+<p>mylib got CMAKE_CURRENT_SOURCE_DIR :
+/home/bate/Codes/course/11/template/mylib</p>
+<p>mylib got CMAKE_CURRENT_BINARY_DIR :
+/home/bate/Codes/course/11/template/build/mylib</p>
+</blockquote>
+<h4 id="project-的初始化-languages-字段">project 的初始化 : LANGUAGES
+字段</h4>
+<ul>
+<li>project( 项目名 LANGUAGES 使用的语言列表...)
+指定了该项目使用了那种编程语言<br />
+目前支持的语言：
+<ul>
+<li>C : C语言<br />
+</li>
+<li>CXX : C++<br />
+</li>
+<li>ASM : 汇编<br />
+</li>
+<li>Fortran : 老年人的编程语言(雾)，IBM<br />
+</li>
+<li>CUDA : 英伟达的黑科技 CUDA ( 需要 CMake 3.8 版本 )<br />
+</li>
+<li>OBJC : 苹果的 Objective-C ( 需要 CMake 3.16 版本 )<br />
+</li>
+<li>OBJCXX : 苹果的 Objective-C++ ( 需要 CMake 3.16 版本 )<br />
+</li>
+<li>ISPC : 一种英特尔的自动 SIMD 编程语言 ( 需要 CMake 3.18 版本 )<br />
+</li>
+</ul></li>
+<li>如果不指定 LANGUAGES, 默认为 C 和 CXX。</li>
+</ul>
+<h5
+id="常见问题languages-中没有启用-c-语言但却用到了-c-语言">常见问题：LANGUAGES
+中没有启用 C 语言，但却用到了 C 语言</h5>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs cmake"><span class="hljs-keyword">cmake_minimum_required</span>(VERSION <span class="hljs-number">3.15</span>)<br><span class="hljs-keyword">project</span>(hellocmake LANGUAGES CXX)<br><br><span class="hljs-keyword">add_executable</span>(main main.c)<br></code></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;stdio.h&gt;</span></span><br><br><span class="hljs-type">int</span> <span class="hljs-title function_">main</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span><br>&#123;<br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Hello world from Cmake!\n&quot;</span>);<br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>这样不行滴哥们，会报错，因为你在 CMakeLists.txt 的设置中没有启用 C
+语言。<br />
+解决办法：</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs cmake"><span class="hljs-keyword">cmake_minimum_required</span>(VERSiON <span class="hljs-number">3.15</span>)<br><span class="hljs-keyword">project</span>(hellocmake LANGUAGES C CXX)<br><br><span class="hljs-keyword">add_executable</span>(main main.c)<br></code></pre></td></tr></table></figure>
+<p>这次启用了 C 和 C++ 就不会报错力。</p>
+<h5
+id="也可以先设置-languages-none-之后调用-enable_languagecxx">也可以先设置
+LANGUAGES NONE, 之后调用 enable_language(CXX)</h5>
+<p>这样可以把 enable_language 放到 if
+语句中，从而只有某些选项开启才启用某语言类似的操作。</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs cmake"><span class="hljs-keyword">cmake_minimum_required</span>(VERSION <span class="hljs-number">3.15</span>)<br><span class="hljs-keyword">project</span>(hellocmake LANGUAGES NONE)<br><span class="hljs-keyword">enable_language</span>(CXX)<br><br><span class="hljs-keyword">add_executable</span>(main main.cpp)<br></code></pre></td></tr></table></figure>
+<h4 id="设置-c-标准cmake_cxx_standard-变量">设置 C++
+标准：CMAKE_CXX_STANDARD 变量</h4>
+<ul>
+<li>CMAKE_CXX_STANDARD 是一个整数，表示要用的 C++ 标准。<br />
+比如需要 C++17 即设为 17。<br />
+</li>
+<li>CMAKE_CXX_STANDARD_REQUIRED 是 BOOL 型，可以为 ON / OFF , 默认为
+OFF。<br />
+表示是否一定要支持指定的 C++ 标准，如果为 OFF 则CMake 检测到编译器不支持
+C++17 时不报错，而是将设置调整为 C++14 让开发人员使用；为 ON
+时，不支持会报错，具有更好的安全性。<br />
+</li>
+<li>CMAKE_CXX_EXTENSIONS 是 BOOL 变量，默认为 ON。为 ON 表示启用 GCC
+特有的一些拓展功能；OFF 则关闭 GCC 的拓展功能，只使用标准的 C++。<br />
+要兼容其他编译器( 如 MSVC )的项目都会将其设为 OFF，以防使用了 GCC
+特有的特性。<br />
+</li>
+<li>注意，最好在 project 命令前设置 CMAKE_CXX_STANDARD
+一系列变量，这样一来 CMAKE 可以在 project
+函数内对编译器进行一些检测，查看是否能支持对应版本C++的特性。</li>
+</ul>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs cmake"><span class="hljs-keyword">cmake_minimum_required</span>(VERSION <span class="hljs-number">3.15</span>)<br><br><span class="hljs-keyword">set</span>(CMAKE_CXX_STANDARD <span class="hljs-number">17</span>)<br><span class="hljs-keyword">set</span>(CMAKE_CXX_STANDARD_REQUIRED <span class="hljs-keyword">ON</span>)<br><span class="hljs-keyword">set</span>(CMAKE_CXX_EXTENSIONS <span class="hljs-keyword">ON</span>)<br><br><span class="hljs-keyword">project</span>(hellocmake LANGUAGES CXX)<br></code></pre></td></tr></table></figure>
+<h5 id="常见误区-小彭老师我手动加--stdc17-行不得行">常见误区 :
+小彭老师，我手动加 -std=c++17 行不得行</h5>
+<ul>
+<li>不要直接修改 CMAKE_CXX_FLAGS 来添加 -std=c++17<br />
+使用 CMake 封装好的 CMAKE_CXX_STANDARD<br />
+前者为什么不好，GCC 用户一旦手动指定 -std=c++17, 就是使用了 GCC
+的特性，而 MSVC 的用户就无法使用了。<br />
+而且 CMake 已经自动根据 CMAKE_CXX_STANDARD 的默认值 11 添加了
+-std=c++11，之后你再手动添加 -std=c++17 选项就发生了冲突。<br />
+所以一定要使用 CMake 已经封装好的 CMAKE_CXX_STANDARD !</li>
+</ul>
+<h3 id="projec-的初始化version-字段">projec 的初始化：VERSION 字段</h3>
+<ul>
+<li>project(项目名 VERSION x.y.z) 可以将当前项目的版本号设定为
+x.y.z<br />
+之后可以使用 PROJECT_VERSION 获取当前项目的版本号<br />
+</li>
+<li>PROJECT_VERSION_MAJOR 获取 x ( 主版本号 )<br />
+PROJECT_VERSION_MINOR 获取 y ( 次版本号 )<br />
+PROJECT_VERSION_PATCH 获取 z ( 补丁版本号 )</li>
+</ul>
+<h4
+id="项目名的另一个作用-会设置另外-_source_dir-等变量">项目名的另一个作用
+: 会设置另外 <项目名>_SOURCE_DIR 等变量</h4>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs cmake"><span class="hljs-keyword">cmake_minimum_required</span>(VERSION <span class="hljs-number">3.15</span>)<br><span class="hljs-keyword">project</span>(hellocmake VERSION <span class="hljs-number">2.7</span>.<span class="hljs-number">1</span>)<br><br><span class="hljs-keyword">message</span>(<span class="hljs-string">&quot;PROJECT_NAME: $&#123;PROJECT_NAME&#125;&quot;</span>)<br><span class="hljs-keyword">message</span>(<span class="hljs-string">&quot;PROJECT_VERSION: $&#123;PROJECT_VERSION&#125;&quot;</span>)<br><span class="hljs-keyword">message</span>(<span class="hljs-string">&quot;PROJECT_SOURCE_DIR: $&#123;PROJECT_SOURCE_DIR&#125;&quot;</span>)<br><span class="hljs-keyword">message</span>(<span class="hljs-string">&quot;PROJECT_BINARY_DIR: $&#123;PROJECT_BINARY_DIR&#125;&quot;</span>)<br><span class="hljs-keyword">message</span>(<span class="hljs-string">&quot;hellocmake_VERSION: $&#123;hellocmake_VERSION&#125;&quot;</span>)<br><span class="hljs-keyword">message</span>(<span class="hljs-string">&quot;hellocmake_SOURCE_DIR: $&#123;hellocmake_SOURCE_DIR&#125;&quot;</span>)<br><span class="hljs-keyword">message</span>(<span class="hljs-string">&quot;hellocmake_BINARY_DIR: $&#123;hellocmake_BINARY_DIR&#125;&quot;</span>)<br></code></pre></td></tr></table></figure>
+<blockquote>
+<p>PROJECT_NAME: hellocmake<br />
+PROJECT_VERSION: 2.7.1<br />
+PROJECT_SOURCE_DIR: /home/bate/Codes/course/11/templa<br />
+PROJECT_BINARY_DIR: /tmp/build/home/bate/Codes/course/11/templa<br />
+hellocmake_VERSION: 2.7.1<br />
+hellocmake_SOURCE_DIR: /home/bate/Codes/course/11/templa<br />
+hellocmake_BINARY_DIR: /tmp/build/home/bate/Codes/course/11/templa</p>
+</blockquote>
+<p>这个功能可以让我们在当前项目去查询别的项目的版本号比如在 hellocmake
+查询 helloworld 的版本号或者其他信息。</p>
+<h4 id="小技巧-cmake-的-表达式可以嵌套">小技巧 : CMake 的 ${}
+表达式可以嵌套</h4>
+<p>因为 ${PROJECT_NAME} 的值是 hellocmake<br />
+所以 <span class="math inline">\({\)</span>{PROJECT_NAME}_VERSION}
+相当于 ${hellocmake_VERSION} 即 2.7.1<br />
+<a target="_blank" rel="noopener" href="https://blog.csdn.net/fuyajun01/article/details/8891749">CMake
+其他关键字</a></p>
+<h4 id="一个标准的-cmakelists.txt-模板">一个标准的 CMakeLists.txt
+模板</h4>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><code class="hljs cmake"><span class="hljs-keyword">cmake_minimum_required</span>(VERSION <span class="hljs-number">3.15</span>)<br><br><span class="hljs-keyword">set</span>(CMAKE_CXX_STANDARD <span class="hljs-number">17</span>)<br><span class="hljs-keyword">set</span>(CMAKE_CXX_STANDARD_REQUIRED <span class="hljs-keyword">ON</span>)<br><br><span class="hljs-keyword">project</span>(zeno LANGUAGES C CXX)<br><br><span class="hljs-keyword">if</span>(PROJECT_BINARY_DIR <span class="hljs-keyword">STREQUAL</span> PROJECT_SOURCE_DIR)<br>	<span class="hljs-keyword">message</span>(WARING <span class="hljs-string">&quot;The binary directory of CMake cannot be the same as source directory!&quot;</span>)<br><span class="hljs-keyword">endif</span>()<br><br><span class="hljs-keyword">if</span>(<span class="hljs-keyword">NOT</span> CMAKE_BUILD_TYPE)<br>	<span class="hljs-keyword">set</span>(CMAKE_BUILD_TYPE Release)<br><span class="hljs-keyword">endif</span>()<br><br><span class="hljs-keyword">if</span>(WIN32)<br>	<span class="hljs-keyword">add_definitions</span>(-DNOMINMAX -D_USE_MATH_DEFINES)<br><span class="hljs-keyword">endif</span>()<br><br><span class="hljs-keyword">if</span>(<span class="hljs-keyword">NOT</span> MSVC)<br>	<span class="hljs-keyword">find_program</span>(CCACHE_PROGRAM ccache)<br>	<span class="hljs-keyword">if</span>(CCACHE_PROGRAM)<br>		<span class="hljs-keyword">message</span>(STATUS <span class="hljs-string">&quot;Found CCache: $&#123;CCACHE_PROGRAM&#125;&quot;</span>)<br>		<span class="hljs-keyword">set_property</span>(GLOBAL PROPERTY RULE_LAUNCH_COMPILE <span class="hljs-variable">$&#123;CCACHE_PROGRAM&#125;</span>)<br>		<span class="hljs-keyword">set_property</span>(GLOBAL PROPERTY RULE_LAUNCH_LINK <span class="hljs-variable">$&#123;CCACHE_PROGRAM&#125;</span>)<br>	<span class="hljs-keyword">endif</span>()<br><span class="hljs-keyword">endif</span>()<br></code></pre></td></tr></table></figure>
+<h2 id="第三章链接库文件">第三章：链接库文件</h2>
+<h3 id="main.cpp-调用-mylib.cpp-里的-say_hello-函数">main.cpp 调用
+mylib.cpp 里的 say_hello 函数</h3>
+<ul>
+<li><p>CMakeLists.txt<br />
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs cmake"><span class="hljs-keyword">add_executable</span>(main main.cpp mylib.cpp)  <br></code></pre></td></tr></table></figure></p></li>
+<li><p>main.cpp</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;mylib.h&quot;</span></span><br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span>  </span><br><span class="hljs-function"></span>&#123;  <br>	<span class="hljs-built_in">say_hello</span>();  <br>&#125;  <br></code></pre></td></tr></table></figure></li>
+<li><p>mylib.cpp<br />
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;mylib.h&quot;</span>  </span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;cstdio&gt;</span></span><br><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">say_hello</span><span class="hljs-params">()</span>  </span><br><span class="hljs-function"></span>&#123;  <br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Hello, mylib!\n&quot;</span>);  <br>&#125;  <br></code></pre></td></tr></table></figure></p></li>
+</ul>
+<h4 id="改进mylib-作为静态库">改进：mylib 作为静态库</h4>
+<blockquote>
+<p><a
+target="_blank" rel="noopener" href="https://www.jianshu.com/p/090e1c0310ab">《静态库和动态库》</a> ,
+<a
+target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_39766005/article/details/122368414">《CMake
+| 编译静态库、动态库和对象库》</a><br />
+静态库会在<em>链接时</em>完整的复制到每一个可执行文件，被多次使用时就会造成多分冗余。<br />
+动态库在<em>链接时</em>不复制，程序运行时由系统动态加载到内存中，供程序调用，系统仅需加载一次，多个程序公用，节省内存。</p>
+</blockquote>
+<ul>
+<li><p>CMakeLists.txt</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs cmake"><span class="hljs-keyword">add_library</span>(mylib STATIC mylib.cpp)<br><br><span class="hljs-keyword">add_executable</span>(main main.cpp)<br><br><span class="hljs-keyword">target_link_libraries</span>(main PUBLIC mylib)  <br></code></pre></td></tr></table></figure></li>
+</ul>
+<h4 id="改进mylib-作为一个动态库">改进：mylib 作为一个动态库</h4>
+<ul>
+<li>CMakeLists.txt ( 动态库在Windows上有坑 )<br />
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs cmake"><span class="hljs-keyword">add_library</span>(mylib SHARED mylib.cpp)<br><br><span class="hljs-keyword">add_executable</span>(main main.cpp)<br><br><span class="hljs-keyword">target_link_libraries</span>(main PUBLIC mylib)  <br></code></pre></td></tr></table></figure></li>
+</ul>
+<h4 id="改进mylib-作为一个对象库">改进：mylib 作为一个对象库</h4>
+<p>对象库类似于静态库，但不生成 .a 文件，只由 CMake
+记住该库生成了那些对象文件<br />
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs cmake">add_libraty(mylib OBJECT mylib.cpp)<br><br><span class="hljs-keyword">add_executable</span>(main main.cpp)<br><br><span class="hljs-keyword">target_link_libraries</span>(main PUBLIC mylib)<br></code></pre></td></tr></table></figure></p>
+<p>对象库是 CMake
+自创的，绕开了编译器和操作系统的各种繁琐规则，保证了跨平台统一性。<br />
+在自己的项目中，推荐全部使用对象库( OBJECT ) 替代静态库 ( STATIC )
+避免跨平台的麻烦。<br />
+对象库仅仅作为组织代码的方式，而实际生成的可执行文件只有一个，减轻了部署的困难。</p>
+<h4
+id="静态库的麻烦gcc-编译器会自作聪明将自动剔除没有引用符号的对象">静态库的麻烦：GCC
+编译器会自作聪明，将自动剔除没有引用符号的对象</h4>
+<ul>
+<li><p>CMakeLists.txt<br />
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs cmake"><span class="hljs-keyword">add_library</span>(mylib STATIC mylib.cpp)  <br></code></pre></td></tr></table></figure></p></li>
+<li><p>mylib.cpp<br />
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;cstdio&gt;</span>  </span><br><span class="hljs-comment">// 静态初始化  </span><br><span class="hljs-type">static</span> <span class="hljs-type">int</span> unused = <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;My initialized\n&quot;</span>);	<span class="hljs-comment">// 会在主函数前被执行  </span><br></code></pre></td></tr></table></figure></p></li>
+<li><p>main.cpp<br />
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;cstdio&gt;</span></span><br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span>  </span><br><span class="hljs-function"></span>&#123;  <br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Main function\n&quot;</span>);  <br>&#125;  <br></code></pre></td></tr></table></figure></p></li>
+<li><p>Output<br />
+&gt;main function</p></li>
+</ul>
+<p>这里就是 GCC 看到没有引用人 mylib ，就会删掉 mylib.o
+但是恰恰遇到了静待初始化，GCC 就做错了。</p>
+<h4
+id="对象库就可以绕开编译器的不统一保证不会自动剔除没有用到的对象文件">对象库就可以绕开编译器的不统一：保证不会自动剔除没有用到的对象文件</h4>
+<ul>
+<li><p>CMakeLists.txt<br />
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs cmake"><span class="hljs-keyword">add_library</span>(mylib OBJECT mylib.cpp)  <br></code></pre></td></tr></table></figure></p></li>
+<li><p>mylib.cpp</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;cstdio&gt;</span></span><br><br><span class="hljs-type">static</span> <span class="hljs-type">int</span> unused = <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Mylib Function\n&quot;</span>);  <br></code></pre></td></tr></table></figure></li>
+<li><p>main.cpp<br />
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;cstdio&gt;</span></span><br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span>  </span><br><span class="hljs-function"></span>&#123;  <br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Main Function\n&quot;</span>);  <br>&#125;  <br></code></pre></td></tr></table></figure></p></li>
+<li><p>Output<br />
+&gt;Mylib Function<br />
+&gt;Main Function</p></li>
+</ul>
+<h4 id="add_library-无参数时是静态库还是动态库">add_library
+无参数时，是静态库还是动态库</h4>
+<p>会根据 BUILD_SHARED_LIBS 这个变量的值决定是动态库还是静态库。<br />
+ON 则相当于 SHARED, OFF 则相当于 STATIC<br />
+如果未指定 BUILD_SHARED_LIBS 变量，则默认为 STATIC。<br />
+因此，如果发现一个项目内的 add_library
+都是无参的，意味着我们可以使用：<br />
+<code>cmake -B build -DBUILD_SHARD_LIBS:BOOL=ON</code><br />
+来让他全部生成为动态库，这里涉及到<em>命令行传递变量的规则。</em></p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs cmake"><span class="hljs-keyword">set</span>(BUILD_SHARED_LIBS <span class="hljs-keyword">ON</span>)<br><br><span class="hljs-keyword">add_library</span>(mylib mylib.cpp)<br></code></pre></td></tr></table></figure>
+<h4 id="小技巧设定一个变量的默认值">小技巧：设定一个变量的默认值</h4>
+<p>要让 BUILD_SHARED_LIBS 默认为 ON，可以用之前类似的思路<br />
+如果该变量没有定义，则设为 ON，否则保持用户指定的值不变<br />
+这样用户没有指定 BUILD_SHARED_LIBS 时，会默认变成ON。<br />
+只有用户指定 BUILD_SHARED_LIBS 为 OFF 即
+<code>-DBUILD_SHARED_LIBS:BOOL:OFF</code><br />
+才会生成静态库，否则默认生成动态库。</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs cmake"><span class="hljs-keyword">if</span>(<span class="hljs-keyword">NOT</span> <span class="hljs-keyword">DEFINED</span> BUILD_SHARED_LIBS)<br>	<span class="hljs-keyword">set</span>(BUILD_SHARED_LIBS <span class="hljs-keyword">ON</span>)<br><span class="hljs-keyword">endif</span>()<br></code></pre></td></tr></table></figure>
+<h4
+id="常见坑点动态库无法链接静态库">常见坑点：动态库无法链接静态库</h4>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs cmake"><span class="hljs-keyword">add_library</span>(otherlib STATIC otherlib.cpp)<br><br><span class="hljs-keyword">add_library</span>(mylib SHARED mylib.cpp)<br><span class="hljs-keyword">target_link_libraries</span>(mylib PUBLIC otherlib)<br><br><span class="hljs-keyword">add_executable</span>(main main.cpp)<br><span class="hljs-keyword">target_link_libraries</span>(main PUBLIC mylib)<br></code></pre></td></tr></table></figure>
+<p><code>target_link_libraries(mylib PUBLIC otherlib)</code>试图将静态库<code>otherlib</code>链接到<code>mylib</code>中，发生错误。<em>静态库<code>otherlib</code>误以为用户将其连接到一个可执行文件上</em>，但用户却连接到动态库上。动态库在内存中的地址会变化的，在编译时会指定一个<code>fPIC</code>选项，但是静态库没有<code>fPIC</code>选项，静态库的地址并不想变化，而动态库本身却想改变地址，二者会发生冲突。</p>
+<h5 id="解决办法">解决办法：</h5>
+<p>1、将<code>otherlib</code>变为对象库</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs cmake"><span class="hljs-keyword">add_library</span>(otherlib OBJECT otherlib.cpp)<br><br><span class="hljs-keyword">add_library</span>(mylib SHARED mylib.cpp)<br><span class="hljs-keyword">target_link_libraries</span>(mylib PUBLIC otherlib)<br><br><span class="hljs-keyword">add_executable</span>(main main.cpp)<br>target_link_libraties(main PUBLIC mylib)<br></code></pre></td></tr></table></figure>
+<p>2、让静态库编译也生成位置无关的代码( PIC )，这样才能装在动态库中</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs cmake"><span class="hljs-keyword">set</span>(CMAKE_POSITION_INDEPENDENT_CODE <span class="hljs-keyword">ON</span>)<br><br><span class="hljs-keyword">add_library</span>(otherlib STATIC otherlib.cpp)<br><br><span class="hljs-keyword">add_library</span>(mylib SHARED mylib.cpp)<br><span class="hljs-keyword">target_link_libraries</span>(mylib PUBLIC otherlib)<br><br><span class="hljs-keyword">add_executable</span>(main main.cpp)<br><span class="hljs-keyword">target_link_libraries</span>(main PUBLIC mylib)<br></code></pre></td></tr></table></figure>
+<p>但是这样处理会导致本来不需要为静态 PIC 的静态库也变成 PIC
+了，<strong>所以我们可以只针对一个库，只对他启用位置无关的代码( PIC
+)</strong><br />
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs cmake"><span class="hljs-keyword">add_library</span>(otherlib STATIC otherib.cpp)<br><span class="hljs-keyword">set_property</span>(<span class="hljs-keyword">TARGET</span> otherlib PROPERTY POSITION_INDEPENDENT_CODE <span class="hljs-keyword">ON</span>)<br><br><span class="hljs-keyword">add_library</span>(mylib SHARED mylib.cpp)<br><span class="hljs-keyword">target_link_libraries</span>(mylib PUBLIC otherlib)<br><br><span class="hljs-keyword">add_executable</span>(main main.cpp)<br>target_link_libraried(main PUBLIC mylib)<br></code></pre></td></tr></table></figure></p>
+<p><strong>注意，add_library()
+是要指定头文件的，这里偷懒没加，指定头文件后其就会出现在IDE中。</strong></p>
+<h2 id="第四章-对象的属性">第四章 : 对象的属性</h2>
+<p>前面提到的 <code>POSITION_INDEPENDENT_CODE</code>
+就是一个属性。<br />
+### 除了 <code>POSITION_INDEPENDENT_CODE</code> 还有哪些属性呢？</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs cmake"><span class="hljs-keyword">add_executable</span>(main main.cpp)<br><br><span class="hljs-keyword">set_property</span>(<span class="hljs-keyword">TARGET</span> main PROPERTY CXX_STANDARD <span class="hljs-number">17</span>)	<span class="hljs-comment"># 采用 C++17 标准编译( 默认为11 )</span><br><span class="hljs-keyword">set_property</span>(<span class="hljs-keyword">TARGET</span> main PROPERTY CXX_STANDARD_REQUIRED <span class="hljs-keyword">ON</span>)	<span class="hljs-comment"># 如果编译器不支持 C++17，则直接报错( 默认为 OFF )</span><br><span class="hljs-keyword">set_property</span>(<span class="hljs-keyword">TARGET</span> main PROPERTY WIN32_EXECUTABLE <span class="hljs-keyword">ON</span>)	<span class="hljs-comment"># 在 Windows 系统中运行时不启动控制台窗口，只有 GUI 界面 (默认 OFF)</span><br><span class="hljs-keyword">set_property</span>(<span class="hljs-keyword">TARGET</span> main PROPERTY LINK_WHAT_YOU_USE <span class="hljs-keyword">ON</span>)	<span class="hljs-comment"># 告诉编译器不要自动剔除没有引用符号的链接库(默认 OFF)</span><br><span class="hljs-keyword">set_property</span>(<span class="hljs-keyword">TARGET</span> main PROPERTY LIBRARY_OUTPUT_DIRECTORY <span class="hljs-variable">$&#123;CMAKE_SOURCE_DIR&#125;</span>/lib)	<span class="hljs-comment"># 设置动态链接库的输出路径(默认 $&#123;CMAKE_BINARY_DIR&#125;)</span><br><span class="hljs-keyword">set_property</span>(<span class="hljs-keyword">TARGET</span> main PROPERTY ARCHIVE_OUTPUT_DIRECTORY <span class="hljs-variable">$&#123;CMAKE_SOURCE_DIR&#125;</span>/lib)	<span class="hljs-comment"># 设置静态链接库的输出路径(默认 $&#123;CMAKE_BINARY_DIR&#125;)</span><br><span class="hljs-keyword">set_property</span>(<span class="hljs-keyword">TARGET</span> main PROPERTY RUNTIME_OUTPUT_DIRECTORY <span class="hljs-variable">$&#123;CMAKE_SOURCE_DIR&#125;</span>/bin)	<span class="hljs-comment"># 设置可执行文件的输出路径(默认 $&#123;CMAKE_BINARY_DIR&#125;)</span><br></code></pre></td></tr></table></figure>
+<p>这样一个一个 <code>set_property</code>
+好麻烦啊！要是有更简单的写法就好了，于是……</p>
+<h3 id="另一个方法-set_target_properties-批量设置多个属性">另一个方法 :
+<code>set_target_properties</code> 批量设置多个属性</h3>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs cmake"><span class="hljs-keyword">add_executable</span>(main main.cpp)<br><br><span class="hljs-keyword">set_target_properties</span>(main PROPERTIES<br>	CXX_STANDARD <span class="hljs-number">17</span><br>	CXX_STANDARD_REQUIRED <span class="hljs-keyword">ON</span><br>	WIN32_EXECUTABLE <span class="hljs-keyword">ON</span><br>	LINK_WHAT_YOU_USE <span class="hljs-keyword">ON</span><br>	LIBRARY_OUTPUT_DIRECTORY <span class="hljs-variable">$&#123;CMAKE_SOURCE_DIR&#125;</span>/lib<br>	ARCHIVE_OUTPUT_DIRECTORY <span class="hljs-variable">$&#123;CMAKE_SOURCE_DIR&#125;</span>/lib<br>	RUNTIME_OUTPUT_DIRECTORY <span class="hljs-variable">$&#123;CMAKE_SOURCE_DIR&#125;</span>/bin<br>)<br></code></pre></td></tr></table></figure>
+<h3
+id="另一种方法通过全局的变量让之后创建的所有对象都享有同样的属性">另一种方法：通过全局的变量，让之后创建的所有对象都享有同样的属性</h3>
+<p>相当于改变了各属性的默认初始值，要注意<em>此时</em>
+<code>set(CMAKE_xxx)</code> <em>必须在</em> <code>add_executable</code>
+<em>之前才有效</em>。<br />
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs cmake"><span class="hljs-keyword">set</span>(CMAKE_CXX_STANDARD <span class="hljs-number">17</span>)<br><span class="hljs-keyword">set</span>(CMAKE_CXX_STANDARD_REQUIRED <span class="hljs-keyword">ON</span>)<br><span class="hljs-keyword">set</span>(CMAKE_WIN32_EXECUTABLE <span class="hljs-keyword">ON</span>)<br><span class="hljs-keyword">set</span>(CMAKE_LINK_WHAT_YOU_USE <span class="hljs-keyword">ON</span>)<br><span class="hljs-keyword">set</span>(CMAKE_LIBRARY_OUTPUT_DIRECTORY <span class="hljs-variable">$&#123;CMAKE_SOURCE_DIR&#125;</span>/lib)<br><span class="hljs-keyword">set</span>(CMAKE_ARCHIVE_OUTPUT_DIRECTORY <span class="hljs-variable">$&#123;CMAKE_SOURCE_DIR&#125;</span>/lib)<br><span class="hljs-keyword">set</span>(CMAKE_RUNTIME_OUTPUT_DIRECTORY <span class="hljs-variable">$&#123;CMAKE_SOURCE_DIR&#125;</span>/bin)<br><br>add_executbale(main main.cpp) <span class="hljs-comment"># 这里需要放在后面</span><br></code></pre></td></tr></table></figure></p>
+<h3 id="百度常见的错误">百度常见的错误！！！</h3>
+<p>对于 <code>CXX_STANDARD</code> 这种 CMake
+本身提供了变量进行配置设置的，不要自己去设置 -std=c++17 选项，会和 CMake
+自己设置好的产生冲突，导致出错！<br />
+请始终使用 <code>CXX_STANDARD</code> 或者全局变量
+<code>CMAKE_CXX_STANDARD</code> 来设置 -std=c++17 这个 flag，CMake
+会在配置阶段进行编译器检测是否支持 C++17。<br />
+CUDA 的 -arch=sm_75 也是同样的道理，请使用
+<code>CUDA_ARCHITECTURES</code> 属性。<br />
+再者说 -std=c++17 只是 GCC 编译器的选项，也不能进行跨平台适用于 MSVC
+编译器啊！！！</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs cmake"><span class="hljs-keyword">add_executable</span>(main main.cpp)<br><br><span class="hljs-keyword">set_property</span>(<span class="hljs-keyword">TARGET</span> main PROPERTY CXX_STANDARD <span class="hljs-number">17</span>)	<span class="hljs-comment"># 正确</span><br><span class="hljs-keyword">target_compile_options</span>(main PUBLIC <span class="hljs-string">&quot;-std=c++17&quot;</span>)	<span class="hljs-comment"># 错误！！！！</span><br><span class="hljs-keyword">set_property</span>(<span class="hljs-keyword">TARGET</span> main PROPERTY CUDA_ARCHITECTURES <span class="hljs-number">75</span>)	<span class="hljs-comment"># 正确</span><br><span class="hljs-keyword">target_compile_options</span>(main PUBLIC <span class="hljs-string">&quot;-arch=sm_75&quot;</span>)	<span class="hljs-comment"># 错误！！！</span><br></code></pre></td></tr></table></figure>
+<h3 id="假如在-windows-使用动态链接库需要额外操作">假如在 Windows
+使用动态链接库，需要额外操作</h3>
+<p><code>m/mylib.cpp</code></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;cstdio&gt;</span></span><br><span class="hljs-comment">// 需要手动加入这几句，在实现处加入dllexport</span><br><span class="hljs-meta">#<span class="hljs-keyword">ifdef</span> _MSC_VER</span><br>__declspec(dllexport)<br><span class="hljs-meta">#<span class="hljs-keyword">endif</span></span><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">say_hello</span><span class="hljs-params">()</span></span>&#123;<br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Hello, world!\n&quot;</span>);<br>&#125;<br></code></pre></td></tr></table></figure>
+<p><code>m/mylib.h</code></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-keyword">pragma</span> once</span><br><span class="hljs-comment">// 在声明处，加入import</span><br><span class="hljs-meta">#<span class="hljs-keyword">ifdef</span> _MSC_VER</span><br>__declspec(dllimport)<br><span class="hljs-meta">#<span class="hljs-keyword">endif</span></span><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">say_hello</span><span class="hljs-params">()</span></span>;<br></code></pre></td></tr></table></figure>
+<p>根目录下的 <code>CMakeLists.txt</code><br />
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs cmake"><span class="hljs-keyword">cmake_minimum_required</span>(VERSION <span class="hljs-number">3.15</span>)<br><br><span class="hljs-keyword">add_subdirectory</span>(mylib)<br><br><span class="hljs-keyword">add_executable</span>(main main.cpp)<br><span class="hljs-keyword">target_link_libraries</span>(main PUBLIC mylib)<br></code></pre></td></tr></table></figure></p>
+<p>子目录<code>m</code>下的<code>CMakeLists.txt</code>,
+<code>m/CMakeLists.txt</code><br />
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs cmake"><span class="hljs-keyword">add_library</span>(mylib SHARED mylib.cpp mylib.h)<br></code></pre></td></tr></table></figure></p>
+<h4
+id="常见问题链接了自己的-dll但是运行时会找不到">常见问题：链接了自己的
+dll，但是运行时会找不到</h4>
+<ul>
+<li>这是因为 dll 和 exe 不在用一个目录，而愚蠢的 Windows
+只会在<strong>当前 exe 所在目录查找</strong>，<strong>然后查找
+<em>PATH环境变量</em></strong>，找不到就报错。而 dll 在其他目录，因此
+Windows 找不到。
+<ul>
+<li><strong>解决办法1</strong>：把 dll 所在位置加到
+<em>PATH环境变量</em> 里，一劳永逸。<br />
+</li>
+<li><strong>结局办法2</strong>：把这个 dll，以及这个 dll 依赖的其他所有
+dll，全部拷贝到和 exe 文件同一目录下。</li>
+</ul></li>
+</ul>
+<h4
+id="手动拷贝-dll-好麻烦cmake-能不能救一下把-dll-自动生成在-exe-同一目录下">手动拷贝
+dll 好麻烦，CMake 能不能救一下！把 dll 自动生成在 exe 同一目录下</h4>
+<ul>
+<li>说到底还是因为 CMake 把定义在顶层模块里的 main 放在
+<code>build/main.exe</code><br />
+而 mylib 因为是定义在 mylib 这个子模块里的，因此被放到了
+<code>build/mylib/mylib.dll</code></li>
+</ul>
+<h5
+id="解决1设置-mylib-对象的-xx_output_deirectory-系列属性">解决1：设置
+mylib 对象的 xx_OUTPUT_DEIRECTORY 系列属性</h5>
+<ul>
+<li><p>所以，可以设置 mylib 的这些属性，让 mylib.dll 文件输出到
+PROJECT_BINARY_DIR，也就是项目根目录( main 所在的位置 )，这样 main.exe
+在运行时就能找到 mylib.dll</p></li>
+<li><p>为了侍奉 Windows，要设置全部的 6个属性！很烦！<br />
+<code>m/CMakeLists.txt</code></p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs cmake"><span class="hljs-keyword">add_library</span>(mylib SHARED mylib.cpp mylib.h)<br><br><span class="hljs-keyword">set_property</span>(<span class="hljs-keyword">TARGET</span> mylib PROPERTY RUNTIME_OUTPUT_DIRECTORY <span class="hljs-variable">$&#123;PROJECT_BINARY_DIR&#125;</span>)  <br><span class="hljs-keyword">set_property</span>(<span class="hljs-keyword">TARGET</span> mylib PROPERTY ARCHIVE_OUTPUT_DIRECTORY <span class="hljs-variable">$&#123;PROJECT_BINARY_DIR&#125;</span>)  <br><span class="hljs-keyword">set_property</span>(<span class="hljs-keyword">TARGET</span> mylib PROPERTY LIBRARY_OUTPUT_DIRECTORY <span class="hljs-variable">$&#123;PROJECT_BINARY_DIR&#125;</span>)  <br><span class="hljs-keyword">set_property</span>(<span class="hljs-keyword">TARGET</span> mylib PROPERTY RUNTIME_OUTPUT_DIRECTORY_DEBUG <span class="hljs-variable">$&#123;PROJECT_BINARY_DIR&#125;</span>)  <br><span class="hljs-keyword">set_property</span>(<span class="hljs-keyword">TARGET</span> mylib PROPERTY ARCHIVE_OUTPUT_DIRECTORY_DEBUG <span class="hljs-variable">$&#123;PROJECT_BINARY_DIR&#125;</span>)  <br><span class="hljs-keyword">set_property</span>(<span class="hljs-keyword">TARGET</span> mylib PROPERTY LIBRARY_OUTPUT_DIRECTORY_DEBUG <span class="hljs-variable">$&#123;PROJECT_BINARY_DIR&#125;</span>)  <br><span class="hljs-keyword">set_property</span>(<span class="hljs-keyword">TARGET</span> mylib PROPERTY RUNTIME_OUTPUT_DIRECTORY_RELEASE <span class="hljs-variable">$&#123;PROJECT_BINARY_DIR&#125;</span>)  <br><span class="hljs-keyword">set_property</span>(<span class="hljs-keyword">TARGET</span> mylib PROPERTY ARCHIVE_OUTPUT_DIRECTORY_RELEASE <span class="hljs-variable">$&#123;PROJECT_BINARY_DIR&#125;</span>)  <br><span class="hljs-keyword">set_property</span>(<span class="hljs-keyword">TARGET</span> mylib PROPERTY LIBRARY_OUTPUT_DIRECTORY_RELEASE <span class="hljs-variable">$&#123;PROJECT_BINARY_DIR&#125;</span>)  <br></code></pre></td></tr></table></figure>
+<p>这样就会输出到项目根目录 build 目录下</p></li>
+</ul>
+<h5 id="而在-linux-系统下就显得简便了">而在 Linux
+系统下就显得简便了</h5>
+<ul>
+<li>Linux 系统支持 RPATH，CMake 会让生成出来可执行文件的 RPATH
+指向他链接了的 .so 文件所在目录，运行时会优先从 RPATH
+里找链接库，所以即使不在同目录也能找到。<br />
+所以<strong>第三种解决办法</strong>，卸载 Windows 安装 Linux。<br />
+</li>
+<li>需要手动修改或者查看一个 ELF 文件的 RPATH，可以用 chrpath 或者
+pathchelf 命令。</li>
+</ul>
+<h2 id="第五章连接第三方库">第五章：连接第三方库</h2>
+<h3 id="例子需要使用-tbb-库">例子：需要使用 tbb 库</h3>
+<ul>
+<li><p>CMakeLists.txt<br />
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs cmake"><span class="hljs-keyword">add_executable</span>(main main.cpp)  <br><span class="hljs-keyword">target_link_libraries</span>(main PUBLIC tbb)	<span class="hljs-comment"># Linux 上直接链接 tbb 是可以的，但是 Windows 可能不行。  </span><br></code></pre></td></tr></table></figure></p></li>
+<li><p>main.cpp<br />
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;tbb/parallel_for.h&gt;</span></span><br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>&#123;  <br>	tbb::<span class="hljs-built_in">parallel_for</span>(<span class="hljs-number">0</span>,<span class="hljs-number">4</span>,[&amp;](<span class="hljs-type">int</span> i)&#123;  <br>        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Hello, %d!\n&quot;</span>, i);  <br>    &#125;);  <br>&#125;  <br></code></pre></td></tr></table></figure></p></li>
+<li><p>OutPut<br />
+&gt;Hello, 0!<br />
+&gt;Hello, 1!<br />
+&gt;Hello, 2!<br />
+&gt;Hello, 3!</p></li>
+</ul>
+<h4 id="直接链接-tbb-的缺点">直接链接 tbb 的缺点</h4>
+<p>Linux 可以直接链接，是因为其有默认的库目录 <code>usr/lib</code>
+，但是 Windows 没有一个固定的库安装位置。Linux 因为
+<code>usr/lib/</code>, Linux 可以找到
+<code>usr/lib/libtbb.so</code><br />
+如果这样直接指定 tbb，CMake 会让连接器在系统的库目录里查找 tbb，他会找到
+<code>usr/lib/libtbb.so</code>
+这个系统自带的，但是对于没有一个固定库安装位置的 Windows
+系统并不适用。<br />
+此外，他还要求 tbb 的头文件就在 <code>usr/include</code>
+这个系统默认的头文件目录，<br />
+这样才能 <code>#include &lt;tbb/parallel_for.h</code> 不报错，如果 tbb
+的头文件在其他地方<br />
+就需要再加一个 <code>target_include_directories</code>
+设置额外的头文件查找目录。</p>
+<ul>
+<li>CMakeLists.txt<br />
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs cmake"><span class="hljs-keyword">add_executable</span>(main main.cpp)  <br><span class="hljs-keyword">target_link_libraries</span>(main PUBLIC tbb)  <br></code></pre></td></tr></table></figure></li>
+</ul>
+<h4 id="windows-可以直接写出全部的绝对路径十分的硬核">Windows
+可以直接写出全部的绝对路径，十分的硬核</h4>
+<p>也可以直接写出全部的路径，这样就能让没有默认系统路径的 Windows
+系统找到安装在不知何处的
+tbb，不过这样就不能跨平台了，如果其他人安装在不同位置就会发生错误。<br />
+<strong>顺便一提，CMake 的路径分隔符始终是<code>/</code>。即使在 Windows
+上，也要把所有的 <code>\</code> 改成
+<code>/</code></strong>，这是为了跨平台考量。请放心，CMake 会自动在调用
+MSVC时转换成 <code>\</code> ，可以放心的用 <code>$&#123;x&#125;/bin</code>
+来实现和 Python 的 <a
+target="_blank" rel="noopener" href="https://blog.csdn.net/swan777/article/details/89040802"><code>os.path.join(x, 'bin')</code></a>
+一样的效果。</p>
+<ul>
+<li><p>CMakeLists.txt<br />
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs cmake"><span class="hljs-keyword">add_executable</span>(main main.cpp)  <br><span class="hljs-keyword">target_link_libraries</span>(main PUBLIC C:/User/archibate/installed/tbb/tbb.dll)  <br></code></pre></td></tr></table></figure></p>
+<blockquote>
+<p>大多数操作系统都是 Unix-like，只有 Windows 搞特殊。<br />
+<code>cd /d C:\\Program\ Files\\(x86\)\\Micsoft\ Visual\ Studio\\2019\\</code><br />
+在路径中动不动就放一堆转移符、空格、特殊符号<br />
+高情商：Windows 是最适合练习 C 语言转移符使用水平的平台！</p>
+</blockquote></li>
+</ul>
+<h4 id="终于find_package">终于！<code>find_package</code></h4>
+<p>更通用的方式：find_package<br />
+更好的办法就是使用 CMake 的 <code>find_package</code> 命令。<br />
+<code>find_package(TBB REQUIRED)</code> 会查找
+<code>/usr/lib/cmake/TBB/TBBConfig.cmake</code>
+这个配置文件，根据里面的配置信息创建 <code>TBB::tbb</code> 这个伪对象(
+实际它指向真正的 tbb 库文件路径 <code>usr/lib/libtbb.so</code>
+)，之后通过 <code>target_link_libraries</code> 链接
+<code>TBB::tbb</code> 就可以正常工作。</p>
+<ul>
+<li>CMakeLists.txt<br />
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs cmake">add_executbale(main main.cpp)<br><br><span class="hljs-keyword">find_package</span>(TBB REQUIRED)  <br><span class="hljs-keyword">target_link_libraries</span>(main PUBLIC TBB::tbb)	<span class="hljs-comment"># TBB 包下的 tbb 库  </span><br></code></pre></td></tr></table></figure></li>
+</ul>
+<h5 id="tbbtbb-的秘密自带了一些-public-属性"><code>TBB::tbb</code>
+的秘密：自带了一些 PUBLIC 属性</h5>
+<p><code>TBB::tbb</code> 是一个伪对象( imported )，他除了会指向
+<code>/usr/lib/libtbb.so</code>，TBBConfig.cmake 还会给 TBB::tbb
+添加一些 PUBLIC 属性，用于让链接了他的对象带上一些 flag 之类的。<br />
+比如，TBB 安装在 <code>/opt/tbb</code> 目录下，头文件在
+<code>/opt/tbb/include</code> 里，那么这时 TBBConfig.cmake 里就会有 :
+<code>target_include_directories(TBB::tbb PUBLIC /opt/tbb/include)</code><br />
+这样 main 在链接了 TBB::tbb 时也会被“传染”上
+<code>/opt/tbb/include</code> 这个目录，无需手动添加。<br />
+再比如，TBB::tbb 链接了另一个库 Blosc::blosc，那么这个库也会自动连接到
+main 上，无需调用者手动添加。</p>
+<blockquote>
+<p>比如 spdlog 的 spdlog-config.cmake 就会定义 SPDLOG_NOT_HEADER_ONLY
+这个宏为 PUBLIC 。从而实现直接 #include &lt;spdlog/spdlog.h&gt;
+时候时纯头文件，而 find_package(spdlog REQUIRED)
+时却变成预编译链接库的版本。( 其实不是 PUBLIC 而是
+INTERFACE，因为伪对象没有实体 )</p>
+</blockquote>
+<h5 id="和-find_packagetbb-config-required-有什么区别">和
+<code>find_package(TBB CONFIG REQUIRED)</code> 有什么区别</h5>
+<p>其实更好的是通过
+<code>find_package(TBB CONFIG REQUIRED)</code>，添加一个 CONFIG
+选项。<br />
+这样他会优先查找 TBBConfig.cmake ( 系统自动的 ) 而不是 FindTBB.cmake (
+项目作者常把他塞在 cmake/ 目录里并添加到 CMAKE_MODULE_PATH
+)。这样能保证寻找包的这个 .cmake 脚本是和系统自带的 tbb
+版本是适配的，而不是项目作者当年下载的那个版本的 .cmake 脚本。</p>
+<ul>
+<li>CMakeLists.txt<br />
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs cmake"><span class="hljs-keyword">add_executable</span>(main main.cpp)<br><br><span class="hljs-keyword">find_package</span>(TBB CONFIG REQUIRED)  <br><span class="hljs-keyword">target_link_libraries</span>(main PUBLIC TBB::tbb)  <br></code></pre></td></tr></table></figure></li>
+</ul>
+<p>当然如果坚持要用 find_package(TBB REQUIRED) 也是可以的。<br />
+没有 CONFIG 选项：先找 FindTBB.cmake，再找
+TBBConfig.cmake，找不到就报错。<br />
+有 CONFIG 选项：只会找 TBBConfig.cmake，找不到则报错。<br />
+此外有一些老年项目( 比如 OpenVDB ) 只提供 Find 而没有 Config
+文件，这时候只能用 find_package(OpenVDB REQUIRED) 而不能带 CONFIG
+选项。</p>
+<h4
+id="usrlibcmaketbbtbbconfig.cmake-长什么样">/usr/lib/cmake/TBB/TBBConfig.cmake
+长什么样？</h4>
+<p>不论 TBBConfig.cmake 还是
+FindTBB.cmake，这个文件通常由库的作者提供，在 Linux 的包管理器安装 tbb
+后也会自动安装这个文件。少部分对 CMake 不友好的第三方库，需要自己写
+FindXXX.cmake 才能使用。</p>
+<ul>
+<li>TBBConfig.cmake<br />
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs cmake"><span class="hljs-comment"># Create imported target TBB::tbb  </span><br><span class="hljs-keyword">add_library</span>(TBB::tbb SHARED IMPORTED)<br><br><span class="hljs-keyword">set_target_properties</span>(TBB::tbb PROPERTIES  <br>	INTERFACE_COMPILE_DEFINITIONS <span class="hljs-string">&quot;\$&lt;\$&lt;CONFIG:DEBUG&gt;:TBB_USE_DEBUG&gt;&quot;</span>  <br>	INTERFACE_INCLUDE_DIRECTORIES <span class="hljs-string">&quot;$&#123;_IMPORT_PREFIX&#125;/include&quot;</span>  <br>)<br><br><span class="hljs-comment"># Create imported target TBB::tbbmalloc  </span><br><span class="hljs-keyword">add_library</span>(TBB::tbbmalloc SHARED IMPORTED)<br><br>set_target_proerties(TBB::tbbmalloc PROPERTIES  <br>	INTERFACE_COMPILE_DEFINITIONS <span class="hljs-string">&quot;\$&lt;\$&lt;CONFIG:DEBUG&gt;:TBB_USE_DEBUG&gt;&quot;</span>  <br>	INTERFACE_INCLUDE_DIRECTORIES <span class="hljs-string">&quot;$&#123;_IMPORT_PREFIX&#125;/include&quot;</span>  <br>)<br><br><span class="hljs-comment"># Create imported target TBB::tbbmalloc_proxy  </span><br><span class="hljs-keyword">add_library</span>(TBB::tbbmalloc_proxy SHARED IMPORTED)<br><br><span class="hljs-keyword">set_target_properties</span>(TBB::tbbmalloc_proxy PROPERTIES  <br>	INTERFACE_COMPILE_DEFINITIONS <span class="hljs-string">&quot;\$&lt;\$&lt;CONFIG:DEBUG&gt;:TBB_USE_DEBUG&gt;&quot;</span>  <br>	INTERFACE_INCLUDE_DIRECTORIES <span class="hljs-string">&quot;$&#123;_IMPORT_PREFIX&#125;/include&quot;</span>  <br>)  <br></code></pre></td></tr></table></figure></li>
+</ul>
+<h4 id="find_packageqt5-required-出错">find_package(Qt5 REQUIRED)
+出错</h4>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs cmake"><span class="hljs-keyword">find_package</span>(Qt5 REQUIRED)<br><span class="hljs-keyword">target_link_libraries</span>(main PUBLIC Qt5::Widgets Qt5::Gui)<br></code></pre></td></tr></table></figure>
+<ul>
+<li><strong>ERROR</strong><br />
+<img src="/imgs/CMake Note/Qt5Error.png" srcset="/img/loading.gif" lazyload alt="Qt5报错"><br />
+这里是说( 看最后一句 ) Qt5 包至少需要一个组件。<br />
+Qt5 有很多组件，但是直接 <code>find_package(Qt5 REQUIRED)</code>
+他不知道用户需要哪些组件。</li>
+</ul>
+<h5 id="原因qt5-具有多个组件你必须指定你需要哪些组件">原因：Qt5
+具有多个组件，你必须指定你需要哪些组件</h5>
+<p>find_package 生成的伪对象 (imported target) 都按照 “包名::组件名”
+的格式命名。<br />
+可以在 find_package 中通过 <strong>COMPONENTS</strong>
+选项，后面跟随一个列表表示需要用的组件。</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs cmake"><span class="hljs-keyword">find_package</span>(Qt5 COMPONENTS Widgets Gui REQUIRED)<br><span class="hljs-keyword">target_link_libraries</span>(main PUBLIC Qt5::Widgets Qt5::Gui)<br></code></pre></td></tr></table></figure>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs cmake"><span class="hljs-keyword">find_package</span>(TBB COMPONENTS tbb tbbmalloc tbbmalloc_proxy REQUIRED)<br><span class="hljs-keyword">target_link_libraries</span>(main PUBLIC TBB::tbb TBB::tbbmalloc TBB::tbbmalloc_proxy)<br></code></pre></td></tr></table></figure>
+<h5 id="常见错误windows-找不到-qt5">常见错误：Windows 找不到 Qt5</h5>
+<p>因为 Windows 系统安装路径混乱没有固定的 /usr/lib
+之类的默认路径能供CMake搜索所以报错了。<br />
+<img src="/imgs/CMake Note/Qt5CannotFound.png" srcset="/img/loading.gif" lazyload alt="Qt5找不到"></p>
+<ul>
+<li><p>假设 Qt5 安装在 C:.2，去找这个目录<br />
+C:.2_64<br />
+</p></li>
+<li><p>会有一个 Qt5Config.cmake，现在有四种办法可以让CMake找到他</p>
+<ul>
+<li><p><strong>第一种</strong>：设置 CMAKE_MODULE_PATH
+变量，添加一下包含 Qt5Config.cmake 这个文件的目录路径
+C:.2_64，当然这里也要把 <code>\</code> 换成 <code>/</code>，因为 CMake
+是倾向 Unix
+的构建，<em><del>这是派别和历史问题了</del></em>。这种方法相当于在 CMake
+搜索目录里加上这个路径，其他包在搜索遍历时也会遍历过这个路径，后面会有更好的办法。</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs cmake"><span class="hljs-keyword">set</span>(CMAKE_MODULE_PATH <span class="hljs-variable">$&#123;CMAKE_MODULE_PATH&#125;</span> C:/Qt/Qt5.<span class="hljs-number">14.2</span>/msvc2019_64/lib/cmake)<br><br><span class="hljs-keyword">find_package</span>(Qt5 REQUIRED COMPONENTS Widgets Gui REQUIRED)  <br><span class="hljs-keyword">target_link_libraries</span>(main PUBLIC Qt5::Widgets Qt5::Gui)  <br></code></pre></td></tr></table></figure></li>
+<li><p>**第二种(更好的办法)：设置<包名>_DIR 变量指向 <包名>Config.cmake
+所在位置**<br />
+设置 Qt5_DIR 这个变量为 C:.2_64 这样只有 Qt5 这个包会去这个目录里搜索
+Qt5Config.cmake 更有针对性。</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs cmake"><span class="hljs-keyword">set</span>(Qt5_Dir C:/Qt/Qt5.<span class="hljs-number">14.2</span>/msvc2019_64/lib/cmake)<br><br><span class="hljs-keyword">find_package</span>(Qt5 REQUIRED COMPONENTS Widgets Gui REQUIRED)  <br><span class="hljs-keyword">target_link_libraries</span>(main PUBLIC Qt5::Widgets Qt5::Gui)  <br></code></pre></td></tr></table></figure></li>
+<li><p>第三种(推荐)，直接在命令行通过 <code>-DQt5_DIR="xxx"</code>
+指定，这样不用修改 CMakeLists.txt<br />
+<code>cmake -B build -DQt5_DIR="C:/Qt/Qt5.14.2/msvc2019_64/lib/cmake"</code><br />
+</p></li>
+<li><p>第四种，还可以设置环境变量 Qt5_DIR 也是可以的，就是对 Windows
+用户比较困难<br />
+<code>export Qt5_DIR="/opt/Qt5.14.2/lib/cmake"</code></p></li>
+</ul></li>
+</ul>
+<h3
+id="不指定-required-找不到时不报错只会设置-tbb_found-为-false">不指定
+REQUIRED 找不到时不报错，只会设置 TBB_FOUND 为 FALSE</h3>
+<p><figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs cmake"><span class="hljs-keyword">find_package</span>(TBB)  <br><span class="hljs-keyword">if</span>(TBB_FOUND)  <br>	<span class="hljs-keyword">message</span>(STATUS <span class="hljs-string">&quot;TBB found at:$&#123;TBB_DIR&#125;&quot;</span>)  <br>	<span class="hljs-keyword">target_link_libraries</span>(main PUBLIC TBB::tbb)  <br>	<span class="hljs-keyword">target_compile_definitions</span>(main PUBLIC WITH_TBB)  <br><span class="hljs-keyword">else</span>()  <br>	<span class="hljs-keyword">message</span>(WARNING <span class="hljs-string">&quot;TBB not found! using serial for&quot;</span>)  <br><span class="hljs-keyword">endif</span>()  <br></code></pre></td></tr></table></figure></p>
+<p>前面很多例子都在 find_package() 加上 REQUIRED 选项。<br />
+如果我们不加 REQUIRED，在找不到对应 package 时不会报错。<br />
+这样的设计目的在于，当我们添加一些可选的依赖，如果没有也不会影响程序基本运行，我们找不到可选项，就可以向用户抛出一个警告。<br />
+找到了会把 TBB_FOUND 设为 TRUE，TBB_DIR 也会设置为 TBBConfig.cmake
+所在目录。<br />
+找不到会把 TBB_FOUND 设为 FASLE，TBB_DIR 也会为空。<br />
+这里我们在找到 TBB 的 if 里定义一个 WITH_TBB 宏，稍后在 .cpp
+里就可以根据这个判断。<br />
+如果找不到 TBB 可以 fallback 到保守的实现方式。<br />
+<code>-- TBB found at: /usr/lib64/cmake/TBB</code></p>
+<h4 id="在-c-中判断-with_tbb-宏找不到-tbb-则退化到串行-for-循环">在 C++
+中判断 WITH_TBB 宏，找不到 TBB 则退化到串行 for 循环</h4>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;cstdio&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">ifdef</span> WITH_TBB</span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;tbb/parallel_for.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">endif</span></span><br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br><span class="hljs-meta">#<span class="hljs-keyword">ifdef</span> WITH_TBB</span><br>	tbb::<span class="hljs-built_in">parallel_for</span>(<span class="hljs-number">0</span>,<span class="hljs-number">4</span>,[&amp;](<span class="hljs-type">int</span> i)&#123;<br><span class="hljs-meta">#<span class="hljs-keyword">else</span></span><br>        <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">4</span>; i++)&#123;<br><span class="hljs-meta">#<span class="hljs-keyword">endif</span></span><br>			<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;hello, %d!\n&quot;</span>,i);<br><span class="hljs-meta">#<span class="hljs-keyword">ifdef</span> WITH_TBB</span><br>    &#125;);<br><span class="hljs-meta">#<span class="hljs-keyword">else</span></span><br>    &#125;<br><span class="hljs-meta">#<span class="hljs-keyword">endif</span></span><br>&#125;<br></code></pre></td></tr></table></figure>
+<h3
+id="也可以使用-target-判断是否存在-tbbtbb-这个伪对象实现-tbb_found-的效果">也可以使用
+TARGET 判断是否存在 TBB::tbb 这个伪对象，实现 TBB_FOUND 的效果</h3>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs cmake"><span class="hljs-keyword">find_package</span>(TBB)<br><span class="hljs-keyword">if</span>(<span class="hljs-keyword">TARGET</span> TBB::tbb)<br>	<span class="hljs-keyword">message</span>(STATUS <span class="hljs-string">&quot;TBB found at:$&#123;TBB_DIR&#125;&quot;</span>)<br>	<span class="hljs-keyword">target_link_libraries</span>(main PUBLIC TBB::tbb)<br>	<span class="hljs-keyword">target_compile_definitions</span>(main PUBLIC WITH_TBB)<br><span class="hljs-keyword">else</span>()<br>	<span class="hljs-keyword">message</span>(WARNING <span class="hljs-string">&quot;TBB not found! using serial for&quot;</span>)<br><span class="hljs-keyword">endif</span>()<br></code></pre></td></tr></table></figure>
+<p>同时也可以在 if 进行复合语句判断<br />
+<code>NOT TARGET TBB::tbb AND TARGET Eigen3::eigen</code><br />
+表示找得到 TBB 但是找不到 Eigen3。</p>
+<h2 id="第六章输出与变量">第六章：输出与变量</h2>
+<h3 id="在运行-cmake--b-build-时打印字符串用于调试程序">在运行 cmake -B
+build 时，打印字符串用于调试程序</h3>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs cmake"><span class="hljs-keyword">message</span>(<span class="hljs-string">&quot;Hello World&quot;</span>)<br></code></pre></td></tr></table></figure>
+<blockquote>
+<p>Hello world</p>
+</blockquote>
+<p>message 会把字符串打在命令行。</p>
+<h4 id="messagestatus-...">message(STATUS "...")</h4>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs cmake"><span class="hljs-keyword">message</span>(STATUS <span class="hljs-string">&quot;Hello World&quot;</span>)<br></code></pre></td></tr></table></figure>
+<blockquote>
+<p>-- Hello world</p>
+</blockquote>
+<p>不带 <code>STATUS</code> 选项，cmake
+认为：“哦，你的需求很紧急，你只想调试程序。”，被认为是调试信息。<br />
+带上 <code>STATUS</code> 表示是状态信息，告诉用户做了这件事。</p>
+<h4 id="messagewaring-...-表示警告信息">message(WARING "...")
+表示警告信息</h4>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs cmake"><span class="hljs-keyword">message</span>(STATUS <span class="hljs-string">&quot;Hello world&quot;</span>)<br><span class="hljs-keyword">message</span>(WARNING <span class="hljs-string">&quot;This is a warning sign&quot;</span>)<br></code></pre></td></tr></table></figure>
+<blockquote>
+<p>CMake Warning at CMakeLists.txt:2 (message):<br />
+This is a warning sign!</p>
+</blockquote>
+<h4
+id="messageauthor_warning-...-表示仅仅是给项目作者看的警告">message(AUTHOR_WARNING
+"...") 表示仅仅是给项目作者看的警告</h4>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs cmake"><span class="hljs-keyword">message</span>(STATUS <span class="hljs-string">&quot;Hello world&quot;</span>)<br><span class="hljs-keyword">message</span>(AUTHOR_WARNING <span class="hljs-string">&quot;Hollow Knight is the best!&quot;</span>)<br></code></pre></td></tr></table></figure>
+<blockquote>
+<p>-- Hello world<br />
+CMake Warning (dev) at CMakeLists.txt:2 (message):<br />
+Hollow Knight is the best!<br />
+This warning is for project developers. Use -Wno-dev suppress it.</p>
+</blockquote>
+<p><strong>AUTHOR_WARNING 可以通过 -Wno-dev 关闭</strong></p>
+<p><code>cmake -B build -Wno-dev</code></p>
+<h4
+id="messagefatal_error-...-表示是错误信息会终止-cmake-的运行">message(FATAL_ERROR
+"...") 表示是错误信息，会终止 CMake 的运行</h4>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs cmake"><span class="hljs-keyword">message</span>(STATUS <span class="hljs-string">&quot;Hello world&quot;</span>)<br><span class="hljs-keyword">message</span>(FATAL_ERROR <span class="hljs-string">&quot;This is an error message!&quot;</span>)<br><span class="hljs-keyword">message</span>(STATUS <span class="hljs-string">&quot;After Error&quot;</span>)<br></code></pre></td></tr></table></figure>
+<blockquote>
+<p>-- Hello world<br />
+CMake Error at CMakeLists.txt:2 (message):<br />
+This is an error message!</p>
+</blockquote>
+<p>因为程序被中断所以 Hello world 被打印，Error 有执行，但是 After Error
+没有执行，因为在 Error message 处被中断运行了。</p>
+<h4
+id="messagesend_error-...-表示错误信息但之后的语句仍继续执行">message(SEND_ERROR
+"...") 表示错误信息，但之后的语句仍继续执行</h4>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs cmake"><span class="hljs-keyword">message</span>(STATUS <span class="hljs-string">&quot;Hello world&quot;</span>)<br><span class="hljs-keyword">message</span>(SEND_ERROR <span class="hljs-string">&quot;This is an error message!&quot;</span>)<br><span class="hljs-keyword">message</span>(STATUS <span class="hljs-string">&quot;After Error&quot;</span>)<br></code></pre></td></tr></table></figure>
+<blockquote>
+<p>-- Hello world<br />
+CMake Error at CMakeLists.txt:2 (message) :<br />
+This is an error message</p>
+<p>After Error</p>
+</blockquote>
+<p>可以看到 After Error 正常运行。</p>
+<h3 id="message-可以用于打印变量">message 可以用于打印变量</h3>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs cmake"><span class="hljs-keyword">set</span>(myvar <span class="hljs-string">&quot;Hello world&quot;</span>)<br><span class="hljs-keyword">message</span>(<span class="hljs-string">&quot;myvar is: $&#123;myvar&#125;&quot;</span>)<br></code></pre></td></tr></table></figure>
+<blockquote>
+<p>myvar is: Hello world<br />
+-- Configuring done<br />
+-- Generating done</p>
+</blockquote>
+<h4 id="如果-set-没加引号会怎么样">如果 set 没加引号会怎么样？</h4>
+<p><strong>会变成分号分隔的列表。</strong><br />
+这时候 set(myvar Hello world) 等价于 set(myvar "Hello;world")</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs cmake"><span class="hljs-keyword">set</span>(myvar Hello world)<br><span class="hljs-keyword">message</span>(<span class="hljs-string">&quot;myvar is: $&#123;myvar&#125;&quot;</span>)<br></code></pre></td></tr></table></figure>
+<blockquote>
+<p>myvar is: Hello;world<br />
+-- Configuring done<br />
+-- Generating done</p>
+</blockquote>
+<h4 id="如果-message-没加引号会怎么样">如果 message
+没加引号会怎么样？</h4>
+<p><strong>会把列表里的字符串当作他的关键字</strong><br />
+结论：除非实在实在需要列表，不然建议始终在你不确定的地方加上引号，例如：<br />
+set(source "main.cpp" "mylib.cpp" "C:/Program Files/a.cpp")<br />
+message("${source}")<br />
+这里的 <code>C:/Program Files/a.cpp</code>
+有空格所以最好使用引号，这也是为什么CMake用 <code>;</code> 做分割，因为
+<code></code> 可能出现在路径中，而 <code>;</code>
+不会出现在文件路径中。</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs cmake"><span class="hljs-keyword">set</span>(myvar FATAL_ERROR hello)<br><span class="hljs-keyword">message</span>(<span class="hljs-variable">$&#123;myvar&#125;</span>)<br><span class="hljs-comment"># 这样$&#123;myvar&#125; 会变成 FATAL_ERROR hello</span><br></code></pre></td></tr></table></figure>
+<blockquote>
+<p>CMake Error at CMakeLists.txt:2 (message) :<br />
+hello</p>
+</blockquote>
+<h2 id="第七章变量与缓存最大坑点">第七章：变量与缓存(最大坑点)</h2>
+<h3 id="重复执行-cmake--b-build-会有什么区别">重复执行 cmake -B build
+会有什么区别</h3>
+<p>假如多次执行后几次执行会比第一次执行输出少很多。<br />
+这是因为 CMake 第一遍需要检测编译器和 C++
+特性等比较耗时，检测完后会把结果存储的<strong>缓存</strong>中，这样第二遍运行cmake
+-B build 时就可以直接使用缓存的值，就不需要在检测一遍了。</p>
+<h3 id="如何清理缓存删-build-大法">如何清理缓存？删 build 大法</h3>
+<p>虽然 CMake
+缓存为了加快编译的出发点是好的，但是有问题。比如有时候外部的情况有所更新比如原来的编译器被卸载或者更改，这时候
+CMake 缓存内却还存储的是旧的值，就会导致一些问题。<br />
+最简单的解决办法就是删除 build 文件夹，然后重新运行 cmake -B
+build。<br />
+缓存是很多 CMake 出错的根源，因此如果出现诡异的错误，可以先试着删除
+build 重新构建看看。<br />
+删除了缓存就会重新跑一边检测，写新缓存。<br />
+所以有了经典的 CMake 笑话：</p>
+<blockquote>
+<p>99%的 cmake 错误都可以用删 build 解决<br />
+删 build 大法好<br />
+rm -rf build</p>
+</blockquote>
+<h3
+id="清除缓存其实只需删除-buildcmakecache.txt-就可以了">清除缓存，其实只需删除
+build/CMakeCache.txt 就可以了</h3>
+<p>删除 build 虽然简单粗暴彻底，但是这会导致编译产生的中间结果 (.o文件)
+也都被删除了，重新编译需要花费很长时间。<br />
+如果只想清除缓存，不想从头重新编译，可以只删除 build/CMakeCache.txt
+这个文件。<br />
+它存储了缓存的变量，删除它就可以让 CMake
+强制重新检测一遍所有的库和编译器。<br />
+但是有些错误是中间文件的问题还是要删除 build<br />
+### find_package 就用到了缓存机制</p>
+<p>变量缓存的意义在于能把 find_package
+找到的库文件位置等信息，存储起来。<br />
+这下下次 find_package 时就会利用上缓存的变量，直接返回。<br />
+避免重复执行 cmake -B 时速度变慢的问题。</p>
+<p>但是会有这样一个问题，假如第一次 build，没有 TBB 库<br />
+然后我们安装 TBB 后，再次进行build<br />
+这时候 CMake 读了缓存发现：“哦，我之前找过 TBB，没找到，那不用找了没有
+TBB 库”<br />
+这时候 CMake 就不会去找了……<br />
+这时候就要 rm -rf build/CMakeCache.txt，删除缓存文件让 CMake
+强行重新配置。</p>
+<h3 id="设置缓存变量">设置缓存变量</h3>
+<p>语法是：<code>set(变量名 "变量值" CACHE 变量类型 "注释")</code></p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs cmake"><span class="hljs-keyword">set</span>(myvar <span class="hljs-string">&quot;hello&quot;</span> CACHE <span class="hljs-keyword">STRING</span> <span class="hljs-string">&quot;this is the docstring.&quot;</span>)<br><span class="hljs-keyword">message</span>(<span class="hljs-string">&quot;myvar is: $&#123;myvar&#125;&quot;</span>)<br></code></pre></td></tr></table></figure>
+<p><strong>缓存的 myvar 会出现在 build/CMakeCache.txt 里。</strong></p>
+<h3
+id="常见问题我修改了-cmakelists.txt-里-set-的值却没有更新">常见问题：我修改了
+CMakeLists.txt 里 set 的值，却没有更新。</h3>
+<p>为了更新缓存变量，经常有人偷懒直接修改 CMakeLists.txt
+里的值，这是没用的。<br />
+因为 set(...CACHE..)
+在缓存变量已经存在的时候，不会去更新缓存的值。<br />
+CMakeLists.txt 里 set 的值被认为是“默认值”，因此不会在第二次 set
+的时候更新。<br />
+比如上面我们设置过 myvar 的内容是 hello，然后 build，现在改成
+world，但是 CMakeCaChe.txt 内的 myvar 还会是 hello</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs cmake"><span class="hljs-keyword">set</span>(myvar <span class="hljs-string">&quot;world&quot;</span> CACHE <span class="hljs-keyword">STRING</span> <span class="hljs-string">&quot;This is the docstring!&quot;</span>)<br><span class="hljs-keyword">message</span>(<span class="hljs-string">&quot;myvar is: $&#123;myvar&#125;&quot;</span>)<br></code></pre></td></tr></table></figure>
+<h3
+id="缓存变量如何更新标准解法通过命令行--d参数">缓存变量如何更新？标准解法：通过命令行
+-D参数</h3>
+<p>当然可以使用 ”删 build 大法“，但是有更好的。<br />
+更新缓存变量正确的方式，通过命令行参数：<code>cmake -B build -Dmyvar=world</code></p>
+<h4 id="命令行--d-太硬核了有没有图形化的缓存编译器">命令行 -D
+太硬核了，有没有图形化的缓存编译器？</h4>
+<ul>
+<li>在 Linux 中，可以运行 ccmake -B build
+启动基于终端的可视化缓存编辑菜单。<br />
+</li>
+<li>在 Windows 中，可以 cmake-gui -B build
+来启动图形界面编辑各个缓存选项。<br />
+</li>
+<li>当然，可以直接用编辑器打开 build/CMakeCaChe.txt 修改后保存。<br />
+CMakeCaChe.txt
+用文本文件存储的目的就是可供用户手动编辑，或者被第三方软件打开并解析的。</li>
+</ul>
+<h3 id="也可以通过指定-force-来强制-set-更新缓存">也可以通过指定 FORCE
+来强制 set 更新缓存</h3>
+<p>set 可以在后面加一个 FORCE
+选项，表示无论缓存存在与否，都强制更新缓存。<br />
+不过这样就会导致没办法用 -Dmyvar=othervalue 来更新缓存变量。</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs cmake"><span class="hljs-keyword">set</span>(myvar <span class="hljs-string">&quot;world&quot;</span> CACHE <span class="hljs-keyword">STRING</span> <span class="hljs-string">&quot;This is the docstring&quot;</span> FORCE)<br><span class="hljs-keyword">message</span>(<span class="hljs-string">&quot;mtvar is: $&#123;myvar&#125;&quot;</span>)<br></code></pre></td></tr></table></figure>
+<h3 id="缓存变量除了-string-还有哪些类型">缓存变量除了 STRING
+还有哪些类型？</h3>
+<ul>
+<li>STRING 字符串，比如："hello","world"<br />
+</li>
+<li>FILEPATH
+文件路径，例如："C:/vcpkg/scripts/buildsystems/vcpkg.cmake"<br />
+</li>
+<li>PATH 目录路径，例如："C:/Qt/Qt5.14.2/msvc2019_64/cmake/"<br />
+</li>
+<li>BOOL 布尔值，只有两个取值：ON 或 OFF<br />
+注意：TRUE 和 ON 等价，FALSE 和 OFF 等价；YES 和 ON 等价，NO 和 OFF
+等价。</li>
+</ul>
+<h4 id="添加一个-bool-类型变量用于控制是否启用某些特性">添加一个 BOOL
+类型变量，用于控制是否启用某些特性</h4>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs cmake"><span class="hljs-keyword">add_executable</span>(main main.cpp)<br><br><span class="hljs-keyword">set</span>(WITH_TBB <span class="hljs-keyword">ON</span> CACHR BOOL <span class="hljs-string">&quot;set to ON to enable TBB, OFF to disable TBB.&quot;</span>)<br><br><span class="hljs-keyword">if</span>(WITH_TBB)<br>	<span class="hljs-keyword">target_compile_definitions</span>(main PUBLIC WITH_TBB)<br>	<span class="hljs-keyword">find_package</span>(TBB REQUIRED)<br>	<span class="hljs-keyword">target_link_libraries</span>(main PUBLIC TBB::tbb)<br><span class="hljs-keyword">endif</span>()<br></code></pre></td></tr></table></figure>
+<p>这里就是用 CACHE变量 控制是否启用 TBB。</p>
+<h4 id="cmake-对-bool-类型缓存的-set-提供了简写option">CMake 对 BOOL
+类型缓存的 set 提供了简写：option</h4>
+<p><code>option(变量名 "描述" 变量值)</code><br />
+等价于<br />
+<code>set(变量名 CACHE BOOL 变量值 "描述")</code></p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs cmake"><span class="hljs-keyword">add_executable</span>(main main.cpp)<br><br><span class="hljs-keyword">option</span>(WITH_TBB <span class="hljs-string">&quot;set to ON to enable TBB, OFF to disable TBB.&quot;</span>)<br><span class="hljs-keyword">if</span>(WITH_TBB)<br>	<span class="hljs-keyword">target_compile_definitions</span>(main PUBLIC WITH_TBB)<br>	<span class="hljs-keyword">find_package</span>(TBB REQUIRED)<br>	<span class="hljs-keyword">target_link_libraries</span>(main PUBLIC TBB::tbb)<br><span class="hljs-keyword">endif</span>()<br></code></pre></td></tr></table></figure>
+<p>option 的本质还是 set CACHE<br />
+所以还会有和 set CACHE 一样的问题：option 设置成了 OFF，但是还是
+ON。</p>
+<h4
+id="常见问题在-cmakelists.txt-里修改了-option-为-off但是运行出来还是-on">常见问题：在
+CMakeLists.txt 里修改了 option 为 OFF，但是运行出来还是 ON</h4>
+<p>因为 option 本质就是 set CACHE，<br />
+虽然修改了，但是 CMakeCaChe.txt 内还是 ON</p>
+<h4 id="解决办法还是--d参数-来修改">解决办法还是 -D参数 来修改</h4>
+<p>-D变量名:BOOL=ON/OFF<br />
+<code>cmake -B build -DWITH_TBB:BOOL=OFF</code></p>
+<h4 id="或者改用-set-然后-force">或者改用 set 然后 Force</h4>
+<h4
+id="绕靠缓存使用普通变量但仅当没有定义时设定为默认值">绕靠缓存：使用普通变量，但仅当没有定义时设定为默认值</h4>
+<p>一般而言，CMake 自带的变量( 如 CMAKE_BUILD_TYPE )都这样设置。<br />
+<strong>这样项目的使用者还是可以用 -D来指示参数，</strong>只不过不会在
+ccmake 里被显示。(ccmake是查询缓存的)</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs cmake"><span class="hljs-keyword">if</span>(<span class="hljs-keyword">NOT</span> <span class="hljs-keyword">DEFINED</span> WITH_TBB)<br>	<span class="hljs-keyword">set</span>(WITH_TBB <span class="hljs-keyword">ON</span>)<br><span class="hljs-keyword">endif</span>()<br><span class="hljs-keyword">message</span>(<span class="hljs-string">&quot;WITH_TBB: $&#123;WITH_TBB&#125;&quot;</span>)<br><span class="hljs-keyword">if</span>(WITH_TBB)<br>	target_compile_definition(main PUBLIC WITH_TBB)<br>	<span class="hljs-keyword">find_package</span>(TBB REQUIRED)<br>	<span class="hljs-keyword">target_link_libraries</span>(main PUBLIC TBB::tbb)<br><span class="hljs-keyword">endif</span>()<br></code></pre></td></tr></table></figure>
+<h2 id="第八章跨平台和编译器">第八章：跨平台和编译器</h2>
+<h3 id="在cmake-中给-.cpp-定义一个宏">在CMake 中给 .cpp 定义一个宏</h3>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;cstdio&gt;</span></span><br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br><span class="hljs-meta">#<span class="hljs-keyword">ifdef</span> MY_MACRO</span><br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;MY_MACRO defined! value: %d\n&quot;</span>, MY_MACRO);<br><span class="hljs-meta">#<span class="hljs-keyword">else</span></span><br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;MY_MACRO not defined!\n&quot;</span>);<br><span class="hljs-meta">#<span class="hljs-keyword">endif</span></span><br>&#125;<br></code></pre></td></tr></table></figure>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs cmake"><span class="hljs-keyword">add_executable</span>(main)<br><span class="hljs-keyword">file</span>(GLOB sources CONFIGURE_DEPENDS *.cpp *.h)<br><span class="hljs-keyword">target_sources</span>(main PUBLIC <span class="hljs-variable">$&#123;sources&#125;</span>)<br><span class="hljs-keyword">target_compile_definitions</span>(main PUBLIC MY_MACRO=<span class="hljs-number">233</span>)	<span class="hljs-comment"># 相当于 gcc -DMY_MACRO=233</span><br></code></pre></td></tr></table></figure>
+<blockquote>
+<p>MY_MACRO defined! value: 233</p>
+</blockquote>
+<h3
+id="根据不同的操作系统把宏定义为不同的值">根据不同的操作系统，把宏定义为不同的值</h3>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;cstdio&gt;</span></span><br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br><span class="hljs-meta">#<span class="hljs-keyword">ifdef</span> MY_NAME</span><br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Hello, %s!\n&quot;</span>, MY_NAME);<br><span class="hljs-meta">#<span class="hljs-keyword">else</span></span><br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;I don`t know your name!\n&quot;</span>);<br><span class="hljs-meta">#<span class="hljs-keyword">endif</span></span><br>&#125;<br></code></pre></td></tr></table></figure>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs cmake"><span class="hljs-keyword">if</span>(CMAKE_SYSTEM_NAME <span class="hljs-keyword">MATCHES</span> <span class="hljs-string">&quot;Windows&quot;</span>)<br>	<span class="hljs-keyword">target_compile_definitions</span>(main PUBLIC MY_NAME=<span class="hljs-string">&quot;Bill Gates&quot;</span>)<br><span class="hljs-keyword">elseif</span>(CMAKE_SYSTEM_NAME <span class="hljs-keyword">MATCHES</span> <span class="hljs-string">&quot;Linux&quot;</span>)<br>	<span class="hljs-keyword">target_compile_definitions</span>(main PUBLIC MY_NAME=<span class="hljs-string">&quot;Linus Torvalds&quot;</span>)<br><span class="hljs-keyword">elseif</span>(CMAKE_SYSTEM_NAME <span class="hljs-keyword">MATCHES</span> <span class="hljs-string">&quot;Darwin&quot;</span>)<br>	<span class="hljs-keyword">target_compile_definitions</span>(main PUBLIC MY_NAME=<span class="hljs-string">&quot;Steve Jobs&quot;</span>)<br><span class="hljs-keyword">elseif</span>()<br></code></pre></td></tr></table></figure>
+<h3 id="cmake-提供了一些简写变量win32-apple-unix-android-ios等等">CMake
+提供了一些简写变量：WIN32, APPLE, UNIX, ANDROID, IOS等等</h3>
+<p>虽然是 WIN32 但是对 32位和 64位Windows一样适用<br />
+APPLE 对所有苹果产品 MacOS/IOS 都为真<br />
+UNIX 对所有 Unix 类系统( FreeBSD, Linux, Android, MacOS, IOS )
+都为真</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs cmake"><span class="hljs-keyword">if</span>(WIN32)	<span class="hljs-comment"># WIN32 这些是 bool 类型</span><br>	<span class="hljs-keyword">target_compile_definitions</span>(main PUBLIC MY_NAME=<span class="hljs-string">&quot;Bill Gates&quot;</span>)<br><span class="hljs-keyword">elseif</span>(UNIX <span class="hljs-keyword">AND</span> <span class="hljs-keyword">NOT</span> APPLE)<br>	<span class="hljs-keyword">target_compile_definitions</span>(main PUBLIC MY_NAME=<span class="hljs-string">&quot;Linus Torvalds&quot;</span>)<br><span class="hljs-keyword">elseif</span>(APPLE)<br>	<span class="hljs-keyword">target_compile_definitions</span>(main PUBLIC MY_NAME=<span class="hljs-string">&quot;Steve Jobs&quot;</span>)<br><span class="hljs-keyword">elseif</span>()<br></code></pre></td></tr></table></figure>
+<h3 id="使用生成器表达式简化指令">使用生成器表达式，简化指令</h3>
+<p>语法：<code>$&lt;$&lt;类型:值&gt;:为真时表达式&gt;</code><br />
+比如<code>$&lt;$&lt;PLATFORM_ID:Windows&gt;:MY_NAME="Bill Gates"&gt;</code><br />
+在 Windows 平台上还会变成 MY_NAME="Bill Gates"<br />
+其他平台则为空字符。</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs cmake"><span class="hljs-keyword">target_compile_definitions</span>(main PUBLIC<br>	$&lt;$&lt;PLATFROM_ID:Windows&gt;:MY_NAME=<span class="hljs-string">&quot;Bill Gates&quot;</span>&gt;<br>	$&lt;$&lt;PLATFROM_ID:Linux&gt;:MY_NAME=<span class="hljs-string">&quot;Linus Torvalds&quot;</span>&gt;<br>	$&lt;$&lt;PLATFROM_ID:Darwin&gt;:MY_NAME=<span class="hljs-string">&quot;Steve Jobs&quot;</span>&gt;<br>)<br></code></pre></td></tr></table></figure>
+<h3
+id="生成器表达式如需多个平台可以用逗号分隔">生成器表达式：如需多个平台可以用逗号分隔</h3>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs cmake"><span class="hljs-keyword">target_compile_definitions</span>(main PUBLIC<br>	$&lt;$&lt;PLATFORM_ID:Windows&gt;:MY_NAME=<span class="hljs-string">&quot;DOS-like&quot;</span>&gt;<br>	$&lt;$&lt;PLATFROM_ID:Linux,Darwin,FreeBSD&gt;:MY_NAME=<span class="hljs-string">&quot;Unix-like&quot;</span>&gt;<br>)<br></code></pre></td></tr></table></figure>
+<p>相关参考：<a
+target="_blank" rel="noopener" href="https://cmake.org/cmake/help/latest/manual/cmake-generator-expressions.7.html#genex:PLATFROM_ID">CMake
+: PLATFROM_ID</a></p>
+<h3 id="判断当前是哪一款-c-编译器">判断当前是哪一款 C++ 编译器</h3>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs cmake"><span class="hljs-keyword">if</span>(CMAKE_CXX_COMPILER_ID <span class="hljs-keyword">MATCHES</span> <span class="hljs-string">&quot;GNU&quot;</span>)<br>	<span class="hljs-keyword">target_compile_definitions</span>(main PUBLIC MY_NAME=<span class="hljs-string">&quot;gcc&quot;</span>)<br><span class="hljs-keyword">elseif</span>(CMAKE_CXX_COMPILER_ID <span class="hljs-keyword">MATCHES</span> <span class="hljs-string">&quot;NVIDIA&quot;</span>)<br>	<span class="hljs-keyword">target_compile_definitions</span>(main PUBLIC MY_NAME=<span class="hljs-string">&quot;nvcc&quot;</span>)<br><span class="hljs-keyword">elseif</span>(CMAKE_CXX_COMPILER_ID <span class="hljs-keyword">MATCHES</span> <span class="hljs-string">&quot;Clang&quot;</span>)<br>	target_compile_difinitions(mian PUBLIC MY_NAME=<span class="hljs-string">&quot;clang&quot;</span>)<br><span class="hljs-keyword">elseif</span>(CMAKE_CXX_COMPILER_ID <span class="hljs-keyword">MATCHES</span> <span class="hljs-string">&quot;MSVC&quot;</span>)<br>	<span class="hljs-keyword">target_compile_definitions</span>(main PUBLIC MY_NAME=<span class="hljs-string">&quot;msvc&quot;</span>)<br><span class="hljs-keyword">endif</span>()<br></code></pre></td></tr></table></figure>
+<h3 id="也同样可以使用生成器表达式">也同样可以使用生成器表达式</h3>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs cmake"><span class="hljs-keyword">target_compile_definitions</span>(main PUBLIC<br>	$&lt;$&lt;CXX_COMPILER_ID:GNU,Clang&gt;:MY_NAME=<span class="hljs-string">&quot;Open-source&quot;</span>&gt;<br>	$&lt;$&lt;CXX_COMPILER_ID:MSVC,NVIDIA&gt;:MY_NAME=<span class="hljs-string">&quot;Commercial&quot;</span>&gt;<br>)<br></code></pre></td></tr></table></figure>
+<h3
+id="生成器表达式可以做复杂的逻辑判断">生成器表达式可以做复杂的逻辑判断</h3>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs cmake"><span class="hljs-keyword">target_compile_definitions</span>(main PUBLIC<br>	$&lt;$&lt;<span class="hljs-keyword">AND</span>:$&lt;CXX_COMPILER_ID:GNU,Clang&gt;,$&lt;PLATFROM_ID:Linux,FreeBSD&gt;&gt;:MY_NAME=<span class="hljs-string">&quot;Open-source&quot;</span>&gt;<br>)<br></code></pre></td></tr></table></figure>
+<h3 id="cmake-还提供了一些简写变量msvc-cmake_compiler_is_gnucc">CMake
+还提供了一些简写变量：MSVC, CMAKE_COMPILER_IS_GNUCC</h3>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs cmake"><span class="hljs-keyword">if</span>(MSVC)<br>	<span class="hljs-keyword">target_compile_definitions</span>(main PUBLIC MY_NAME=<span class="hljs-string">&quot;MSVC&quot;</span>)<br><span class="hljs-keyword">elseif</span>(CMAKE_COMPILER_IS_GNUCC)<br>	<span class="hljs-keyword">target_compile_definitions</span>(main PUBLIC MY_NAME=<span class="hljs-string">&quot;GCC&quot;</span>)<br><span class="hljs-keyword">else</span>()<br>	<span class="hljs-keyword">target_compile_definitions</span>(main PUBLIC MY_NAME=<span class="hljs-string">&quot;Other compiler&quot;</span>)<br><span class="hljs-keyword">endif</span>()<br></code></pre></td></tr></table></figure>
+<h3 id="cmake_cxx_compiler_id-直接作为字符串变量">CMAKE_CXX_COMPILER_ID
+直接作为字符串变量</h3>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs cmake"><span class="hljs-keyword">target_compile_definitions</span>(main PUBLIC MY_NAME=<span class="hljs-string">&quot;The $&#123;CMAKE_CXX_COMPILER_ID&#125; Compiler&quot;</span>)<br></code></pre></td></tr></table></figure>
+<h3 id="从命令行参数指定编译器">从命令行参数指定编译器</h3>
+<p><code>cmake -B build -DCMAKE_CXX_COMPILER="/usr/bin/clang++"</code><br />
+当然这个得第一次就定义，如果第二次使用这个命令需要 删build
+清除缓存。</p>
+<h3 id="也可以通过环境变量-cxx-指定">也可以通过环境变量 CXX 指定</h3>
+<p><code>CXX='which clang' cmake -B build</code></p>
+<h3 id="cmake_generator-也可以了解一下">CMAKE_GENERATOR
+也可以了解一下</h3>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs cmake"><span class="hljs-keyword">message</span>(<span class="hljs-string">&quot;Generator:$&#123;CMAKE_GENERATOR&#125;&quot;</span>)<br><span class="hljs-keyword">message</span>(<span class="hljs-string">&quot;C++ compiler: $&#123;CMAKE_CXX_COMPILER&#125;&quot;</span>)<br><span class="hljs-keyword">message</span>(<span class="hljs-string">&quot;C compiler: $&#123;CMAKE_C_COMPILER&#125;&quot;</span>)<br></code></pre></td></tr></table></figure>
+<h2 id="第九章分支和判断">第九章：分支和判断</h2>
+<h3 id="bool-类型的值">BOOL 类型的值</h3>
+<ul>
+<li>通常来讲只有 ON/OFF 两个取值<br />
+但是由于历史问题，TRUE/FALSE 和 YES/NO 也可以表示 BOOL 类型<br />
+</li>
+<li>但是推荐只使用 ON/OFF 避免混淆</li>
+</ul>
+<h3 id="if-的特点不需要加-会自动尝试作为变量名求值">if 的特点：不需要加
+${}, 会自动尝试作为变量名求值</h3>
+<p>由于历史问题，if 的括号中有着特殊的语法，如果是一个字符串，比如
+MYVAR，则他会先看是否有 ${MYVAR}
+这个变量，如果有则被替换为变量的值来进行接下来的比较，否则保持原来的字符串不变。<br />
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs cmake"><span class="hljs-keyword">set</span>(MYVAR Hello)<br><span class="hljs-keyword">if</span>(MYVAR <span class="hljs-keyword">MATCHES</span> Hello)<br>	<span class="hljs-keyword">message</span>(<span class="hljs-string">&quot;MYVAR is Hello&quot;</span>)<br><span class="hljs-keyword">else</span>()<br>	<span class="hljs-keyword">message</span>(<span class="hljs-string">&quot;MYVAR is not hello&quot;</span>)<br><span class="hljs-keyword">endif</span>()<br></code></pre></td></tr></table></figure></p>
+<h3 id="如果加上-也没区别">如果加上 ${} 也没区别</h3>
+<p><code>if($&#123;MYVAR&#125; MATCHES "Hello")</code> 会展开成
+<code>if(Hello MACHES "Hello")</code><br />
+因为没有 Hello 变量所以被视为字符串正常进行匹配。</p>
+<h3 id="万一定义了-hello-变量那就寄了">万一定义了 Hello
+变量那就寄了</h3>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs cmake"><span class="hljs-keyword">set</span>(MYVAR Hello)<br><span class="hljs-keyword">set</span>(Hello world)<br><span class="hljs-keyword">if</span>(<span class="hljs-variable">$&#123;MYVAR&#125;</span> <span class="hljs-keyword">MATCHES</span> <span class="hljs-string">&quot;Hello&quot;</span>)<br>	<span class="hljs-keyword">message</span>(<span class="hljs-string">&quot;MYVAR is Hello!&quot;</span>)<br><span class="hljs-keyword">else</span>()<br>	<span class="hljs-keyword">message</span>(<span class="hljs-string">&quot;MYVAR is not Hello!&quot;</span>)<br><span class="hljs-keyword">endif</span>()	<br></code></pre></td></tr></table></figure>
+<p><code>if($&#123;MYVAR&#125; MATCHES "Hello")</code> 变成
+<code>if(Hello MATCHES "Hello")</code><br />
+if 认为用户要使用 Hello 变量，然后就出错了。<br />
+这里不要自作聪明加 ${} 就好了。</p>
+<h3
+id="解决用引号包裹防止被当作变量名">解决：用引号包裹，防止被当作变量名</h3>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs cmake"><span class="hljs-keyword">set</span>(MYVAR Hello)<br><span class="hljs-keyword">set</span>(Hello world)<br><span class="hljs-keyword">if</span>(<span class="hljs-string">&quot;$&#123;MYVAR&#125;&quot;</span> <span class="hljs-keyword">MATCHES</span> <span class="hljs-string">&quot;Hello&quot;</span>)<br>	<span class="hljs-keyword">message</span>(<span class="hljs-string">&quot;MYVAR is Hello!&quot;</span>)<br><span class="hljs-keyword">else</span>()<br>	<span class="hljs-keyword">message</span>(<span class="hljs-string">&quot;MYVAR is not Hello!&quot;</span>)<br><span class="hljs-keyword">endif</span>()	<br></code></pre></td></tr></table></figure>
+<p>但是你不觉得麻烦吗？直接变量名就好了。<br />
+<strong>另外：CMake 仅仅是指令( set,message 这些
+)不分大小写，但变量名什么的是分大小写的！</strong></p>
+<h2 id="第十章变量和作用域">第十章：变量和作用域</h2>
+<h3 id="变量的传递规则父传子">变量的传递规则：父传子</h3>
+<ul>
+<li><p>父模块内容会传递给子模块</p></li>
+<li><p>CMakeLists.txt</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs cmake"><span class="hljs-keyword">cmake_minimum_required</span>(VERSION <span class="hljs-number">3.15</span>)<br><br><span class="hljs-keyword">set</span>(MYVAR <span class="hljs-keyword">ON</span>)  <br><span class="hljs-keyword">add_executable</span>(main main.cpp)  <br></code></pre></td></tr></table></figure></li>
+<li><p>m/CMakeLists.txt<br />
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs cmake"><span class="hljs-keyword">message</span>(<span class="hljs-string">&quot;MYVAR is $&#123;MYVAR&#125;&quot;</span>)  <br></code></pre></td></tr></table></figure></p></li>
+<li><p>Output<br />
+&gt;MYVAR is ON</p></li>
+</ul>
+<h3 id="变量传递规则子不传父">变量传递规则：子不传父</h3>
+<ul>
+<li><p>如果父模块本来就定义同名变量，则离开子模块后仍保持父模块原来设置的值。</p></li>
+<li><p>CMakeLists.txt<br />
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs cmake"><span class="hljs-keyword">cmake_minimum_required</span>(VERSION <span class="hljs-number">3.15</span>)<br><br><span class="hljs-keyword">set</span>(MYVAR <span class="hljs-keyword">OFF</span>)  <br><span class="hljs-keyword">add_subdirectory</span>(mylib)  <br><span class="hljs-keyword">message</span>(<span class="hljs-string">&quot;MYVAR:$&#123;MYVAR&#125;&quot;</span>)  <br></code></pre></td></tr></table></figure></p></li>
+<li><p>m/CMakeLists.txt</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs cmake"><span class="hljs-keyword">set</span>(MYVAR <span class="hljs-keyword">ON</span>)  <br></code></pre></td></tr></table></figure></li>
+<li><p>Output</p>
+<blockquote>
+<p>MYVAR:OFF</p>
+</blockquote></li>
+</ul>
+<h3
+id="若子模块想向父模块传递变量该怎么办">若子模块想向父模块传递变量该怎么办？</h3>
+<ul>
+<li><p>可以使用 set 的 PARENT_SCOPE
+选项把一个变量传递到上一层作用域</p></li>
+<li><p>CMakeLists.txt</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs cmake"><span class="hljs-keyword">cmake_minimum_required</span>(VERSION <span class="hljs-number">3.15</span>)<br><br><span class="hljs-keyword">set</span>(MYVAR <span class="hljs-keyword">OFF</span>)  <br><span class="hljs-keyword">add_subdirectory</span>(mylib)  <br><span class="hljs-keyword">message</span>(<span class="hljs-string">&quot;MYVAR:$&#123;MYVAR&#125;&quot;</span>)  <br></code></pre></td></tr></table></figure></li>
+<li><p>m/CMakeLists.txt</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs cmake"><span class="hljs-keyword">set</span>(MYVAR <span class="hljs-keyword">ON</span> PARENT_SCOPE)  <br></code></pre></td></tr></table></figure></li>
+<li><p>Output</p>
+<blockquote>
+<p>MYVAR:ON</p>
+</blockquote></li>
+<li><p>如果父模块没有定义 MYVAR，也可以使用缓存变量向外传递( 不建议,
+这样很不安全
+)，但是因为缓存变量是全局的，这样不仅父模块可见，父模块的父模块也可见。</p>
+<ul>
+<li><p>CMakeLists.txt</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs cmake"><span class="hljs-keyword">cmake_minimum_required</span>(VERSION <span class="hljs-number">3.15</span>)<br><br><span class="hljs-keyword">add_subdirectory</span>(mylib)  <br><span class="hljs-keyword">message</span>(<span class="hljs-string">&quot;MYVAR:$&#123;MYVAR&#125;&quot;</span>)  <br></code></pre></td></tr></table></figure></li>
+<li><p>m/CMakeLists.txt</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs cmake"><span class="hljs-keyword">set</span>(MYVAR <span class="hljs-keyword">ON</span> CACHE BOOL <span class="hljs-string">&quot;&quot;</span> FORCE)  <br></code></pre></td></tr></table></figure></li>
+<li><p>Output</p>
+<blockquote>
+<p>MYVAR:ON</p>
+</blockquote></li>
+</ul></li>
+</ul>
+<h3
+id="除了父模块还有哪些是带有独立作用域的">除了父模块还有哪些是带有独立作用域的</h3>
+<ul>
+<li>include 的 XXX.cmake <strong>没有</strong>独立作用域<br />
+</li>
+<li>add_subdirectory 的 CMakeLists.txt 有独立作用域<br />
+</li>
+<li>macro
+<strong>没有</strong>独立作用域，插入执行，变量会暴露出来<br />
+</li>
+<li>function <strong>有</strong>独立作用域，变量不会暴露出来<br />
+</li>
+<li>因此 PARENT_SCORE 也可以用于 function 的返回值</li>
+</ul>
+<h3 id="环境变量的访问方式envxx">环境变量的访问方式：$ENV{xx}</h3>
+<ul>
+<li><p>用 ${xx}
+访问的是局部变量，局部变量服从刚刚说的父子模块传递规则。</p></li>
+<li><p>而还有一种特殊的方式可以访问系统的环境变量( enviroment variable )
+: $ENV{xx}</p></li>
+<li><p>比如 $ENV{PATH} 获取的就是 PATH 这个环境变量的值<br />
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs cmake"><span class="hljs-keyword">cmake_minimum_required</span>(VERSION <span class="hljs-number">3.15</span>)  <br><span class="hljs-keyword">project</span>(helloCMake)<br><br><span class="hljs-keyword">message</span>(<span class="hljs-string">&quot;PATH:$ENV&#123;PATH&#125;&quot;</span>)  <br></code></pre></td></tr></table></figure></p></li>
+</ul>
+<h3 id="缓存变量的访问方式cachexx">缓存变量的访问方式：$CACHE{xx}</h3>
+<ul>
+<li><p>还可以用 $CACHE{xx} 访问缓存变量<br />
+缓存变量和环境变量都是全局的，没有作用域一说</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs cmake"><span class="hljs-keyword">cmake_minimum_required</span>(VERSION <span class="hljs-number">3.15</span>)  <br><span class="hljs-keyword">project</span>(helloCMake)<br><br><span class="hljs-keyword">message</span>(<span class="hljs-string">&quot;CMAKE_BUILD_TYPE:$CACHE&#123;CMAKE_BUILD_TYPE&#125;&quot;</span>)  <br></code></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="xx-找不到局部变量时会自动去找缓存变量">${xx}
+找不到局部变量时，会自动去找缓存变量</h3>
+<ul>
+<li><p>当 ${xx} 在局部变量找不到时，回去查询名为 xx 缓存变量</p></li>
+<li><p>所以这里虽然没有定义 CMAKE_BUILD_TYPE，但是 ${}
+在缓存变量中找到了<br />
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs cmake"><span class="hljs-keyword">cmake_minimum_required</span>(VERSION <span class="hljs-number">3.15</span>)  <br>projecr(helloCMake)<br><br><span class="hljs-keyword">message</span>(<span class="hljs-string">&quot;CMAKE_BUILD_TYPE:$&#123;CMAKE_BUILD_TYPE&#125;&quot;</span>)<br><br><span class="hljs-keyword">add_executable</span>(main main.cpp)  <br></code></pre></td></tr></table></figure></p></li>
+</ul>
+<h3 id="ifdefined-xx-判断变量是否存在">if(DEFINED XX)
+判断变量是否存在</h3>
+<p>if(DEFINED MYVAR) 可以判断是否定义了 MYVAR
+变量，判断的是<strong>局部变量</strong>和<strong>缓存变量</strong><br />
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs cmake"><span class="hljs-keyword">cmake_minimum_required</span>(VERSION <span class="hljs-number">3.15</span>)<br>projecr(helloCMake)<br><br><span class="hljs-keyword">if</span>(<span class="hljs-keyword">DEFINED</span> MYVAR)<br>	<span class="hljs-keyword">message</span>(<span class="hljs-string">&quot;MYVAR:$&#123;MYVAR&#125;&quot;</span>)<br><span class="hljs-keyword">else</span>()<br>	<span class="hljs-keyword">message</span>(<span class="hljs-string">&quot;MYVAR not defined&quot;</span>)<br><span class="hljs-keyword">endif</span>()<br></code></pre></td></tr></table></figure></p>
+<p>需要注意的是即便变量是空字符串也是被认为存在的，因为 DEFINED
+判断的是<em>是否被定义</em>。</p>
+<h3 id="ifxx-就可以判断是否存在且不为空">if(xx)
+就可以判断是否存在且不为空</h3>
+<p>可以直接用 if(xx) 来判断空字符串，因为空字符串等于 OFF<br />
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs cmake"><span class="hljs-keyword">cmake_minimum_required</span>(VERSION <span class="hljs-number">3.15</span>)<br>projecr(helloCMake)<br><br><span class="hljs-keyword">set</span>(MYVAR <span class="hljs-string">&quot;&quot;</span>)<br><span class="hljs-keyword">if</span>(MYVAR)<br>	<span class="hljs-keyword">message</span>(<span class="hljs-string">&quot;MYVAR is:$&#123;MYVAR&#125;&quot;</span>)<br><span class="hljs-keyword">else</span>()<br>	<span class="hljs-keyword">message</span>(<span class="hljs-string">&quot;MYVAR is empty or not defined&quot;</span>)<br><span class="hljs-keyword">endif</span>()<br></code></pre></td></tr></table></figure></p>
+<h3 id="ifdefined-envxx-判断环境变量是否存在">if(DEFINED ENV{xx})
+判断环境变量是否存在</h3>
+<ul>
+<li><p>因为 $ENV{xx} 代表环境变量，因此在 set 和 if 中也可以用 ENV{xx}
+来表示环境变量<br />
+因为 set 的第一参数和 if 的参数都是不加 $ 的，<br />
+所以要设置 ${x} 就变成了 set(x ...);<br />
+设置 $ENV{x} 就变成了 set( ENV{x} ...)<br />
+同理还可以用 if(DEFINED CACHE{x} ) 判断是否存在 缓存变量x<br />
+但是 set( CACHE{x} ...) 不行，别搞错了。</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs cmake"><span class="hljs-keyword">cmake_minimum_required</span>(VERSION <span class="hljs-number">3.15</span>)  <br><span class="hljs-keyword">project</span>(helloCMake)<br><br><span class="hljs-keyword">set</span>(ENV&#123;MYVAR&#125; <span class="hljs-string">&quot;hello&quot;</span>)  <br><span class="hljs-keyword">if</span>(<span class="hljs-keyword">DEFINED</span> ENV&#123;MYVAR&#125;)  <br>	<span class="hljs-keyword">message</span>(<span class="hljs-string">&quot;MYVAR:$ENV&#123;MYVAR&#125;&quot;</span>)  <br><span class="hljs-keyword">else</span>()  <br>	<span class="hljs-keyword">message</span>(<span class="hljs-string">&quot;MYVAR is not defined!&quot;</span>)  <br><span class="hljs-keyword">endif</span>()  <br></code></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="第十一章小建议">第十一章：小建议</h3>
+<h3 id="ccache编译加速缓存">CCache：编译加速缓存</h3>
+<ul>
+<li><p>用法：把 gcc -c main.cpp -o main 换成 ccache gcc -c main.cpp -o
+main 即可<br />
+在 CMake 中，可这样来启用 ccache ( 就是给每个编译和链接命令前面加上
+ccache )</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs cmake"><span class="hljs-keyword">cmake_minimum_required</span>(VERSION <span class="hljs-number">3.15</span>)  <br><span class="hljs-keyword">project</span>(helloCMake)<br><br><span class="hljs-keyword">find_program</span>(CCACHE_PROGRAM ccache)  <br><span class="hljs-keyword">if</span>(CCACHE_PROGRAM)  <br>	<span class="hljs-keyword">message</span>(STATUS <span class="hljs-string">&quot;Found CCache:$&#123;CCACHE_PROGRAM&#125;&quot;</span>)  <br>	<span class="hljs-keyword">set_property</span>(GLOBAL PROPERTY RULE_LAUNCH_COMPILE <span class="hljs-variable">$&#123;CCACHE_PROGRAM&#125;</span>)  <br>	<span class="hljs-keyword">set_property</span>(GLOBAL PROPERTY RULE_LAUNCH_LINK <span class="hljs-variable">$&#123;CCACHE_PROGRAM&#125;</span>)  <br><span class="hljs-keyword">endif</span>()  <br></code></pre></td></tr></table></figure></li>
+<li><p>CCache 官网：https://ccache.dev/ ( 不过好像不支持 MSVC )</p></li>
+</ul>
+<h3 id="添加一个-run-伪目标用于启动主程序-可执行文件">添加一个 run
+伪目标，用于启动主程序( 可执行文件 )</h3>
+<ul>
+<li><p>创建一个 run 伪目标，其执行 main 的可执行文件<br />
+这里用了生成器表达式 <code>$&lt;TARGET_FILE:main&gt;</code> 会自动让 run
+依赖 main<br />
+如果自动依赖失败，可以手动加上 add_dependencies(run main)
+也是可以的。</p></li>
+<li><p>这样就可以在命令行运行 cmake --build build --target run 来启动
+main.exe 运行了。而不必根据不同的平台，手动写出 build/main 或者
+build.exe<br />
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs cmake"><span class="hljs-keyword">add_executable</span>(main main.cpp)<br><br><span class="hljs-keyword">add_custom_target</span>(run <span class="hljs-keyword">COMMAND</span> $&lt;TARGET_FILR:main&gt;)  <br></code></pre></td></tr></table></figure></p></li>
+</ul>
+<h3 id="再加一个-configure-伪目标用于可视化地修改缓存变量">再加一个
+configure 伪目标，用于可视化地修改缓存变量</h3>
+<ul>
+<li><p>这样就可以 cmake --build build --target configure 来启动 ccmake
+修改缓存了<br />
+Linux 上相当于 ccmake -B build，Windows 则是 cmake-gui -B build</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs cmake"><span class="hljs-keyword">add_custom_target</span>(run <span class="hljs-keyword">COMMAND</span> $&lt;TARGET_FILE:main&gt;)  <br><span class="hljs-keyword">if</span>(CMAKE_EDIT_COMMAND)  <br>	<span class="hljs-keyword">add_custom_target</span>(configure <span class="hljs-keyword">COMMAND</span> <span class="hljs-variable">$&#123;CMAKE_EDIT_COMMAND&#125;</span> -B <span class="hljs-variable">$&#123;CMAKE_BINARY_DIR&#125;</span>)  <br><span class="hljs-keyword">endif</span>()  <br></code></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="文件目录组织规范"><a
+target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1V84y117YU">文件目录组织规范</a></h2>
+<p>基于CMake的项目组织。</p>
+<h3 id="推荐的目录组织">推荐的目录组织</h3>
+<ul>
+<li>project_name/include/project_name/module_name.h<br />
+</li>
+<li>project_name/src/module_name.cpp</li>
+</ul>
+<p>将头文件放在include/project_name目录下是防止<strong>不同子项目</strong>或<strong>项目</strong>与<strong>系统头文件</strong>相冲突。</p>
+<p><strong>在CMakeLists.txt中</strong>使用</p>
+<p><code>target_include_directories(project_name PUBLIC include)</code></p>
+<p>指定项目名project_name, PUBLIC导入include文件</p>
+<p><strong>源文件中</strong></p>
+<ul>
+<li>#include<project_name/module_name><br />
+</li>
+<li>project_name::func();</li>
+</ul>
+<p><strong>头文件中(project_name/include/project_name/module_name.h)</strong></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-keyword">pragma</span> once</span><br><span class="hljs-keyword">namespace</span> project_name&#123;<br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">func</span><span class="hljs-params">()</span></span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p><strong>实现文件(projecr_name/src/module_name.cpp)</strong></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;project_name/module.h&gt;</span></span><br><span class="hljs-keyword">namespace</span> project_name&#123;<br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">func</span><span class="hljs-params">()</span></span><br><span class="hljs-function">    </span>&#123;<br>        <span class="hljs-type">int</span> a;<br>	&#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h4 id="例子-1">例子</h4>
+<ul>
+<li>biology
+<ul>
+<li>CMakeLists.txt<br />
+</li>
+<li>include
+<ul>
+<li>biology
+<ul>
+<li>Animal.h<br />
+</li>
+</ul></li>
+</ul></li>
+<li>src
+<ul>
+<li>Animal.cpp<br />
+</li>
+</ul></li>
+</ul></li>
+<li>CMakeList.txt<br />
+</li>
+<li>pybmain
+<ul>
+<li>CMakeLists.txt<br />
+</li>
+<li>include
+<ul>
+<li>pybmain
+<ul>
+<li>myutils.h<br />
+</li>
+</ul></li>
+</ul></li>
+<li>src
+<ul>
+<li>main.cpp</li>
+</ul></li>
+</ul></li>
+</ul>
+<p>有点抽象……</p>
+<p><img src="D:\Book\C++\MyC++Note\CMake.png" srcset="/img/loading.gif" lazyload alt="CMake" style="zoom:67%;" /></p>
+<h3 id="划分子项目">划分子项目</h3>
+<p>一个大型的项目不可能是仅仅一个项目，往往是要分成多个子项目。</p>
+<p>通常分为库文件，可执行文件两个部分，<strong>库文件</strong>主要负责逻辑运算、数据处理诸如此类的<strong>代码逻辑</strong>；<strong>可执行文件</strong>主要是和<strong>用户的交互逻辑</strong>。</p>
+<h3 id="根项目的-cmakelists.txt-配置">根项目的 CMakeLists.txt 配置</h3>
+<ul>
+<li>在根项目的 CMakeLists.txt
+中，设置了该项目默认的构建模式，设置了统一的 C++
+版本等各种选项。然后通过 <code>project</code> 命令初始化了根项目。<br />
+</li>
+<li>随后通过 <code>add_subdirectory</code> 把子项目添加进来(
+顺序无关紧要 )，这会调用子项目的 CMakeLists.txt 。<br />
+比如调用 biology/CMakeLists.txt 和 pybmain/CMakeLists.txt</li>
+</ul>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs cmake"><span class="hljs-keyword">cmake_minimum_required</span>(VERSION <span class="hljs-number">3.18</span>)<br><br><span class="hljs-keyword">if</span> (<span class="hljs-keyword">NOT</span> CMAKE_BUILD_TYPE)<br>	<span class="hljs-keyword">set</span>(CMAKE_BUILD_TYPE Release)<br><span class="hljs-keyword">endif</span>()<br><span class="hljs-keyword">set</span>(CMAKE_CXX_STANDARD <span class="hljs-number">20</span>)<br><span class="hljs-keyword">set</span>(CMAKE_CXX_STANDARD_REQUIRED <span class="hljs-keyword">ON</span>)<br><span class="hljs-keyword">set</span>(CMAKE_CXX_EXTENSIONS <span class="hljs-keyword">OFF</span>)<br><br><span class="hljs-keyword">project</span>(CppCMakeDemo LANGUAGES CXX)<br><br><span class="hljs-keyword">add_subdirectory</span>(pybmain)<br><span class="hljs-keyword">add_subdirectory</span>(biology)<br></code></pre></td></tr></table></figure>
+<h1 id="我遇到的实际问题">我遇到的实际问题</h1>
+<h2
+id="将资源拷贝到build目录供可执行文件读取">将资源拷贝到Build目录，供可执行文件读取</h2>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs cmake"><span class="hljs-keyword">add_custom_command</span>(<br>	<span class="hljs-keyword">TARGET</span> main POST_BUILD<br>	<span class="hljs-keyword">COMMAND</span> <span class="hljs-variable">$&#123;CMAKE_COMMAND&#125;</span> -E copy_directory<br>			<span class="hljs-variable">$&#123;CMAKE_CURRENT_SOURCE_DIR&#125;</span>/obj<br>			<span class="hljs-variable">$&#123;CMAKE_CURRENT_BINARY_DIR&#125;</span>/obj<br>)<br></code></pre></td></tr></table></figure>
+<p><a
+target="_blank" rel="noopener" href="https://cmake.org/cmake/help/latest/command/add_custom_command.html?highlight=add_custom_command">CMake官方：add_custom_command</a><br />
+<a
+target="_blank" rel="noopener" href="https://discourse.cmake.org/t/post-copy-files-to-currently-building-target-directory/6027">Post
+copy files to currently building target directory.</a>在这个问题中：“For
+example, if I’m building demo1 I want the output dir to be demo1s binary
+dir, if I’m building demo2, demo2’s binary dir
+etc.”有点意思但是我没想到解决思路用<code>$&#123;PROJECT_SOURCE_DIR&#125;</code>和<code>$&#123;PROJECT_BINARY_DIR&#125;</code>不行吗？</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>我的CMake学习</div>
+      <div>http://example.com/2023/03/10/CMake Note/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Hollow Emiya</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2023年3月10日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2023/04/10/%E5%B8%B8%E8%A7%81%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" title="设计模式学习">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">设计模式学习</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/03/04/SpringBoss/" title="春招寄语">
+                        <span class="hidden-mobile">春招寄语</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

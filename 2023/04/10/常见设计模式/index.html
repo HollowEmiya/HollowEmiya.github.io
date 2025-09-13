@@ -1,0 +1,971 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Hollow Emiya">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="对常见设计模式的学习，从C++角度学习的，但是部分资料没找到好C++版本，所以可能会有不正确的地方。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="设计模式学习">
+<meta property="og:url" content="http://example.com/2023/04/10/%E5%B8%B8%E8%A7%81%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/index.html">
+<meta property="og:site_name" content="Emiya Blog">
+<meta property="og:description" content="对常见设计模式的学习，从C++角度学习的，但是部分资料没找到好C++版本，所以可能会有不正确的地方。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2023/04/10/%E5%B8%B8%E8%A7%81%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/StrategyUML.png">
+<meta property="og:image" content="http://example.com/2023/04/10/%E5%B8%B8%E8%A7%81%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/Proxy.jpg">
+<meta property="article:published_time" content="2023-04-10T04:23:38.000Z">
+<meta property="article:modified_time" content="2025-08-19T02:21:06.289Z">
+<meta property="article:author" content="Hollow Emiya">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/2023/04/10/%E5%B8%B8%E8%A7%81%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/StrategyUML.png">
+  
+  
+  
+  <title>设计模式学习 - Emiya Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null},"woyaola":null,"cnzz":null},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Emiya&#39;s Blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="设计模式学习"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-04-10 12:23" pubdate>
+          2023年4月10日 中午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          5.6k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          47 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">设计模式学习</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>对常见设计模式的学习，从C++角度学习的，但是部分资料没找到好C++版本，所以可能会有不正确的地方。<br />
+<span id="more"></span></p>
+<h1 id="常见设计模式"><a
+target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/231526884">常见设计模式</a></h1>
+<h2 id="工厂模式">工厂模式</h2>
+<h3 id="简单工厂">简单工厂</h3>
+<h4 id="含义">含义</h4>
+<ul>
+<li><strong>简单工厂模式</strong>又叫<strong>静态方法模式</strong>，因为<strong>工厂类</strong>定义了一个<strong>静态方法</strong>。<br />
+</li>
+<li>简单工厂的工厂类是负责生产一个对象的类。</li>
+</ul>
+<h4 id="解决的问题">解决的问题</h4>
+<p>“类实例化的操作”和“使用对象的操作”分开，可以做到不知道具体参数就可以实例化出所需要的“产品类”。</p>
+<h4 id="模式原理">模式原理</h4>
+<h5 id="模式组成">模式组成</h5>
+<ul>
+<li>抽象产品：产品的父类；是一个描述产品的公共接口<br />
+</li>
+<li>具体产品：抽象产品的子类、工厂创建的目标类；描述生产的具体产品。<br />
+</li>
+<li>工厂：被外界调用；根据传入不同参数创建不同产品。</li>
+</ul>
+<h4 id="代码实例">代码实例</h4>
+<p>一个小摊位可以产出“烤冷面”、“手抓饼”、“煎饼果子”等。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-comment">// 抽象的食物  </span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Food</span> &#123;  <br><span class="hljs-keyword">public</span>: <span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-type">void</span> <span class="hljs-title">Cook</span><span class="hljs-params">()</span> </span>&#123; std::cout &lt;&lt; <span class="hljs-string">&quot;A Food&quot;</span>; &#125;  <br>&#125;;<br>  <br><span class="hljs-comment">// 具体食物类  </span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">KaoLengMian</span> :<span class="hljs-keyword">public</span> Food &#123;  <br><span class="hljs-keyword">public</span>:  <br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">Cook</span><span class="hljs-params">()</span>  </span><br><span class="hljs-function">    </span>&#123;  <br>        std::cout &lt;&lt; <span class="hljs-string">&quot;烤冷面&quot;</span>;  <br>    &#125;  <br>&#125;;<br>  <br><span class="hljs-keyword">class</span> <span class="hljs-title class_">ShouZhuaBing</span> :<span class="hljs-keyword">public</span> Food &#123;  <br><span class="hljs-keyword">public</span>:  <br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">Cook</span><span class="hljs-params">()</span> </span>&#123;  <br>        std::cout &lt;&lt; <span class="hljs-string">&quot;手抓饼&quot;</span>;  <br>    &#125;  <br>&#125;;<br>  <br><span class="hljs-keyword">class</span> <span class="hljs-title class_">JianBingGuoZi</span> :<span class="hljs-keyword">public</span> Food &#123;  <br><span class="hljs-keyword">public</span>:  <br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">Cook</span><span class="hljs-params">()</span>  </span><br><span class="hljs-function">    </span>&#123;  <br>        std::cout &lt;&lt; <span class="hljs-string">&quot;煎饼果子&quot;</span>;  <br>    &#125;  <br>&#125;;<br>  <br><span class="hljs-comment">// 创建工厂  </span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">LiuJiu</span> &#123;  <br><span class="hljs-keyword">public</span>:  <br>    <span class="hljs-function"><span class="hljs-type">static</span> Food* <span class="hljs-title">CookFood</span><span class="hljs-params">(<span class="hljs-type">const</span> <span class="hljs-type">char</span>* foodName)</span>  </span><br><span class="hljs-function">    </span>&#123;  <br>        <span class="hljs-keyword">if</span> (!<span class="hljs-built_in">strcmp</span>(foodName,<span class="hljs-string">&quot;烤冷面&quot;</span>))  <br>        &#123;  <br>            <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">KaoLengMian</span>();  <br>        &#125;  <br>        <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (!<span class="hljs-built_in">strcmp</span>(foodName,<span class="hljs-string">&quot;手抓饼&quot;</span>))  <br>        &#123;  <br>            <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">ShouZhuaBing</span>();  <br>        &#125;  <br>        <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (!<span class="hljs-built_in">strcmp</span>(foodName, <span class="hljs-string">&quot;煎饼果子&quot;</span>))  <br>        &#123;  <br>            <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">JianBingGuoZi</span>();  <br>        &#125;  <br>        <span class="hljs-keyword">else</span>  <br>        &#123;  <br>            std::cout &lt;&lt; <span class="hljs-string">&quot;没有这种商品&quot;</span>;  <br>        &#125;  <br>        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Food</span>();  <br>    &#125;  <br>&#125;;<br><br>  <br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span>  </span><br><span class="hljs-function"></span>&#123;  <br>    LiuJiu myCar=<span class="hljs-built_in">LiuJiu</span>();  <br>    std::string f;  <br>    std::cin &gt;&gt; f;  <br>    Food* myfood;  <br>    myfood = myCar.<span class="hljs-built_in">CookFood</span>(f.<span class="hljs-built_in">c_str</span>());  <br>    myfood-&gt;<span class="hljs-built_in">Cook</span>();  <br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;  <br>&#125;  <br></code></pre></td></tr></table></figure>
+<h4 id="优缺点">优缺点</h4>
+<ul>
+<li>优点
+<ul>
+<li><u>把创建产品实例的操作</u> 和 <u>使用实例的工作分开</u>
+，类似于消费者不需要知道怎么做煎饼果子就能吃到，不关心产品如何制造，只关心如何使用，实现了解耦。<br />
+</li>
+<li>把初始化产品的工作全集中在工厂内进行，方便维护，更符合面向对象的原则，而不是面向过程。<br />
+</li>
+</ul></li>
+<li>缺点
+<ul>
+<li>所有实例创建都在工厂内，工厂不能工作后，整个系统都会被影响。<br />
+</li>
+<li>违背开闭原则，添加新产品，不得不修改工厂类的逻辑，会造成工厂类的逻辑复杂。<br />
+</li>
+<li>使用了静态方法，静态方法无法被继承、重写，工厂无法基于继承形成等级结构。</li>
+</ul></li>
+</ul>
+<h4 id="适用场景">适用场景</h4>
+<p>产品少；只知道传入参数，对构造逻辑不关心。</p>
+<h3 id="工厂方法">工厂方法</h3>
+<h4 id="简介">简介</h4>
+<p>通过定义工厂父类负责定义创建对象的公共接口，而子类则负责生成具体的对象。解决普通工厂一旦生产新产品就要修改工厂类的方法逻辑，造成工厂逻辑混乱复杂的问题。</p>
+<h4 id="模式组成-1">模式组成</h4>
+<ul>
+<li>抽象产品<br />
+</li>
+<li>具体产品<br />
+</li>
+<li>抽象工厂，具体工厂的父类，描述具体工厂的接口<br />
+</li>
+<li>具体工厂，被外界调用，实现工厂方法创建产品实例。</li>
+</ul>
+<h4 id="直接上代码">直接上代码</h4>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-comment">// 抽象的食物</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Food</span> &#123;<br><span class="hljs-keyword">public</span>: <span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-type">void</span> <span class="hljs-title">Cook</span><span class="hljs-params">()</span> </span>&#123; std::cout &lt;&lt; <span class="hljs-string">&quot;A Food&quot;</span>; &#125;<br>&#125;;<br><br><span class="hljs-comment">// 抽象工厂类</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Factory</span> &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-keyword">virtual</span> Food <span class="hljs-title">FactoryMeth</span><span class="hljs-params">()</span> </span>&#123; std::cout &lt;&lt; <span class="hljs-string">&quot;Can`t find Factory&quot;</span>; &#125;<br>&#125;;<br><br><span class="hljs-comment">// 具体食物类</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">KaoLengMian</span> :<span class="hljs-keyword">public</span> Food &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">Cook</span><span class="hljs-params">()</span></span><br><span class="hljs-function">    </span>&#123;<br>        std::cout &lt;&lt; <span class="hljs-string">&quot;烤冷面&quot;</span>;<br>    &#125;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-type">int</span> a = <span class="hljs-number">0</span>;<br>&#125;;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">ShouZhuaBing</span> :<span class="hljs-keyword">public</span> Food &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">Cook</span><span class="hljs-params">()</span> </span>&#123;<br>        std::cout &lt;&lt; <span class="hljs-string">&quot;手抓饼&quot;</span>;<br>    &#125;<br>&#125;;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">JianBingGuoZi</span> :<span class="hljs-keyword">public</span> Food &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">Cook</span><span class="hljs-params">()</span></span><br><span class="hljs-function">    </span>&#123;<br>        std::cout &lt;&lt; <span class="hljs-string">&quot;煎饼果子&quot;</span>;<br>    &#125;<br>&#125;;<br><br><span class="hljs-comment">// 创建工厂</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">KLMFactory</span> : <span class="hljs-keyword">public</span> Factory &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function">Food* <span class="hljs-title">FactoryMeth</span><span class="hljs-params">()</span> </span>&#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">KaoLengMian</span>();<br>    &#125;<br>&#125;;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">SZBFactory</span> : <span class="hljs-keyword">public</span> Factory &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function">Food* <span class="hljs-title">FactoryMeth</span><span class="hljs-params">()</span></span><br><span class="hljs-function">    </span>&#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">ShouZhuaBing</span>();<br>    &#125;<br>&#125;;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">JBGZFactory</span> : <span class="hljs-keyword">public</span> Factory &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function">Food* <span class="hljs-title">FactoryMeth</span><span class="hljs-params">()</span> </span>&#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">JianBingGuoZi</span>();<br>    &#125;<br>&#125;;<br><br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>    KLMFactory klmCar = <span class="hljs-built_in">KLMFactory</span>();<br>    SZBFactory szbCar = <span class="hljs-built_in">SZBFactory</span>();<br>    JBGZFactory jbgzCar = <span class="hljs-built_in">JBGZFactory</span>();<br>    KaoLengMian* klm = (KaoLengMian*)klmCar.<span class="hljs-built_in">FactoryMeth</span>();<br>    klm-&gt;<span class="hljs-built_in">Cook</span>();<br>    std::cout &lt;&lt; klm-&gt;a;<br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h4 id="优缺点-1">优缺点</h4>
+<ul>
+<li>优点
+<ul>
+<li>更符合开闭原则<br />
+新增产品时只需要新增相应的工厂即可。<br />
+无需像简单工厂那样修改工厂逻辑。<br />
+</li>
+<li>更符合单一职责原则<br />
+每个工厂只负责一种产品<br />
+</li>
+<li>不用静态方法，可以进行继承，可以实现多态。<br />
+</li>
+</ul></li>
+<li>缺点
+<ul>
+<li>新增产品，还要新增工厂，系统内类的个数成对增加，一定程度上增加了系统的复杂度，编译运行时会带来一定的开销。<br />
+</li>
+<li>抽象类多不方便理解代码<br />
+</li>
+<li>对于使用这种工厂方法的类而言，若要更换别的商品，需要修改工厂类的实例。<br />
+</li>
+<li>一个工厂只能生产一种产品。</li>
+</ul></li>
+</ul>
+<h4 id="适用场景-1">适用场景</h4>
+<p>不需要知道产品类名，只需知道工厂；</p>
+<h3 id="抽象工厂模式">抽象工厂模式</h3>
+<h4 id="简介-1">简介</h4>
+<p>抽象工厂模式，即Abstract Factory
+Pattern，提供一个创建一系列相关或相互依赖对象的接口，而无须指定它们具体的类；具体的工厂负责实现具体的产品实例。<br />
+允许使用抽象的接口来创建一组相关产品，而不需要知道或关心实际生产出的具体产品是什么，这样就可以从具体产品中被解耦。<br />
+解决了每个工厂只能创建一类产品的问题。</p>
+<h4 id="模式组成-2">模式组成</h4>
+<ul>
+<li>抽象产品族(Abstract
+Product)，抽象产品的父类，描述抽象产品的公共接口<br />
+</li>
+<li>抽象产品(Product)<br />
+</li>
+<li>具体产品(Concrete Product)<br />
+</li>
+<li>抽象工厂(Creator)<br />
+</li>
+<li>具体工厂(Concrete Creator)</li>
+</ul>
+<p>抽象产品族：蜥蜴战士，魔法师；抽象产品：火属性蜥蜴战士、冰属性蜥蜴战士、电属性蜥蜴战士；火魔法师、冰魔法师、电魔法师；具体产品：中等难度的冰属性蜥蜴战士。<br />
+不同类型的怪物构成一个产品族，同一种但属性不同的怪物构成一个抽象产品，一个生产出来的怪物是具体产品。</p>
+<h4 id="代码">代码</h4>
+<p>火冰，工厂都能制造1，2两种怪物，怪物有火1，火2，冰1，冰2.<br />
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-comment">// 抽象产品族</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">ZaiE</span> &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">attack</span><span class="hljs-params">()</span> </span>&#123; std::cout &lt;&lt; <span class="hljs-string">&quot;GaLong&quot;</span>; &#125;<br>&#125;;<br><br><span class="hljs-comment">// 抽象工厂类</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">MonsterFactory</span> &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function">ZaiE* <span class="hljs-title">Monster1</span><span class="hljs-params">()</span> </span>&#123; <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> ZaiE; &#125;;<br>    <span class="hljs-function">ZaiE* <span class="hljs-title">Monster2</span><span class="hljs-params">()</span> </span>&#123; <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> ZaiE; &#125;;<br>&#125;;<br><br><span class="hljs-comment">// 抽象产品类</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">MonsterOne</span>:<span class="hljs-keyword">public</span> ZaiE&#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">attack</span><span class="hljs-params">()</span> </span>&#123; std::cout &lt;&lt; <span class="hljs-string">&quot;M1&quot;</span>; &#125;<br>&#125;;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">MonsterTwo</span>:<span class="hljs-keyword">public</span> ZaiE &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">attack</span><span class="hljs-params">()</span> </span>&#123; std::cout &lt;&lt; <span class="hljs-string">&quot;M2&quot;</span>; &#125;<br>&#125;;<br><br><span class="hljs-comment">// 具体产品</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">FireMonsterOne</span>:<span class="hljs-keyword">public</span> MonsterOne &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">attack</span><span class="hljs-params">()</span> </span>&#123; std::cout &lt;&lt; <span class="hljs-string">&quot;Fire M1&quot;</span>; &#125;<br>&#125;;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">IceMonsterOne</span> :<span class="hljs-keyword">public</span> MonsterOne&#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">attack</span><span class="hljs-params">()</span> </span>&#123; std::cout &lt;&lt; <span class="hljs-string">&quot;Ice M1&quot;</span>; &#125;<br>&#125;;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">FireMonsterTwo</span> :<span class="hljs-keyword">public</span> MonsterTwo &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">attack</span><span class="hljs-params">()</span> </span>&#123; std::cout &lt;&lt; <span class="hljs-string">&quot;Fire M2&quot;</span>; &#125;<br>&#125;;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">IceMonsterTwo</span> :<span class="hljs-keyword">public</span> MonsterTwo &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">attack</span><span class="hljs-params">()</span> </span>&#123; std::cout &lt;&lt; <span class="hljs-string">&quot;Ice M2&quot;</span>; &#125;<br>&#125;;<br><br><span class="hljs-comment">// 具体工厂</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">FireFactory</span> :<span class="hljs-keyword">public</span> MonsterFactory &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function">ZaiE* <span class="hljs-title">Monster1</span><span class="hljs-params">()</span></span><br><span class="hljs-function">    </span>&#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">FireMonsterOne</span>();<br>    &#125;<br>    <span class="hljs-function">ZaiE* <span class="hljs-title">Monster2</span><span class="hljs-params">()</span></span><br><span class="hljs-function">    </span>&#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">FireMonsterTwo</span>();<br>    &#125;<br>&#125;;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">IceFactory</span> :<span class="hljs-keyword">public</span> MonsterFactory &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function">ZaiE* <span class="hljs-title">Monster1</span><span class="hljs-params">()</span></span><br><span class="hljs-function">    </span>&#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">IceMonsterOne</span>();<br>    &#125;<br>    <span class="hljs-function">ZaiE* <span class="hljs-title">Monster2</span><span class="hljs-params">()</span></span><br><span class="hljs-function">    </span>&#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">IceMonsterTwo</span>();<br>    &#125;<br>&#125;;<br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>    FireFactory ff = <span class="hljs-built_in">FireFactory</span>();<br>    IceFactory icef = <span class="hljs-built_in">IceFactory</span>();<br>    FireMonsterOne* fm1 = (FireMonsterOne*)ff.<span class="hljs-built_in">Monster1</span>();<br>    IceMonsterTwo* icem2 = (IceMonsterTwo*)icef.<span class="hljs-built_in">Monster2</span>();<br>    fm1-&gt;<span class="hljs-built_in">attack</span>();<br>    icem2-&gt;<span class="hljs-built_in">attack</span>();<br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure></p>
+<h4 id="优缺点-2">优缺点</h4>
+<ul>
+<li>优点
+<ul>
+<li>具体产品生产，交给具体工厂，降低耦合。<br />
+</li>
+<li>新增产品，增加产品类，修改工厂类即可<br />
+</li>
+</ul></li>
+<li>缺点
+<ul>
+<li>容易增添抽象产品种类(比如增加暗属性怪物)，但是增加新的产品族比较难(比如加入新的怪)，因为抽象工厂定义内定义了能生产的所有对象，新增产品族需要修改所有的工厂，而增加新的抽象产品，只需建新的工厂。</li>
+</ul></li>
+</ul>
+<h2 id="单例模式"><a
+target="_blank" rel="noopener" href="https://blog.csdn.net/unonoi/article/details/121138176">单例模式</a></h2>
+<p>单例模式是指在整个系统的生命周期内，保证一个类只能产生一个实例，确保该类的唯一性。<br />
+特点就是全局唯一，就像世界上只有一个一个一个！啊啊啊！</p>
+<h3 id="为什么需要单例模式">为什么需要单例模式</h3>
+<p>单例模式是为了保证程序的线程安全。<br />
+#### 什么是线程安全？</p>
+<p>线程安全是指在拥有共享数据的多条线程并行执行的过程中，线程安全的代码会通过同步机制保证各个线程可以正常且正确的执行，不会出现数据污染的情况。<br />
+#### 如何保证线程安全</p>
+<p>1、使用锁，给共享的资源加锁，保证每个资源变量每时每刻至多被一个线程占用。<br />
+2、让线程也拥有资源，不去共享进程中的资源。<br />
+如：使用 threadlocal 可以为每个线程维护一个私有的本地变量。</p>
+<h3 id="单例模式分类">单例模式分类</h3>
+<p>分为<strong>懒汉式</strong>和<strong>饿汉式</strong>，二者<strong>区别在于创建实例的时间不同。</strong></p>
+<ul>
+<li>懒汉式(比较懒，用到时候才创建)<br />
+系统运行中，实例不存在，只有用到才会去创建并使用实例。我们需要考虑线程安全的问题，所以后面有普通懒汉式(<em>线程不安全</em>)和加锁的懒汉式(<em>线程安全</em>)。<br />
+</li>
+<li>饿汉式(饿的不行了，一开始就创建)<br />
+系统一运行就初始化创建实例，直接调用即可。这种方式本身就是线程安全的，可以安心使用。</li>
+</ul>
+<h3 id="单例类的特点">单例类的特点</h3>
+<ul>
+<li>构造函数和析构函数均为私有成员，防止外部构造和析构。<br />
+</li>
+<li>拷贝构造函数和赋值构造函数是私有类型，禁止外部拷贝和赋值。<br />
+</li>
+<li>类内有一个获取实例的静态方法，供全局访问。</li>
+</ul>
+<h3 id="单例模式实现">单例模式实现</h3>
+<h4 id="普通懒汉模式">普通懒汉模式</h4>
+<p>大佬没写，我也不写(</p>
+<h4 id="加锁的懒汉模式">加锁的懒汉模式</h4>
+<h5 id="方法1.返回普通指针">方法1.返回普通指针</h5>
+<p>头文件<br />
+这里需要学习<a
+target="_blank" rel="noopener" href="https://cn.bing.com/search?q=std%3A%3Amutex&amp;PC=U316&amp;FORM=CHROMN"><code>std::mutex</code>互斥量，先贴一个bing搜的，以后补充学习</a></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;mutex&gt;</span></span><br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">SingleInstance</span> &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-type">static</span> SingleInstance* <span class="hljs-title">GetInstacne</span><span class="hljs-params">()</span></span>;   <span class="hljs-comment">// 获取单实例对象</span><br>    <span class="hljs-function"><span class="hljs-type">static</span> <span class="hljs-type">void</span> <span class="hljs-title">deleteInstance</span><span class="hljs-params">()</span></span>;           <span class="hljs-comment">// 释放单实例，在进程退出时调用。</span><br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">PrintInstance</span><span class="hljs-params">()</span></span>;                   <span class="hljs-comment">// 打印单实例的实际地址</span><br><br><span class="hljs-keyword">private</span>:<br>    <span class="hljs-comment">// 私有的构造、析构寒素</span><br>    <span class="hljs-built_in">SingleInstance</span>();<br>    ~<span class="hljs-built_in">SingleInstance</span>();<br><br>    <span class="hljs-comment">// 私有的拷贝、赋值构造函数</span><br>    <span class="hljs-built_in">SingleInstance</span>(<span class="hljs-type">const</span> SingleInstance&amp; single);<br>    <span class="hljs-type">const</span> SingleInstance&amp; <span class="hljs-keyword">operator</span>=(<span class="hljs-type">const</span> SingleInstance&amp; single);<br><br><span class="hljs-keyword">private</span>:<br>    <span class="hljs-comment">// 唯一单实例对象的指针</span><br>    <span class="hljs-type">static</span> SingleInstance* m_SingleInstance;<br>    <span class="hljs-type">static</span> std::mutex m_Mutex;              <span class="hljs-comment">// 锁</span><br>&#125;;<br></code></pre></td></tr></table></figure>
+<p>源文件<br />
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-comment">// 初始化静态成员变量</span><br>SingleInstance* SingleInstance::m_SingleInstance = <span class="hljs-literal">nullptr</span>;<br>std::mutex SingleInstance::m_Mutex;<br><br><span class="hljs-comment">// 不能返回指针的引用！会存在在外部被修改的风险</span><br><span class="hljs-function">SingleInstance* <span class="hljs-title">SingleInstance::GetInstacne</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-comment">// 使用两个 if 进行双检锁；好处是，只有判断指针为空时才加锁</span><br>    <span class="hljs-comment">// 避免每次调用 GetInstance 的方法都进行加锁，锁存在一定的开销</span><br>    <span class="hljs-keyword">if</span> (m_SingleInstance == <span class="hljs-literal">nullptr</span>)<br>    &#123;<br>        <span class="hljs-function">std::unique_lock&lt;std::mutex&gt; <span class="hljs-title">lock</span><span class="hljs-params">(m_Mutex)</span></span>;  <span class="hljs-comment">// 加锁</span><br>        <span class="hljs-keyword">if</span> (m_SingleInstance == <span class="hljs-literal">nullptr</span>)<br>        &#123;<br>            m_SingleInstance = <span class="hljs-built_in">new</span>(std::nothrow)<span class="hljs-built_in">SingleInstance</span>();<br>        &#125;<br>    &#125;<br><br>    <span class="hljs-keyword">return</span> m_SingleInstance;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">SingleInstance::deleteInstance</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-function">std::unique_lock&lt;std::mutex&gt; <span class="hljs-title">lock</span><span class="hljs-params">(m_Mutex)</span></span>; <span class="hljs-comment">// 加锁</span><br>    <span class="hljs-keyword">if</span> (m_SingleInstance)<br>    &#123;<br>        <span class="hljs-keyword">delete</span> m_SingleInstance;<br>        m_SingleInstance = <span class="hljs-literal">nullptr</span>;<br>    &#125;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">SingleInstance::PrintInstance</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>    std::cout &lt;&lt; <span class="hljs-string">&quot;该实例的内存地址为：&quot;</span> &lt;&lt; <span class="hljs-keyword">this</span> &lt;&lt; std::endl;<br>&#125;<br><br>SingleInstance::<span class="hljs-built_in">SingleInstance</span>()<br>&#123;<br>    std::cout &lt;&lt; <span class="hljs-string">&quot;单例模式构造函数&quot;</span> &lt;&lt; std::endl;<br>&#125;<br><br>SingleInstance::~<span class="hljs-built_in">SingleInstance</span>()<br>&#123;<br>    std::cout &lt;&lt; <span class="hljs-string">&quot;单例模式析构函数&quot;</span> &lt;&lt; std::endl;<br>&#125;<br></code></pre></td></tr></table></figure></p>
+<h5 id="方法2.返回智能指针">方法2.返回智能指针</h5>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;mutex&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;memory&gt;</span></span><br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Singleton</span> &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-type">static</span> std::shared_ptr&lt;Singleton&gt; <span class="hljs-title">getSingleton</span><span class="hljs-params">()</span></span>;<br><br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">Print</span><span class="hljs-params">()</span> </span>&#123; std::cout &lt;&lt; <span class="hljs-string">&quot;Hello World&quot;</span> &lt;&lt; std::endl; &#125;<br><br>    ~<span class="hljs-built_in">Singleton</span>() &#123; std::cout &lt;&lt; __PRETTY_FUNCTION__ &lt;&lt; std::endl; &#125; <span class="hljs-comment">// print function name</span><br><br><span class="hljs-keyword">private</span>:<br>    <span class="hljs-built_in">Singleton</span>() &#123; std::cout &lt;&lt; __PRETTY_FUNCTION__ &lt;&lt; std::endl; &#125;<br>&#125;;<br><br><span class="hljs-type">static</span> std::shared_ptr&lt;Singleton&gt; singleton = <span class="hljs-literal">nullptr</span>;<br><span class="hljs-type">static</span> std::mutex singletonMutex;<br><br><span class="hljs-function">std::shared_ptr&lt;Singleton&gt; <span class="hljs-title">Singleton::getSingleton</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-keyword">if</span> (singleton == <span class="hljs-literal">nullptr</span>)<br>    &#123;<br>        <span class="hljs-function">std::unique_lock&lt;std::mutex&gt; <span class="hljs-title">lock</span><span class="hljs-params">(singletonMutex)</span></span>;<br>        <span class="hljs-keyword">if</span> (singleton == <span class="hljs-literal">nullptr</span>)<br>        &#123;<br>            <span class="hljs-keyword">auto</span> temp = std::<span class="hljs-built_in">shared_ptr</span>&lt;Singleton&gt;(<span class="hljs-keyword">new</span> <span class="hljs-built_in">Singleton</span>());<br>            singleton = temp;<br>        &#125;<br>    &#125;<br>    <span class="hljs-keyword">return</span> singleton;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h5
+id="静态局部变量的懒汉单例c11线程安全">静态局部变量的懒汉单例(C++11线程安全)</h5>
+<p>头文件<br />
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Single</span> &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-comment">// 获取单实例对象</span><br>    <span class="hljs-function"><span class="hljs-type">static</span> Single <span class="hljs-title">GetInstance</span><span class="hljs-params">()</span></span>;<br><br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">Print</span><span class="hljs-params">()</span></span>;<br><br><span class="hljs-keyword">private</span>:<br>    <span class="hljs-comment">// 防止外部构造</span><br>    <span class="hljs-built_in">Single</span>();<br><br>    <span class="hljs-comment">// 禁止外部析构</span><br>    ~<span class="hljs-built_in">Single</span>();<br><br>    <span class="hljs-comment">// j禁止外部拷贝</span><br>    <span class="hljs-built_in">Single</span>(<span class="hljs-type">const</span> Single&amp; single);<br><br>    <span class="hljs-comment">// 禁止外部赋值</span><br>    <span class="hljs-type">const</span> Single&amp; <span class="hljs-keyword">operator</span>=(<span class="hljs-type">const</span> Single&amp; single);<br>&#125;;<br></code></pre></td></tr></table></figure></p>
+<p>源文件<br />
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-function">Single <span class="hljs-title">Single::GetInstance</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-comment">/*L</span><br><span class="hljs-comment">    利用局部静态变量的特性实现</span><br><span class="hljs-comment">    静态局部变量只能在当前函数内有效，其他函数无法访问</span><br><span class="hljs-comment">    静态局部变量只有在第一次被调用的时候进行初始化，存在静态存储区，直到程序结束</span><br><span class="hljs-comment">    */</span><br>    <span class="hljs-type">static</span> Single single;<br>    <span class="hljs-keyword">return</span> single;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">Single::Print</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>    std::cout &lt;&lt; <span class="hljs-string">&quot;My Single Instance Address is:&quot;</span> &lt;&lt; <span class="hljs-keyword">this</span> &lt;&lt; std::endl;<br>&#125;<br><br>Single::<span class="hljs-built_in">Single</span>()<br>&#123;<br>    std::cout &lt;&lt; <span class="hljs-string">&quot;构造函数&quot;</span> &lt;&lt; std::endl;<br>&#125;<br><br>Single::~<span class="hljs-built_in">Single</span>()<br>&#123;<br>    std::cout &lt;&lt; <span class="hljs-string">&quot;析构函数&quot;</span> &lt;&lt; std::endl;<br>&#125;<br></code></pre></td></tr></table></figure></p>
+<p>但是这种方法其实还是有问题的，在多线程情况下，同时调用<code>GetInstance</code>方法会产生竞争，发生线程安全问题。<br />
+解决办法：在程序的单线程启动阶段就调用 <code>GetInstance</code> 方法</p>
+<h4 id="饿汉式单例">饿汉式单例</h4>
+<p>头文件<br />
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-comment">// 饿汉</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Singleton</span> &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-comment">// Get Instance</span><br>    <span class="hljs-function"><span class="hljs-type">static</span> Singleton* <span class="hljs-title">GetInstance</span><span class="hljs-params">()</span></span>;<br>    <span class="hljs-comment">// 释放单例，当进程退出时调用</span><br>    <span class="hljs-function"><span class="hljs-type">static</span> <span class="hljs-type">void</span> <span class="hljs-title">deleteInstance</span><span class="hljs-params">()</span></span>;<br><br>    <span class="hljs-comment">//打印实例地址</span><br>    <span class="hljs-function"><span class="hljs-keyword">inline</span> <span class="hljs-type">void</span> <span class="hljs-title">Print</span><span class="hljs-params">()</span> </span>&#123; std::cout &lt;&lt; <span class="hljs-string">&quot;This Instance Address is:&quot;</span> &lt;&lt; <span class="hljs-keyword">this</span> &lt;&lt; std::endl; &#125;<br><br><span class="hljs-keyword">private</span>:<br>    <span class="hljs-built_in">Singleton</span>();<br>    ~<span class="hljs-built_in">Singleton</span>();<br><br>    <span class="hljs-built_in">Singleton</span>(<span class="hljs-type">const</span> Singleton&amp; single);<br>    <span class="hljs-type">const</span> Singleton&amp; <span class="hljs-keyword">operator</span>=(<span class="hljs-type">const</span> Singleton&amp; single);<br><br><span class="hljs-keyword">private</span>:<br>    <span class="hljs-comment">// 唯一单实例对象指针</span><br>    <span class="hljs-type">static</span> Singleton* g_pSingleton;<br>&#125;;<br></code></pre></td></tr></table></figure></p>
+<p>源文件<br />
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-comment">// 代码一运行就初始化创建实例，本身即线程安全</span><br>Singleton* Singleton::g_pSingleton = <span class="hljs-built_in">new</span> (std::nothrow)<span class="hljs-built_in">Singleton</span>();<br><br><span class="hljs-function">Singleton* <span class="hljs-title">Singleton::GetInstance</span><span class="hljs-params">()</span> </span>&#123;<br>    <span class="hljs-keyword">return</span> g_pSingleton;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">Singleton::deleteInstance</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-keyword">if</span> (g_pSingleton)<br>    &#123;<br>        <span class="hljs-keyword">delete</span> g_pSingleton;<br>        g_pSingleton = <span class="hljs-literal">nullptr</span>;<br>    &#125;<br>&#125;<br><br>Singleton::<span class="hljs-built_in">Singleton</span>()<br>&#123;<br>    std::cout &lt;&lt; <span class="hljs-string">&quot;gzhs&quot;</span> &lt;&lt; std::endl;<br>&#125;<br><br>Singleton::~<span class="hljs-built_in">Singleton</span>()<br>&#123;<br>    std::cout &lt;&lt; <span class="hljs-string">&quot;xghs&quot;</span> &lt;&lt; std::endl;<br>&#125;<br></code></pre></td></tr></table></figure></p>
+<h5 id="使用-c11-stdcall_once-实现单例c11线程安全">使用 C++11
+<code>std::call_once</code> 实现单例(C++11线程安全)</h5>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostrea&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;memory&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;mutex&gt;</span></span><br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Singleton</span> &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-type">static</span> std::shared_ptr&lt;Singleton&gt; <span class="hljs-title">getSingleton</span><span class="hljs-params">()</span></span>;<br><br>    <span class="hljs-function"><span class="hljs-keyword">inline</span> <span class="hljs-type">void</span> <span class="hljs-title">Print</span><span class="hljs-params">()</span> </span>&#123; std::cout &lt;&lt; <span class="hljs-string">&quot;SingleInstance Address is:&quot;</span> &lt;&lt; <span class="hljs-keyword">this</span> &lt;&lt; std::endl; &#125;<br><br>    ~<span class="hljs-built_in">Singleton</span>() &#123; std::cout &lt;&lt; __PRETTY_FUNCTION__ &lt;&lt; std::endl; &#125;<br><br><span class="hljs-keyword">private</span>:<br>    <span class="hljs-built_in">Singleton</span>() &#123; std::cout &lt;&lt; __PRETTY_FUNCTION__ &lt;&lt; std::endl; &#125;<br>&#125;;<br><br><span class="hljs-type">static</span> std::shared_ptr&lt;Singleton&gt; singleton = <span class="hljs-literal">nullptr</span>;<br><span class="hljs-type">static</span> std::once_flag singletonFlag;<br><br><span class="hljs-function">std::shared_ptr&lt;Singleton&gt; <span class="hljs-title">Singleton::getSingleton</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>    std::<span class="hljs-built_in">call_once</span>(singletonFlag, [&amp;] &#123;<br>        singleton = std::<span class="hljs-built_in">shared_ptr</span>&lt;Singleton&gt;(<span class="hljs-keyword">new</span> <span class="hljs-built_in">Singleton</span>());<br>        &#125;);<br>    <span class="hljs-keyword">return</span> singleton;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h2 id="装饰模式">装饰模式</h2>
+<h3 id="简述">简述</h3>
+<p>装饰模式：装饰模式是<em>动态地将“责任”添加</em>到具体对象上而<strong>不影响这个对象所对应的类或者基类的方法</strong>。当需要拓展功能时，提供了一种比传统继承方式更为灵活的选择。<br />
+就如同名字一样，加上华丽的装饰，但是不改变本质。</p>
+<h4 id="应用场景">应用场景</h4>
+<ol type="1">
+<li>需要<strong>动态地为对象添加功能</strong>，且这些功能可以<strong>动态的撤销</strong>。<br />
+</li>
+<li>当使用继承不利于系统维护/拓展，或者不允许直接使用继承的方式对系统进行拓展时。<br />
+</li>
+<li>对一个原始类同时生成了多个对象，在不影响其它对象的前提下，以动态、透明的方式为单个对象添加新的职能，而不修改原始类；因为如果对原始类进行频繁的修改，会使其变得非常复杂和庞大。</li>
+</ol>
+<h3 id="经典例子">经典例子</h3>
+<p>设食堂出售三种主食：米饭、馒头、面条；并售三种肉食：鸡蛋、火腿、牛肉；在必选主食前提下，可在三样肉食中随意搭配，最后计算价格。</p>
+<p>这就是一个经典的装饰模式，肉食用以修饰注释，而肉食的选择顺序和组合不影响主食，比如先算鸡蛋后算牛肉，和先算牛肉后算鸡蛋，顺序并不影响。</p>
+<h3 id="uml类图并不">UML类图？并不！</h3>
+<ul>
+<li>Food
+<ul>
+<li>FoodRice<br />
+</li>
+<li>FoodNoodle<br />
+</li>
+<li>FoodManTou<br />
+</li>
+<li>Decorator
+<ul>
+<li>Egg<br />
+</li>
+<li>Beef<br />
+</li>
+<li>Ham</li>
+</ul></li>
+</ul></li>
+</ul>
+<h3 id="代码-1">代码</h3>
+<p>1.定义<strong>抽象基类</strong>，Food，声明公共接口
+ImyInterface()，在子类中经由该接口为具体对象添加职责。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Food</span><br>&#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-built_in">Food</span>()&#123;&#125;<br>    <span class="hljs-keyword">virtual</span> ~<span class="hljs-built_in">Food</span>()&#123;&#125;<br><br>    <span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-type">void</span> <span class="hljs-title">ImyInterface</span><span class="hljs-params">()</span> </span>= <span class="hljs-number">0</span>;    <span class="hljs-comment">// 纯虚函数，为后续修饰操作提供统一接口</span><br><br>    <span class="hljs-function"><span class="hljs-keyword">inline</span> <span class="hljs-keyword">virtual</span> <span class="hljs-type">void</span> <span class="hljs-title">setPrice</span><span class="hljs-params">(<span class="hljs-type">double</span> price)</span> </span>&#123; mPrice = price; &#125;<br>    <span class="hljs-function"><span class="hljs-keyword">inline</span> <span class="hljs-type">double</span> <span class="hljs-title">getPrice</span><span class="hljs-params">()</span> </span>&#123; <span class="hljs-keyword">return</span> mPrice; &#125;<br><br><span class="hljs-keyword">private</span>:<br>    <span class="hljs-type">double</span> mPrice;<br>&#125;;<br></code></pre></td></tr></table></figure>
+<p>2.从基类Food，派生出3个在售的主食类</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-comment">// rice</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">FoodRice</span>:<span class="hljs-keyword">public</span> Food<br>&#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-built_in">FoodRice</span>()<br>    &#123;<br>        <span class="hljs-built_in">setPrice</span>(<span class="hljs-number">2.5</span>);<br>    &#125;<br><br>    ~<span class="hljs-built_in">FoodRice</span>() &#123;&#125;<br><br>    <span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-type">void</span> <span class="hljs-title">ImyInterface</span><span class="hljs-params">()</span></span><br><span class="hljs-function">    </span>&#123;<br>        std::cout &lt;&lt; <span class="hljs-string">&quot;Rice&quot;</span>;<br>    &#125;<br>&#125;;<br><br><span class="hljs-comment">// Noodle</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">FoodNoodle</span> :<span class="hljs-keyword">public</span> Food<br>&#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-built_in">FoodNoodle</span>() &#123;<br>        <span class="hljs-built_in">setPrice</span>(<span class="hljs-number">6.0</span>);<br>    &#125;<br><br>    ~<span class="hljs-built_in">FoodNoodle</span>()&#123;&#125;<br><br>    <span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-type">void</span> <span class="hljs-title">ImyInterfece</span><span class="hljs-params">()</span></span><br><span class="hljs-function">    </span>&#123;<br>        std::cout &lt;&lt; <span class="hljs-string">&quot;Noodle&quot;</span>;<br>    &#125;<br>&#125;;<br><br><span class="hljs-comment">// mantou</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">FoodMantou</span> :<span class="hljs-keyword">public</span> Food &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-built_in">FoodMantou</span>() &#123;<br>        <span class="hljs-built_in">setPrice</span>(<span class="hljs-number">2</span>);<br>    &#125;<br><br>    ~<span class="hljs-built_in">FoodMantou</span>()&#123;&#125;<br><br>    <span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-type">void</span> <span class="hljs-title">ImyInterface</span><span class="hljs-params">()</span></span><br><span class="hljs-function">    </span>&#123;<br>        std::cout &lt;&lt; <span class="hljs-string">&quot;Mantou&quot;</span>;<br>    &#125;<br>&#125;;<br></code></pre></td></tr></table></figure>
+<p>3.定义抽象装饰类 <code>Decorator</code>，继承自 Food
+类，并在内部维护一个 Food
+类型的指针，将各种装饰对象和被装饰对象组织关联起来。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Decorator</span> :<span class="hljs-keyword">public</span> Food<br>&#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-built_in">Decorator</span>(Food* food)<br>    &#123;<br>        mFood = food;<br>    &#125;<br><br>    <span class="hljs-keyword">virtual</span> ~<span class="hljs-built_in">Decorator</span>()&#123;&#125;  <br><br>    <span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-type">void</span> <span class="hljs-title">ImyInstance</span><span class="hljs-params">()</span></span><br><span class="hljs-function">    </span>&#123;<br>        <span class="hljs-keyword">this</span>-&gt;mFood-&gt;<span class="hljs-built_in">ImyInterface</span>();<br>    &#125;<br><br>    <span class="hljs-function">Food* <span class="hljs-title">getFood</span><span class="hljs-params">()</span></span><br><span class="hljs-function">    </span>&#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>-&gt;mFood;<br>    &#125;<br><br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">setFood</span><span class="hljs-params">(Food* food)</span></span><br><span class="hljs-function">    </span>&#123;<br>        <span class="hljs-keyword">this</span>-&gt;mFood = food;<br>    &#125;<br><br><span class="hljs-keyword">private</span>:<br>    Food* mFood = <span class="hljs-literal">nullptr</span>;<br>&#125;;<br></code></pre></td></tr></table></figure>
+<p>4.定义具体的装饰类(Eggs, Beef, Ham)</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">class</span> <span class="hljs-title class_">EggDecorator</span> :<span class="hljs-keyword">public</span> Decorator<br>&#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-built_in">EggDecorator</span>(Food* food) :<span class="hljs-built_in">Decorator</span>(food)<br>    &#123;<br>        <span class="hljs-keyword">this</span>-&gt;<span class="hljs-built_in">setFood</span>(food);<br>        decoratorPrice = <span class="hljs-number">0.5</span>;<br>    &#125;<br><br>    <span class="hljs-keyword">virtual</span> ~<span class="hljs-built_in">EggDecorator</span>()&#123;&#125;<br><br>    <span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-type">void</span> <span class="hljs-title">ImyInterface</span><span class="hljs-params">()</span></span><br><span class="hljs-function">    </span>&#123;<br>        <span class="hljs-keyword">this</span>-&gt;<span class="hljs-built_in">getFood</span>()-&gt;<span class="hljs-built_in">ImyInterface</span>();<br>        <span class="hljs-built_in">doDecorator</span>();<br>    &#125;<br><br><span class="hljs-keyword">private</span>:<br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">doDecorator</span><span class="hljs-params">()</span></span><br><span class="hljs-function">    </span>&#123;<br>        std::cout &lt;&lt; <span class="hljs-string">&quot;Add Eggs&quot;</span>;<br>        <span class="hljs-built_in">setPrice</span>(<span class="hljs-keyword">this</span>-&gt;<span class="hljs-built_in">getFood</span>()-&gt;<span class="hljs-built_in">getPrice</span>() + decoratorPrice);<br>    &#125;<br>&#125;;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">BeefDecorator</span> :<span class="hljs-keyword">public</span> Decorator<br>&#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-built_in">BeefDecorator</span>(Food* food) :<span class="hljs-built_in">Decorator</span>(food)<br>    &#123;<br>        <span class="hljs-keyword">this</span>-&gt;<span class="hljs-built_in">setFood</span>(food);<br>        decoratorPrice = <span class="hljs-number">10</span>;<br>    &#125;<br><br>    <span class="hljs-keyword">virtual</span> ~<span class="hljs-built_in">BeefDecorator</span>()&#123;&#125;<br><br>    <span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-type">void</span> <span class="hljs-title">ImyInterface</span><span class="hljs-params">()</span></span><br><span class="hljs-function">    </span>&#123;<br>        <span class="hljs-keyword">this</span>-&gt;<span class="hljs-built_in">getFood</span>()-&gt;<span class="hljs-built_in">ImyInterface</span>();<br>        <span class="hljs-built_in">doDecorator</span>();<br>    &#125;<br><br><span class="hljs-keyword">private</span>:<br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">doDecorator</span><span class="hljs-params">()</span></span><br><span class="hljs-function">    </span>&#123;<br>        std::cout &lt;&lt; <span class="hljs-string">&quot;Add Beef&quot;</span>;<br>        <span class="hljs-built_in">setPrice</span>(<span class="hljs-keyword">this</span>-&gt;<span class="hljs-built_in">getFood</span>()-&gt;<span class="hljs-built_in">getPrice</span>() + decoratorPrice);<br>    &#125;<br>&#125;;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">HamDecorator</span> :<span class="hljs-keyword">public</span> Decorator<br>&#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-built_in">HamDecorator</span>(Food* food) :<span class="hljs-built_in">Decorator</span>(food)<br>    &#123;<br>        <span class="hljs-keyword">this</span>-&gt;<span class="hljs-built_in">setFood</span>(food);<br>    &#125;<br><br>    <span class="hljs-keyword">virtual</span> ~<span class="hljs-built_in">HamDecorator</span>()&#123;&#125;<br><br>    <span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-type">void</span> <span class="hljs-title">ImyInterface</span><span class="hljs-params">()</span></span><br><span class="hljs-function">    </span>&#123;<br>        <span class="hljs-keyword">this</span>-&gt;<span class="hljs-built_in">getFood</span>()-&gt;<span class="hljs-built_in">ImyInterface</span>();<br>        <span class="hljs-built_in">doDecorator</span>();<br>    &#125;<br><br><span class="hljs-keyword">private</span>:<br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">doDecorator</span><span class="hljs-params">()</span></span><br><span class="hljs-function">    </span>&#123;<br>        std::cout &lt;&lt; <span class="hljs-string">&quot;Add Ham&quot;</span>;<br>        <span class="hljs-built_in">setPrice</span>(<span class="hljs-keyword">this</span>-&gt;<span class="hljs-built_in">getFood</span>()-&gt;<span class="hljs-built_in">getPrice</span>() + decoratorPrice);<br>    &#125;<br>&#125;;<br></code></pre></td></tr></table></figure>
+<p>客户端调用<br />
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-comment">// Noodle + Egg</span><br>    std::cout &lt;&lt; <span class="hljs-string">&quot;Food Plane One:&quot;</span>;<br>    Food* plane1 = <span class="hljs-keyword">new</span> <span class="hljs-built_in">FoodNoodle</span>(); <br>    Food* planeD = <span class="hljs-keyword">new</span> <span class="hljs-built_in">EggDecorator</span>(plane1);<br>    planeD-&gt;<span class="hljs-built_in">ImyInterface</span>();<br>    std::cout &lt;&lt; <span class="hljs-string">&quot;It is &quot;</span> &lt;&lt; planeD-&gt;<span class="hljs-built_in">getPrice</span>() &lt;&lt; <span class="hljs-string">&quot; &quot;</span> &lt;&lt; std::endl;<br>    <br>    <span class="hljs-comment">// Rice + Egg + Beef + Ham</span><br>    std::cout &lt;&lt; <span class="hljs-string">&quot;Food Plane Two is&quot;</span>;<br>    Food* rice = <span class="hljs-keyword">new</span> <span class="hljs-built_in">FoodRice</span>();<br>    Food* riceP = <span class="hljs-keyword">new</span> <span class="hljs-built_in">EggDecorator</span>(rice);<br>    Food* ricePB = <span class="hljs-keyword">new</span> <span class="hljs-built_in">BeefDecorator</span>(riceP);<br>    Food* ricePH = <span class="hljs-keyword">new</span> <span class="hljs-built_in">HamDecorator</span>(ricePB);<br><br>    <span class="hljs-comment">// 这里我们调用 ricePH</span><br>    <span class="hljs-comment">// ricePH-&gt;Imyinterface:(this-&gt;food)RicePB-&gt;ImyInterface RicePH的Interface调用RicePB的Interface</span><br>    <span class="hljs-comment">// ricePB-&gt;ImyInterface:(this-&gt;food)RiceP-&gt;ImyInterface RicePB的Interface调用RiceP的Interface</span><br>    <span class="hljs-comment">// riceP-&gt;ImyInterface:(this-&gt;food)rice-&gt;ImyInterfacc 调用Rice了，然后Egg price + rice price，一级一级返回相加price</span><br>    ricePH-&gt;<span class="hljs-built_in">ImyInterface</span>();<br>    std::cout &lt;&lt; <span class="hljs-string">&quot;It is &quot;</span> &lt;&lt; ricePH-&gt;<span class="hljs-built_in">getPrice</span>() &lt;&lt; std::endl;<br></code></pre></td></tr></table></figure></p>
+<p>通过抽象基类指针Food一个一个Decorator加到主食上，最后调用
+<code>ImyInterface</code> 做包装操作。</p>
+<h4 id="装饰模式优点">装饰模式优点</h4>
+<ol type="1">
+<li>可以对已存在对象进行修饰包装，在被修饰对象前面或后面添加新的行为，而无需修改原始类，符合开闭原则。<strong>原始类不变，但是原始类的对象有新的行为。</strong><br />
+</li>
+<li>在不确定后续功能的时候，可以先定义一个简单的类，使用设计模式来封装，后续利用装饰类来逐步添加新的功能，最终组合出复杂功能。<br />
+</li>
+<li>装饰类的添加和删除非常方便，在客户端代码中就能轻松实现，因此非常适合用来实现可拔插操作频繁的插件。<br />
+上述的例子只展示添加其实删除很简单，只需要用前面的对象指针即可，比如riceBH想去掉H，直接用riceBF就行了。</li>
+</ol>
+<h2 id="策略模式">策略模式</h2>
+<blockquote>
+<p>策略模式就像三国演义中的模式，为了帮助主公取得胜利，有多种计策，虽然这些计策各不相同，但可以相互替换，目的都是为了取胜</p>
+</blockquote>
+<p>定义一系列的算法，把它们一个个封装起来，并且使它们可相互替换。该模式使得算法可独立于使用它的客户而变化。</p>
+<h3 id="适用场景-2">适用场景</h3>
+<p>一个系统需要动态的在几种算法之间切换，使用者不必关心实现的细节，全部封装到策略类内即可。</p>
+<h3 id="策略模式的优缺点">策略模式的优缺点</h3>
+<ul>
+<li>优点
+<ol type="1">
+<li>算法(策略)之间可以自由切换<br />
+</li>
+<li>避免使用多重判断<br />
+</li>
+<li>拓展性好<br />
+</li>
+<li>对开闭原则完美支持，用户无需修改原有系统即可选择算法，没有难看的 if
+else<br />
+</li>
+</ol></li>
+<li>缺点
+<ol type="1">
+<li>策略类会增多<br />
+</li>
+<li>所有策略类都需要对外暴露<br />
+</li>
+<li>调用时必须知道有哪些策略类型，才能自行决定当前场景改用何种策略。</li>
+</ol></li>
+</ul>
+<h3 id="uml类图">UML类图</h3>
+<p><img src="StrategyUML.png" srcset="/img/loading.gif" lazyload></p>
+<p>Context 依赖 Strategy，内有 Strategy 指针，维护对 Strategy
+的对象引用</p>
+<h3 id="代码-2">代码</h3>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Strategy</span> &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-type">void</span> <span class="hljs-title">secretStrategy</span><span class="hljs-params">()</span> </span>= <span class="hljs-number">0</span>;<br>&#125;;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">FireStrategy</span> : <span class="hljs-keyword">public</span> Strategy<br>&#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">secretStrategy</span><span class="hljs-params">()</span> </span>&#123; std::cout &lt;&lt; <span class="hljs-string">&quot;夷陵之火&quot;</span> &lt;&lt; std::endl; &#125;<br>&#125;;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">WaterStrategy</span> :<span class="hljs-keyword">public</span> Strategy<br>&#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">secretStrategy</span><span class="hljs-params">()</span> </span>&#123; std::cout &lt;&lt; <span class="hljs-string">&quot;水淹七军&quot;</span> &lt;&lt; std::endl; &#125;<br>&#125;;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">PoisonStrategy</span> :<span class="hljs-keyword">public</span> Strategy<br>&#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">secretStrategy</span><span class="hljs-params">()</span> </span>&#123; std::cout &lt;&lt; <span class="hljs-string">&quot;文和乱舞&quot;</span> &lt;&lt; std::endl; &#125;<br>&#125;;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Context</span><br>&#123;<br><span class="hljs-keyword">private</span>:<br>    Strategy* pStrategy;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-built_in">Context</span>(Strategy* _pStrategy) :<span class="hljs-built_in">pStrategy</span>(_pStrategy)<br>    &#123;<br><br>    &#125;<br><br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">IContextInterface</span><span class="hljs-params">()</span></span><br><span class="hljs-function">    </span>&#123;<br>        pStrategy-&gt;<span class="hljs-built_in">secretStrategy</span>();<br>    &#125;<br>&#125;;<br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>    Strategy* fireStra = <span class="hljs-keyword">new</span> <span class="hljs-built_in">FireStrategy</span>();<br>    Strategy* waterStra = <span class="hljs-keyword">new</span> <span class="hljs-built_in">WaterStrategy</span>();<br>    Strategy* poisonStra = <span class="hljs-keyword">new</span> <span class="hljs-built_in">PoisonStrategy</span>();<br><br>    <span class="hljs-comment">// 先火攻，在水淹，后文和乱武</span><br>    Context* master = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Context</span>(fireStra);<br>    master-&gt;<span class="hljs-built_in">IContextInterface</span>();<br>    master = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Context</span>(waterStra);<br>    master-&gt;<span class="hljs-built_in">IContextInterface</span>();<br>    master = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Context</span>(poisonStra);<br>    master-&gt;<span class="hljs-built_in">IContextInterface</span>();<br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h2 id="代理模式">代理模式</h2>
+<blockquote>
+<p>三国时期天子暗弱，曹公掌权，面见天子不容易，但是可以访问曹公达到访问天子的目的，曹公就是天子的代理，对天子实施了保护(禁锢)。</p>
+</blockquote>
+<p>代理模式是常用的结构型设计模式之一，当无法直接访问某个对象或访问某个对象存在困难时可以通过一个代理对象来间接访问。代理模式又可以分为多种类型，例如保护代理、远程代理、虚拟代理、缓冲代理等，它们应用于不同的场合，满足用户的不同需求。</p>
+<h3 id="类型">类型</h3>
+<ol type="1">
+<li>远程代理（Remote
+Proxy）：为一个位于不同地址空间的对象提供一个本地的代理对象。不同的地址空间可以在相同或不同的主机中。它<em>使得客户端程序可以访问在远程主机上的对象</em>，远程主机可能具有更好的计算性能与处理速度，可以<em>快速响应并处理客户端的请求</em>。<br />
+</li>
+<li>虚拟代理（Virtual
+Proxy）：对于一些<strong>占用系统资源较多或者加载时间较长的对象</strong>，可以<em>先创建一个消耗相对较小的对象来表示</em>，真实对象只在<em>需要时才会被真正创建</em>，而当真实对象创建之后，虚拟代理将用户的请求转发给真实对象。<br />
+</li>
+<li>保护代理（Protect
+Proxy）：给不同的用户提供不同的对象访问权限。(曹操挟天子以令诸侯和这个有点类似)<br />
+</li>
+<li>缓冲代理（Cache
+Proxy）：为某一个目标操作的结果提供临时存储空间，以使更多用户可以共享这些结果。<br />
+</li>
+<li>智能引用代理（Smart Reference
+Proxy）：当一个对象被引用时提供一些额外的操作，比如将对象被调用的次数记录下来等。</li>
+</ol>
+<h3 id="应用场景-1">应用场景</h3>
+<ol type="1">
+<li>客户端需要访问远程主机，可以使用远程代理。<br />
+</li>
+<li>需要用一个消耗资源较少的对象表示资源消耗大的对象，以降低性能开销。<br />
+</li>
+<li>要控制不同对象的访问权限级别<br />
+</li>
+<li>为频繁访问的某个操作结果提供临时存储空间，供多客户端共享访问，无需每个客户端重新计算<br />
+</li>
+<li>需要为一个对象的访问(引用)提供一些额外操作</li>
+</ol>
+<h3 id="代理模式优缺点">代理模式优缺点</h3>
+<h4 id="有点">有点</h4>
+<ul>
+<li>代理模式可以在客户端和用户直接起到中介、保护作用<br />
+</li>
+<li>代理对象可以扩展目标对象的功能<br />
+</li>
+<li>代理模式能将客户端和目标对象分离，降低了耦合度，增加了可拓展性。</li>
+</ul>
+<h4 id="缺点">缺点</h4>
+<ul>
+<li>会造成系统设计的类增加<br />
+</li>
+<li>在客户端和目标对象增加代理对象，会造成处理速度变慢<br />
+</li>
+<li>增加了系统复杂度</li>
+</ul>
+<h3 id="uml类图-1">UML类图</h3>
+<p><img src="Proxy.jpg" srcset="/img/loading.gif" lazyload></p>
+<ul>
+<li>Proxy
+<ol type="1">
+<li>保存一个引用使得代理，</li>
+</ol></li>
+</ul>
+<h2 id="观察者模式">观察者模式</h2>
+<p><a
+target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/1963312?areaSource=&amp;traceId=">Carson带你学设计模式</a><br />
+<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/231526884">常见设计模式</a><br />
+<a
+target="_blank" rel="noopener" href="https://www.cnblogs.com/ring1992/p/9592428.html">C++设计模式解读合集</a></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>设计模式学习</div>
+      <div>http://example.com/2023/04/10/常见设计模式/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Hollow Emiya</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2023年4月10日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2023/04/11/%E7%90%83%E8%B0%90%E5%87%BD%E6%95%B0/" title="简单学习球谐函数">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">简单学习球谐函数</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/03/10/CMake%20Note/" title="我的CMake学习">
+                        <span class="hidden-mobile">我的CMake学习</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

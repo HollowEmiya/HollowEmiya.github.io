@@ -1,0 +1,1266 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Hollow Emiya">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Rigid Body Simulation Ⅲ Appendix Appendix A Motion Equation Derivations 在这部分，我们将补充在第2节中缺失的内容，关于方程 \(\dot{P}(t)&#x3D;F(t),\dot{L}(t)&#x3D;\tau(t),L(t)&#x3D;I(t)\omega(t)\)。这里的推导方法并非标准方法，是由 Andy Witkin 提出的。本附录推导(">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Rigid Body Simulation Ⅱ">
+<meta property="og:url" content="http://example.com/2025/09/04/Rigid%20Body%20Simulation%20%E2%85%A2/index.html">
+<meta property="og:site_name" content="Emiya Blog">
+<meta property="og:description" content="Rigid Body Simulation Ⅲ Appendix Appendix A Motion Equation Derivations 在这部分，我们将补充在第2节中缺失的内容，关于方程 \(\dot{P}(t)&#x3D;F(t),\dot{L}(t)&#x3D;\tau(t),L(t)&#x3D;I(t)\omega(t)\)。这里的推导方法并非标准方法，是由 Andy Witkin 提出的。本附录推导(">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/imgs/Rigid%20Body%20Simulation%20%E2%85%A1/figure26.png">
+<meta property="article:published_time" content="2025-09-04T02:39:34.560Z">
+<meta property="article:modified_time" content="2025-09-10T08:26:17.215Z">
+<meta property="article:author" content="Hollow Emiya">
+<meta property="article:tag" content="Math">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/imgs/Rigid%20Body%20Simulation%20%E2%85%A1/figure26.png">
+  
+  
+  
+  <title>Rigid Body Simulation Ⅱ - Emiya Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null},"woyaola":null,"cnzz":null},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Emiya&#39;s Blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Rigid Body Simulation Ⅱ"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-09-04 10:39" pubdate>
+          2025年9月4日 上午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          4.6k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          38 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">Rigid Body Simulation Ⅱ</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="rigid-body-simulation-ⅲ">Rigid Body Simulation Ⅲ</h1>
+<h2 id="appendix">Appendix</h2>
+<h3 id="appendix-a-motion-equation-derivations">Appendix A Motion
+Equation Derivations</h3>
+<p>在这部分，我们将补充在第2节中缺失的内容，关于方程 <span
+class="math inline">\(\dot{P}(t)=F(t),\dot{L}(t)=\tau(t),L(t)=I(t)\omega(t)\)</span>。这里的推导方法并非标准方法，是由
+Andy Witkin 提出的。本附录推导(原作者认为)比传统推导来自
+Goldstein[^10]的简洁。<br />
+用 <span class="math inline">\(F_i(t)\)</span>
+来描述作用在刚体上的外力，这里 <span
+class="math inline">\(F_i(t)\)</span> 指的是作用在第 i
+个粒子上的外力。然而，对于一个钢铁而言，要保持刚体的形状，就必须有一些“内部”的约束作用作用在同一物体的粒子之间。我们假设这些约束力被动地作用于系统，并且不会对任何网格作用。设
+<span class="math inline">\(F_{ci}(t)\)</span> 表示作用于第 i
+个粒子的净内力。在 <span class="math inline">\(t_0\rightarrow
+t_1\)</span> 间 <span class="math inline">\(F_{ci}\)</span> 对第 i
+个粒子所做的功为：<br />
+<span class="math display">\[
+\int_{t_0}^{t_1}F_{ci}(t)\cdot\dot{r}_i(t)\mathrm{d}t
+\]</span> 这里 <span class="math inline">\(\dot{r}_i(t)\)</span> 是第 i
+个粒子的速度。所有粒子的净做功是总和：<br />
+<span class="math display">\[
+\sum_i\int_{t_0}^{t_1}F_{ci}(t)\cdot\dot{r}_i(t)\mathrm{d}t=
+\int_{t_0}^{t_1}\sum_iF_{ci}(t)\cdot\dot{r}_i(t)\mathrm{d}t
+\]</span> 无论任何 <span class="math inline">\(t_0\rightarrow
+t_1\)</span> 的时间段这个总和必须为零，也就是说<br />
+<span class="math display">\[
+\sum_iF_{ci}(t)\cdot\dot{r}_i(t)\tag{A-1}
+\]</span> 式子(A-1)在任何时候都必须为零。<br />
+所以我们可以使用这个来从我们的推到中消除任何关于约束力 <span
+class="math inline">\(F_{ci}\)</span> 的部分。<br />
+首先，在 2.3 节内定义的 “<span class="math inline">\(^*\)</span>”
+操作，因<span class="math inline">\(a^*b=a\times b,a\times b=-b\times
+a\)</span>，则有：<br />
+<span class="math display">\[
+-a^*b=b\times a=b^*a.\tag{A-2}
+\]</span> 因为 <span class="math inline">\(a^*\)</span>
+是反对称矩阵，<br />
+<span class="math display">\[
+(a^*)^T=-a^*.\tag{A-3}
+\]</span> 最后因为<span class="math inline">\(^*\)</span>
+是线性操作，<br />
+<span class="math display">\[
+(\dot{a})^*=\dot{(a^*)}=\frac{\mathrm{d}}{\mathrm{d}t}(a^*)\tag{A-4}
+\]</span> 对于多个向量 <span class="math inline">\(a_i\)</span>
+的集合<br />
+<span class="math display">\[
+\sum a_i^*=(\sum a_i)^*.\tag{A-5}
+\]</span></p>
+回想一下，我们可以把速度 <span class="math inline">\(\dot{r}_i\)</span>
+写作 <span
+class="math inline">\(\dot{r}_i=v+\omega\times(r_i-x)\)</span> 这里
+<span class="math inline">\(r_i\)</span> 是粒子位置， <span
+class="math inline">\(x\)</span> 是质心位置，<span
+class="math inline">\(v,\omega\)</span> 分别是线速度和角速度。令 <span
+class="math inline">\(r&#39;_i=r_i-x\)</span>，并使用 <span
+class="math inline">\(^*\)</span> 运算符。<br />
+<span class="math display">\[
+\dot{r}_i=v+\omega^*r_i&#39;=v-r_i&#39;^*\omega.\tag{A-6}
+\]</span> 将其带入<span class="math inline">\(\sum F_{ci}\cdot
+\dot{r}_i\)</span>，该式恒为零<br />
+<span class="math display">\[
+\sum F_{ci}\cdot(v-r_i&#39;^*\omega)=0\tag{A-7}
+\]</span> 注意该等式对于任何的 <span
+class="math inline">\(v,\omega\)</span> 都成立。因为 <span
+class="math inline">\(v,\omega\)</span> 二者相独立，如果我们将 <span
+class="math inline">\(\omega\)</span> 设为零，则对于任何 <span
+class="math inline">\(v\)</span> 的取值，我们都必须满足 <span
+class="math inline">\(\sum F_{ci}\cdot v=0\)</span>，那实际上就是 <span
+class="math inline">\(\sum
+F_{ci}=\textbf{0}\)</span>。这意味着约束力不会产生合力。同样的，假如我们令
+<span class="math inline">\(v\)</span> 取零，则<span
+class="math inline">\(\sum-F_{ci}\cdot(r_i&#39;^*\omega)=0\)</span>
+对于任何 <span class="math inline">\(\omega\)</span> 取值都成立。重写为
+<span class="math inline">\(F_{ci}\cdot(r_i&#39;^*\omega)\rightarrow
+F_{ci}^T(r_i&#39;^*\omega)\)</span>，能够得到：<br />
+<span class="math display">\[
+\sum-F_{ci}^Tr_i&#39;^*\omega=(\sum-F_{ci}^Tr_i&#39;^*)\omega=0\tag{A-8}
+\]</span> 对于任何 <span class="math inline">\(\omega\)</span>
+取值，都存在 <span
+class="math inline">\(\sum-F_{ci}^Tr_i&#39;^*=\textbf0^T\)</span>。转置后得：<br />
+<span class="math display">\[
+\sum-(r_i&#39;^*)^TF_{ci}=\sum(r_i&#39;)^*F_{ci}=\sum r_i&#39;\times
+F_{ci}=\textbf{0}\tag{A-9}
+\]</span> 这意味着内力不会产生扭矩。<br />
+可以使用上述推导出刚体的运动方程。作用在每个粒子上的合力是内力 <span
+class="math inline">\(F_{ci}\)</span> 和外力 <span
+class="math inline">\(F_i\)</span> 之合。第 i 个粒子的加速度 <span
+class="math inline">\(\ddot{r}_i\)</span> :<br />
+<span class="math display">\[
+\ddot{r}_i=\frac{\mathrm{d}}{\mathrm{d}t}\dot{r}_i=
+\frac{\mathrm{d}}{\mathrm{d}t}(v-r_i&#39;^*\omega)=\dot{v}-\dot{r}_i&#39;^*\omega-r_i&#39;^*\dot\omega\tag{A-10}
+\]</span> 因为每个粒子都要遵循牛顿定律 <span
+class="math inline">\(F=ma\)</span>，或者 <span
+class="math inline">\(ma-f=\textbf0\)</span><br />
+<span class="math display">\[
+m_i\ddot{r}_i-F_i-F_{ci}=m_i(\dot{v}-\dot{r}_i&#39;^*\omega-r_i&#39;^*\dot\omega)-F_i-F_{ci}=\textbf0\tag{A-11}
+\]</span> 为了计算 <span class="math inline">\(\dot{P}=F=\sum
+F_i\)</span>，使用等式 A-11 来对所有粒子求合，<br />
+<span class="math display">\[
+\sum
+m_i(\dot{v}-\dot{r}_i&#39;^*\omega-r_i&#39;^*\dot\omega)-F_i-F_{ci}=\textbf0\tag{A-12}
+\]</span> 拆分这个大的求合运算为多个小的求合：<br />
+$$
+<span class="math display">\[\begin{aligned}
+\sum
+m_i(\dot{v}-\dot{r}_i&#39;^*\omega-r_i&#39;^*\dot\omega)-F_i-F_{ci}&amp;=\\
+
+\sum m_i\dot{v}-
+\sum m_i\dot{r}_i&#39;^*\omega-
+\sum m_ir_i&#39;^*\dot\omega -
+\sum F_i-\sum F_{ci} &amp;=\\
+
+\sum m_i\dot{v}-
+(\sum m_i\dot{r}_i&#39;)^*\omega-
+(\sum m_ir_i&#39;)^*\dot\omega-
+\sum F_i-\sum F_{ci}&amp;=\\
+
+\sum m_i\dot{v}-
+(\frac{\mathrm{d}}{\mathrm{d}t}\sum m_ir_i&#39;)^*\omega-
+(\sum m_ir_i&#39;)^*\dot\omega-
+\sum F_i-\sum F_{ci}
+&amp;=\textbf0
+\end{aligned}\tag{A-13}\]</span>
+<p>$$</p>
+<p>因为我们在以质心为原点的坐标系中，通过 2.6 节的等式 (2-20) 我们能知道
+<span class="math inline">\(\sum
+m_ir_i&#39;=\textbf0\)</span>，这也就是说 <span
+class="math inline">\(\frac{\mathrm{d}}{\mathrm{d}t}\sum
+m_ir_i&#39;=\textbf0\)</span>。去除带有 <span class="math inline">\(\sum
+m_ir_i&#39;\)</span> 和 <span class="math inline">\(\sum F_{ci}\)</span>
+的项，得到下面式子：<br />
+<span class="math display">\[
+\sum m_i\dot{v}-\sum F_i=\textbf{0}\tag{A-14}
+\]</span> 简而言之，就是 <span
+class="math inline">\(M\dot{v}=\dot{P}=\sum F_i\)</span>。<br />
+注意到对角动量求导有 <span class="math inline">\(\dot{L}=\tau=\sum
+r_i&#39;\times F_i\)</span>，对于式 (A-11) 两侧都乘上 <span
+class="math inline">\(r_i&#39;^*\)</span><br />
+<span class="math display">\[
+r_i&#39;^*m_i(\dot{v}-\dot{r}_i&#39;^*\omega-r_i&#39;^*\dot\omega)-r_i&#39;^*F_i-r_i&#39;^*F_{ci}=r_i&#39;^*\textbf0=\textbf0\tag{A-15}
+\]</span> 对所有粒子求合：<br />
+<span class="math display">\[
+(\sum m_ir_i&#39;)^*\dot{v}-(\sum m_ir_i&#39;^*\dot{r}_i&#39;^*)\omega
+-(\sum m_ir_i&#39;^*r_i&#39;^*)\dot\omega-
+\sum r_i&#39;^*F_i-\sum r_i&#39;^*F_{ci}=\textbf0\tag{A-16}
+\]</span> 因为 <span class="math inline">\(\sum
+r_i&#39;^*F_{ci}=\textbf0\)</span> 能够得到<br />
+<span class="math display">\[
+(\sum m_ir_i&#39;)^*\dot{v}-(\sum m_ir_i&#39;^*\dot{r}_i&#39;^*)\omega-
+(\sum m_ir_i&#39;^*r_i&#39;^*)\dot{\omega}-\sum
+r_i&#39;^*F_i=\textbf0\tag{A-17}
+\]</span> 使用 <span class="math inline">\(\sum
+m_ir_i&#39;=\textbf0\)</span> 得<br />
+<span class="math display">\[
+-(\sum m_ir_i&#39;^*\dot{r}_i&#39;^*)\omega-
+(\sum m_ir_i&#39;^*r_i&#39;^*)\dot{\omega}-\sum
+r_i&#39;^*F_i=\textbf0\tag{A-18}
+\]</span> 因 <span class="math inline">\(\sum r_i&#39;^*F_i=\sum
+r_i&#39;\times F_i=\tau\)</span><br />
+<span class="math display">\[
+-(\sum m_ir_i&#39;^*\dot{r}_i&#39;^*)\omega-
+(\sum m_ir_i&#39;^*r_i&#39;^*)\dot{\omega}=\tau\tag{A-19}
+\]</span> 我们的化简差不多了，如果还记得 <span
+class="math inline">\(^*\)</span> 运算的定义，能够很简单的得到矩阵 <span
+class="math inline">\(-a^*a^*\)</span> 是等价于 <span
+class="math inline">\((a^Ta)\textbf{1}-aa^T\)</span> 这里 <span
+class="math inline">\(\textbf1\)</span> 是3x3
+的单位矩阵。(这个规则等价于向量规则：<span
+class="math inline">\(a\times(b\times c)=ba^Tc-ca^Tb.\)</span>)
+所以：<br />
+<span class="math display">\[
+\sum -m_ir_i&#39;^*r_i&#39;^*=
+\sum m_i\big((r_i&#39;^Tr_i&#39;)\textbf1-r_i&#39;r_i&#39;^T\big)=
+I(t)\tag{A-20}
+\]</span> 带入 (A-19)<br />
+<span class="math display">\[
+(\sum-m_ir_i&#39;^*\dot{r}_i&#39;^*)\omega+I(t)\dot\omega=\tau\tag{A-21}
+\]</span> 上式基本计算完成，给出了角加速度 <span
+class="math inline">\(\dot\omega\)</span> 关于扭矩 <span
+class="math inline">\(\tau\)</span>
+参数的表达式，只是我们需要先计算出矩阵 <span class="math inline">\(\sum
+m_ir_i&#39;^*\dot{r}_i&#39;^*\)</span>，该矩阵计算复杂程度不亚于计算惯性张量。我们使用最后一个
+trick 方法来解决。因为 <span
+class="math inline">\(\dot{r}_i&#39;=\omega\times
+r_i&#39;,r_i&#39;^*\omega=-\omega\times
+r_i&#39;\)</span>，能得到：<br />
+<span class="math display">\[
+\sum m_i\dot{r}_i&#39;^*r_i&#39;^*\omega=
+\sum m_i(\omega\times r_i&#39;)^*(-\omega\times r_i&#39;)=
+\sum -m_i(\omega\times r_i&#39;)\times(\omega\times r_i&#39;)=\textbf0
+\tag{A-22}
+\]</span> 所以我们可以把 <span class="math inline">\(-\sum
+m_i\dot{r}_i&#39;^*r_i&#39;^*\omega=\textbf0\)</span> 添加到式
+A-21<br />
+<span class="math display">\[
+(\sum-m_ir_i&#39;^*\dot{r}_i&#39;^*-m_i\dot{r}_i&#39;^*r_i&#39;^*)\omega+
+I(t)\dot\omega=\tau\tag{A-24}
+\]</span></p>
+<p><span class="math display">\[
+\dot{I}(t)=\frac{\mathrm{d}}{\mathrm{d}t}\sum-m_ir_i&#39;^*r_i&#39;^*=
+\sum
+-m_ir_i&#39;^*\dot{r}_i&#39;^*-m_i\dot{r}_i&#39;^*r_i&#39;^*\tag{A-24}
+\]</span></p>
+<p><span class="math display">\[
+\dot{I}(t)\omega+I(t)\dot\omega=
+\frac{\mathrm{d}}{\mathrm{d}t}\big(I(t)\omega\big)=\tau.
+\tag{A-25}
+\]</span></p>
+<p>因为 角动量等于 <span
+class="math inline">\(L(t)=I(t)\omega(t)\)</span>，所以能得到的就是：<br />
+<span class="math display">\[
+\dot{L}(t)=\tau\tag{A-26}
+\]</span></p>
+<h3 id="appendix-b-quaternion-derivations">Appendix B Quaternion
+Derivations</h3>
+<p>对旋转求导 <span class="math inline">\(\dot{q}(t)\)</span>
+的推导过程如下。回想刚体角速度 <span
+class="math inline">\(\omega(t)\)</span> 的描述，物体以大小为 <span
+class="math inline">\(|\omega(t)|\)</span>
+的量级绕着某轴旋转。假设一个物体以恒定的角速度 <span
+class="math inline">\(\omega(t)\)</span> 旋转。然后物体在一段时间 <span
+class="math inline">\(\Delta t\)</span> 后的旋转用四元数表示为：<span
+class="math inline">\([\cos\frac{|\omega(t)|\Delta
+t}{2},\sin\frac{|\omega(t)|\Delta
+t}{2}\frac{\omega(t)}{|\omega(t)|}].\)</span><br />
+我们计算在 <span class="math inline">\(t_0\)</span> 某时刻的 <span
+class="math inline">\(\dot{q}(t)\)</span>。在时刻 <span
+class="math inline">\(t+\Delta t\)</span>(<span
+class="math inline">\(\Delta t\)</span> 是小值)，物体的方向是(一阶精度
+to within first order) 先由 <span class="math inline">\(q(t_0)\)</span>
+的旋转然后再经过角速度 <span class="math inline">\(\omega(t_0)\)</span>
+旋转 <span class="math inline">\(\Delta t\)</span>
+时间的结果。组合两次旋转，能够列出：<br />
+<span class="math display">\[
+q(t_0+\Delta t)=
+[\cos\frac{|\omega(t_0)|\Delta t}{2},
+\sin\frac{|\omega(t_0)|\Delta t}{2}
+\frac{\omega(t_0)}{|\omega(t_0)|}]
+q(t_0).
+\tag{B-1}
+\]</span> 我们用 <span class="math inline">\(t=t_0+\Delta t\)</span>
+来替换表示：<br />
+<span class="math display">\[
+q(t)=[\cos\frac{|\omega(t_0)|(t-t_0)}{2},
+\sin\frac{|\omega(t_0)(t-t_0)|}{2}
+\frac{\omega(t_0)}{|\omega(t_0)|}]
+q(t_0).\tag{B-2}
+\]</span> 让我们在时刻 <span class="math inline">\(t_0\)</span> 对 <span
+class="math inline">\(q(t)\)</span> 求导。首先，因为 <span
+class="math inline">\(q(t_0)\)</span>
+是一个常数，所以我们只需要求导<br />
+<span
+class="math inline">\([\cos\frac{|\omega(t_0)|(t-t_0)}{2},\sin\frac{|\omega(t_0)(t-t_0)|}{2}\frac{\omega(t_0)}{|\omega(t_0)|}]\)</span><br />
+在时刻 <span class="math inline">\(t=t_0\)</span><br />
+<span class="math display">\[
+\begin{aligned}
+\frac{\mathrm{d}}{\mathrm{d}t}\cos\frac{|\omega(t_0)|(t-t_0)}{2}
+&amp;=
+-\frac{|\omega(t_0)|}{2}\sin\frac{|\omega(t_0)|(t-t_0)}{2}\\
+&amp;=-\frac{|\omega(t_0)|}{2}\sin0=0
+\end{aligned}
+\tag{B-3}
+\]</span> 相似的<br />
+<span class="math display">\[
+\begin{aligned}
+\frac{\mathrm{d}}{\mathrm{d}t}\sin\frac{|\omega(t_0)|(t-t_0)}{2}
+&amp;=
+\frac{|\omega(t_0)|}{2}\cos\frac{|\omega(t_0)|(t-t_0)}{2}\\
+&amp;=\frac{|\omega(t_0)|}{2}\cos0=\frac{|\omega(t_0)|}{2}
+\end{aligned}
+\tag{B-4}
+\]</span> 因此在 <span class="math inline">\(t=t_0\)</span><br />
+<span class="math display">\[
+\begin{aligned}
+\dot{q}(t)&amp;=
+\frac{\mathrm{d}}{\mathrm{d}t}
+\Big([\cos\frac{|\omega(t_0)|(t-t_0)}{2},
+\sin\frac{|\omega(t_0)|(t-t_0)}{2}
+\frac{\omega(t_0)}{|\omega(t_0)|}]q(t_0)\Big)\\
+&amp;=
+\frac{\mathrm{d}}{\mathrm{d}t}
+\Big([\cos\frac{|\omega(t_0)|(t-t_0)}{2},
+\sin\frac{|\omega(t_0)|(t-t_0)}{2}
+\frac{\omega(t_0)}{|\omega(t_0)|}]\Big)q(t_0)\\
+&amp;=
+[0,\frac{|\omega(t_0)|}{2}\frac{\omega(t_0)}{|\omega(t_0)|}]q(t_0)\\
+&amp;=
+[0,\frac{1}{2}\omega(t_0)]q(t_0)=
+\frac{1}{2}[0,\omega(t_0)]q(t_0)
+\end{aligned}
+\tag{B-5}
+\]</span> 乘积 <span
+class="math inline">\([0,\omega(t_0)]q(t_0)\)</span> 可缩写作 <span
+class="math inline">\(\omega(t_0)q(t_0)\)</span>。因此，<span
+class="math inline">\(\dot{q}(t_0)\)</span> 的一般表达式为：<br />
+<span class="math display">\[
+\dot{q}(t_0)=\frac{1}{2}\omega(t)q(t)\tag{B-6}
+\]</span></p>
+<h3 id="appendix-c-some-miscellaneous-formulas">Appendix C Some
+Miscellaneous Formulas</h3>
+<h4 id="c.1-kinetic-energy">C.1 Kinetic Energy</h4>
+<p>物体动能 <span class="math inline">\(T\)</span> 的定义为：<br />
+<span class="math display">\[
+T=\sum \frac{1}{2}m_i\dot{r}_i^T\dot{r}_i.\tag{C-1}
+\]</span> 令 <span class="math inline">\(r_i&#39;=r_i-x\)</span>，有
+<span
+class="math inline">\(\dot{r}_i=v(t)+r_i&#39;^*\omega\)</span>，因此<br />
+<span class="math display">\[
+\begin{aligned}
+T&amp;=\sum\frac{1}{2}m_i\dot{r}_i^T\dot{r}_i\\
+&amp;=\sum\frac{1}{2}m_i(v+r_i&#39;^*\omega)^T(v+r_i&#39;^*\omega)\\
+&amp;=\frac{1}{2}\sum m_iv^Tv+
+\sum v^Tm_ir_i&#39;^*\omega+
+\frac{1}{2}\sum m_i(r_i&#39;^*\omega)^T(r_i&#39;^*\omega)\\
+&amp;=\frac{1}{2}v^T(\sum m_i)v+v^T(\sum m_ir_i&#39;^*)\omega
++\frac{1}{2}\omega^T\Big(\sum m_i(r_i&#39;^*)^Tr_i&#39;^*\Big)\omega
+\end{aligned}
+\tag{C-2}
+\]</span> 因 <span class="math inline">\(\sum
+m_ir_i&#39;=\textbf0,(r_i&#39;^*)^T=-r_i&#39;^*\)</span><br />
+<span class="math display">\[
+\begin{aligned}
+T&amp;=\frac{1}{2}v^TMv+
+\frac{1}{2}\omega^T\Big(\sum -m_ir_i&#39;^*r_i&#39;^*\Big)\omega\\
+&amp;=\frac{1}{2}(v^TMv+\omega^TI\omega)
+\end{aligned}
+\tag{C-3}
+\]</span> 这里的 <span class="math inline">\(I=\sum
+-m_ir_i&#39;^*r_i&#39;^*\)</span> 是 Appendix A 的式
+(A-20)。所以动能能够由两部分表达：线性部分 <span
+class="math inline">\(\frac{1}{2}^TMv\)</span> 和 角度部分 <span
+class="math inline">\(\frac{1}{2}\omega^TI\omega\)</span>。</p>
+<h4 id="c.2-angular-acceleration">C.2 Angular Acceleration</h4>
+<p>我们经常需要计算 <span class="math inline">\(\omega(t)\)</span>。因为
+<span class="math inline">\(L(t)=I(t)\omega(t)\)</span>，我们知道 <span
+class="math inline">\(\omega(t)=I^{-1}(t)L(t)\)</span>。<br />
+<span class="math display">\[
+\dot{\omega}(t)=\dot{I}^{-1}(t)L(t)+I^{-1}(t)\dot{L}(t)\tag{C-4}
+\]</span> 因 <span class="math inline">\(\dot{L}(t)=\tau(t)\)</span>
+(A-26) 式，主要处理 <span
+class="math inline">\(\dot{I}^{-1}(t)\)</span>，在式 (2-40) 能得到<br />
+<span class="math display">\[
+I^{-1}(t)=R(t)I^{-1}_{body}R(t)^T.
+\]</span></p>
+<p><span class="math display">\[
+\dot{I}^{-1}(t)=\dot{R}(t)I^{-1}_{body}R(t)^T+R(t)I^{-1}_{body}\dot{R}(t)^T.\tag{C-5}
+\]</span></p>
+<p>因为式 (2-12) <span
+class="math inline">\(\dot{R}(t)=\omega(t)^*R(t)\)</span><br />
+<span class="math display">\[
+\dot{R}(t)^T=(\omega(t)^*R(t))^T=R(t)^T\big(\omega(t)^*\big)^T
+\tag{C-6}
+\]</span> 因为 <span class="math inline">\(\omega(t)^*\)</span>
+是反对称矩阵(antisymmetric matrix)，(<span
+class="math inline">\(\big(\omega(t)^*\big)^T=-\omega(t)^*\)</span>),<br />
+<span class="math display">\[
+\dot{R}(t)^T=-R(t)^T\omega(t)^*\tag{C-7}
+\]</span></p>
+<p><span class="math display">\[
+\begin{aligned}
+\dot{I}^{-1}(t)&amp;=
+\dot{R}(t)I^{-1}_{body}R(t)^T+R(t)I^{-1}_{body}\dot{R}(t)^T\\
+&amp;=\dot{R}(t)I^{-1}_{body}R(t)^T-
+R(t)I^{-1}_{body}R(t)^T\omega(t)^*\\
+&amp;=\omega(t)^*R(t)I^{-1}_{body}R(t)^T-I^{-1}(t)\omega(t)^*\\
+&amp;=\omega(t)^*I^{-1}(t)-I^{-1}(t)\omega(t)^*
+\end{aligned}
+\tag{C-8}
+\]</span></p>
+<p><span class="math display">\[
+\begin{aligned}
+\dot\omega(t)&amp;=\dot{I}^{-1}L(t)+I^{-1}(t)\dot{L}(t)\\
+&amp;=\Big(\omega(t)^*I^{-1}(t)-I^{-1}(t)\omega(t)^*\Big)L(t)+
+I^{-1}(t)\dot{L}(t)\\
+&amp;=\omega(t)^*I^{-1}(t)L(t)-I^{-1}(t)\omega(t)^*L(t)+
+I^{-1}(t)\dot{L}(t)\\
+\end{aligned}
+\tag{C-9}
+\]</span></p>
+<p>因为我们有 <span
+class="math inline">\(I^{-1}(t)L(t)=\omega(t)\)</span>，对于第一项 <span
+class="math inline">\(\omega(t)^*I^{-1}(t)L(t)\)</span> 实际上是 <span
+class="math inline">\(\omega(t)^*\omega(t)=\omega(t)\times\omega(t)=0\)</span>，所以能够得到：<br />
+<span class="math display">\[
+\begin{aligned}
+\dot\omega(t)&amp;=
+-I^{-1}(t)\omega(t)^*L(t)+
+I^{-1}(t)\dot{L}(t)\\
+&amp;=-I^{-1}(t)\omega(t)\times L(t)+
+I^{-1}(t)\dot{L}(t)\\
+&amp;=I^{-1}(t)\Big(L(t)\times\omega(t)\Big)+
+I^{-1}(t)\dot{L}(t)\\
+&amp;=I^{-1}(t)\Big(L(t)\times\omega(t)+\dot{L}(t)\Big)
+\end{aligned}
+\tag{C-10}
+\]</span> 我们可以由此看出，即使没有外力作用（即 <span
+class="math inline">\(\dot{L}(t)=0\)</span>），角加速度 <span
+class="math inline">\(\dot\omega(t)\)</span>
+仍可能非零。（事实上，<strong>只要角动量与角速度的方向不一致</strong>，就会出现这种情况——而这一现象又源于：刚体的<strong>转动速度轴（rotational
+velocity axis）不是刚体的对称轴</strong>。）</p>
+<h4 id="c.3-acceleration-of-a-point">C.3 Acceleration of a Point</h4>
+<p>给定一点在世界空间的位置 <span
+class="math inline">\(p(t)\)</span>，经常会需要计算 <span
+class="math inline">\(\ddot{p}(t)\)</span>。<br />
+将模型空间的点 <span class="math inline">\(p_0\)</span> 变换到时刻 <span
+class="math inline">\(t\)</span> 的世界坐标 <span
+class="math inline">\(p(t)\)</span>: <span
+class="math inline">\(p(t)=R(t)p_0+x(t)\)</span>。<br />
+如果令 <span class="math inline">\(r(t)=p(t)-x(t)\)</span>，则<br />
+<span class="math display">\[
+\begin{aligned}
+\dot{p}(t)
+&amp;=\dot{R}(t)p_0+\dot{x}(t)=\omega(t)^*R(t)p_0+v(t)\\
+&amp;=\omega(t)\times\Big(R(t)p_0+x(t)-x(t)\Big)+v(t)\\
+&amp;=\omega(t)\times\Big(p(t)-x(t)\Big)+v(t)\\
+&amp;=\omega(t)\times r(t)+v(t)
+\end{aligned}
+\tag{C-11}
+\]</span></p>
+<p><span class="math display">\[
+\begin{aligned}
+\ddot{p}(t)&amp;=
+\dot\omega(t)\times r(t)+
+\omega(t)\times \dot{r}(t)+\dot{v}(t)\\
+&amp;=\dot\omega(t)\times r(t)+
+\omega(t)\times\Big(\omega(t)\times r(t)\Big)
++\dot{v}(t)
+\end{aligned}
+\tag{C-12}
+\]</span></p>
+<p>式(C-12) 用了式 (2-7)，对于上式结果我们可以这样理解。<br />
+第一项，<span class="math inline">\(\dot\omega(t)\times r(t)\)</span>
+是该点切向加速度(tangential acceleration)，即 <span
+class="math inline">\(\dot\omega(t)\times r(t)\)</span>
+是物体产生角加速度而产生的垂直于位移 <span
+class="math inline">\(r(t)\)</span> 的加速度。<br />
+第二项，<span class="math inline">\(\omega(t)\times\Big(\omega(t)\times
+r(t)\Big)\)</span>
+是向心加速度，这种向心加速度产生是因为规定物体是刚体，并且物体上各点必须绕质心做圆周运动<font color=#909090><em>(这里我是没懂什么意思……角速度引起的向心加速度？)</em></font>。<br />
+最后一项，<span class="math inline">\(\dot v(t)\)</span>
+点的线性加速度，是因为物体质心线性加速度产生。</p>
+<h3 id="appendix-d-resting-contact-derivations">Appendix D Resting
+Contact Derivations</h3>
+<p>如果想在模拟器中实现静接触，可能会需要本附录中的派生和代码。这或许并不是一篇易于阅读的附录内容；不过话说回来，写这篇附录的过程本身也不怎么有趣啊！<font color=#909090><em>(翻译下来也不是很有趣啊！keso！)</em></font><br />
+这里的推导过程比较简洁，但是搭配原文附录末尾的代码可能能更清晰易懂。<br />
+<span class="math display">\[
+\ddot{d_i}(t_0)=
+a_{i1}f_1+a_{i2}f_2+\cdots+a_{in}f_n+b_i.\tag{D-1}
+\]</span> 给定 <span class="math inline">\(i,j\)</span>，我们需要知道
+<span class="math inline">\(\ddot{d_i}(t_0)\)</span> 如何依赖于 <span
+class="math inline">\(f_j\)</span>，也就是说，需要知道 <span
+class="math inline">\(a_{ij}\)</span>。同时，我们还要计算常数项 <span
+class="math inline">\(b_i\)</span>。<br />
+我们先开始计算 <span class="math inline">\(a_{ij}\)</span>
+暂时忽略常数部分 <span class="math inline">\(b_i\)</span>。假设第 i
+个接触发生在物体 <span class="math inline">\(A,B\)</span> 之间。根据式
+(9-4) 对 <span class="math inline">\(\ddot{d}_i(t_0)\)</span>
+能得到：<br />
+<span class="math display">\[
+\ddot{d}(t_0)=
+\hat{n}_i(t_0)\cdot\big(
+\ddot{p}_a(t_0)-\ddot{p}_b(t_0)\big)+
+2\hat{n}_i(t_0)\cdot\big(
+\dot{p}_a(t_0)-\dot{p}_b(t_0)\big)
+\tag{D-2}
+\]</span> 这里的 <span
+class="math inline">\(p_a(t_0)=p_i=p_b(t_0)\)</span> 是在 <span
+class="math inline">\(t_0\)</span> 时刻的第 <span
+class="math inline">\(i\)</span> 个接触点。因此 <span
+class="math inline">\(2\hat{n}_i(t_0)\cdot\big(\dot{p}_a(t_0)-\dot{p}_b(t_0)\big)\)</span>
+项是一个速度相关项
+(你可以在不知道所涉及的力作用情况下立刻计算出来)，关于 <span
+class="math inline">\(b_i\)</span> 的部分，我们暂时忽略。<br />
+现在我们只需要计算 <span
+class="math inline">\(\ddot{p}_a(t_0),\ddot{p}_b(t_0)\)</span> 如何依赖
+<span class="math inline">\(f_i\)</span>，<span
+class="math inline">\(f_i\)</span> 为第 i 个接触力的大小。<br />
+我们来考虑第 i 个接触点的情况。如果物体 A 不是第 i
+个接触点中的其中一个物体，说明 <span
+class="math inline">\(\ddot{p}_a(t_0)\)</span> 和 <span
+class="math inline">\(f_i\)</span> 无关，因为第 i
+个接触点没有力作用在物体 A 上。同样的，如果 B 也不是第 i
+个接触点中的其中一个物体，则 <span
+class="math inline">\(\ddot{p}_b(t_0)\)</span> 和 <span
+class="math inline">\(f_i\)</span> 是无关的。(就像 figure
+26，第1个点的加速度是不会受到第5个接触点的影响的。因此 <span
+class="math inline">\(\ddot{d}_1(t_0)\)</span> 完全和 <span
+class="math inline">\(f_5\)</span> 无关。反之同理 <span
+class="math inline">\(\ddot{d}_5(t_0)\)</span> 和 <span
+class="math inline">\(f_1\)</span> 也是无关。)<br />
+<img src="/imgs/Rigid%20Body%20Simulation%20Ⅱ/figure26.png" srcset="/img/loading.gif" lazyload /><br />
+假设在第 i 个接触点中，包括了物体 A。为了明确起见，假设在第 i
+个接触点中，一个力 <span class="math inline">\(j\hat{n}_j(t_0)\)</span>
+作用在物体 A 上，而不是 <span
+class="math inline">\(-j\hat{n}_j(t_0)\)</span>。我们需要求解作用在物体
+A 上的力 <span class="math inline">\(j\hat{n}_j(t_0)\)</span> 如何影响
+<span class="math inline">\(\ddot{p}_a(t_0)\)</span>。<br />
+根据式 (C-12)，能够得到： <span class="math display">\[
+\ddot{p}_a(t)=
+\dot{v}_a(t)+
+\dot\omega_a(t)\times r(t)_a+
+\omega_a(t)\times\Big(\omega_a(t)\times r_a(t)\Big)
+\tag{D-3}
+\]</span> 这里 <span
+class="math inline">\(r_a(t)=p_a(t)-x_a(t)\)</span>，并且<span
+class="math inline">\(x_a(t),v_a(t),\omega_a(t)\)</span> 全都是和物体 A
+有关的变量。我们知道 <span class="math inline">\(\dot{v}_a(t)\)</span>
+是物体的线性加速度，并且等于作用在 A 上的合力除以质量。因此，力 <span
+class="math inline">\(j\hat{n}_j(t_0)\)</span> 对加速度 <span
+class="math inline">\(\dot{v}_a(t),\ddot{p}_a(t_0)\)</span>的贡献为:<br />
+<span class="math display">\[
+\frac{f_j\hat{n}_j(t_0)}{m_a}=f_j\frac{\hat{n}_j(t_0)}{m_a}
+\tag{D-4}
+\]</span> 同样的，根据式 (C-10),(2-13) 能针对 <span
+class="math inline">\(\dot\omega_a(t)\)</span> 得<br />
+<span class="math display">\[
+\dot\omega_a(t)=I^{-1}_a(t)\tau_a(t)+
+I^{-1}_a(t)\Big(L_a(t)\times\omega_a(t)\Big)
+\]</span> 这里的 <span class="math inline">\(\tau_a(t)\)</span>
+是作用在物体 A 上的总扭矩。如果第 j 个 接触发生在点 <span
+class="math inline">\(p_j\)</span>，则力 <span
+class="math inline">\(j\hat{n}_j(t_0)\)</span> 产生的力矩为：<br />
+<span class="math display">\[
+\big(p_j-x_a(t_0)\big)\times f_j\hat{n}_j(t_0).
+\]</span> 因此，对于 <span
+class="math inline">\(\ddot{p_a}(t_0)\)</span> 的角度贡献为：<br />
+<span class="math display">\[
+\begin{aligned}
+&amp;f_j\Big(I_a^{-1}(t_0)\big((p_j-x_a(t_0))\times\hat{n}_j(t_0)\big)\Big)\times
+r_a.\\
+&amp;完全看不懂为什么\cdots\\
+&amp;可能就是\dot\omega_a(t)暂时忽略了后面的陀螺项,然后算加速度?\\
+\end{aligned}\tag{D-5}
+\]</span> <span class="math inline">\(\ddot{p}_a(t_0)\)</span> 对 <span
+class="math inline">\(f_j\)</span> 的总依赖为：<br />
+<span class="math display">\[
+f_j\bigg(\frac{\hat{n}_j(t_0)}{m_a}+
+\Big(I_a^{-1}(t_0)\big((p_j-x_a(t_0))\times
+\hat{n}_j(t_0)\big)\Big)\times r_a\bigg).
+\]</span> 如果是一个力 <span
+class="math inline">\(-f_j\hat{n}(t_0)\)</span> 作用在 A
+上，得到的关系是一样的，只是要在 <span
+class="math inline">\(f_j\)</span> 前添加负号。显然 <span
+class="math inline">\(\ddot{p}_b(t_0)\)</span> 以类似的方式依赖于 <span
+class="math inline">\(f_j\)</span>。一旦我们计算出 <span
+class="math inline">\(\ddot{p}_a(t_0),\ddot{p}_b(t_0)\)</span> 如何依赖
+<span class="math inline">\(f_j\)</span>，就将结果组合并和 <span
+class="math inline">\(\hat{n}_i(t_0)\)</span> 做点乘，观察 <span
+class="math inline">\(\ddot{d}_i(t_0)\)</span> 如何依赖 <span
+class="math inline">\(f_j\)</span>。这给出了系数 <span
+class="math inline">\(a_{ij}\)</span>。可能有点困惑，看一看后面的代码部分。</p>
+<p>我们还需要计算出 <span class="math inline">\(b_i\)</span>。我们知道
+<span class="math inline">\(\ddot{d_i}(t_0)\)</span> 包含固定项<br />
+<span class="math display">\[
+2\dot{\hat{n}}_i(t_0)\cdot
+\big(\dot{p}_a(t_0)-\dot{p}_b(t_0)\big).
+\]</span> 但是我们也必须要考虑已知外力对 <span
+class="math inline">\(\ddot{p}_a(t_0),\ddot{p}_b(t_0)\)</span>
+的影响，比如重力，同时还有和力无关的项 <span
+class="math inline">\(\omega_a(t_0)\times(\omega_a(t_0)\times
+r_a),\Big(I^{-1}_a(t_0)\big(L_a(t_0)\times\omega_a(t_0)\big)\Big)\times
+r_a\)</span>。如果令作用在 A 上的合力为 <span
+class="math inline">\(F_a(t_0)\)</span> 并且合扭矩为 <span
+class="math inline">\(\tau_a(t_0)\)</span>，接着从式 (D-4), (D-5)
+中可以得到 <span class="math inline">\(F_a(t_0)\)</span> 贡献为：<span
+class="math inline">\(\frac{F_a(t_0)}{m_a}\)</span>。<br />
+并且 <span class="math inline">\(\tau_a(t_0)\)</span> 贡献为：<span
+class="math inline">\(\Big(I_a^{-1}(t_0)\tau_a(t_0)\Big)\times
+r_a.\)</span><br />
+因此，<span class="math inline">\(\ddot{p}_a(t_0)\)</span> 和 <span
+class="math inline">\(f_j\)</span> 无关的部分为：<br />
+<span class="math display">\[
+\begin{aligned}
+&amp;\frac{F_a(t_0)}{m_a}+
+\big(I^{-1}_a(t_0)\tau_a(t_0)\big)\times r_a+
+\omega_a(t_0)\times\big(\omega_a(t_0)\times r_a\big)+\\
+&amp;\Big(I^{-1}_a(t_0)\big(L_a(t_0)\times\omega_a(t_0)\big)\Big)\times
+r_a
+\end{aligned}
+\]</span> 对于 <span class="math inline">\(\ddot{p}_b(t_0)\)</span>
+是相似的。为了计算 <span class="math inline">\(b_i\)</span>，我们组合
+<span class="math inline">\(\ddot{p}_a(t_0),\ddot{p}_b(t_0)\)</span> 和
+<span class="math inline">\(\hat{n}_i(t_0)\)</span> 做点乘，并添加项
+<span
+class="math inline">\(2\dot{\hat{n}}_i(t_0)\cdot\big(\dot{p}_a(t_0)-\dot{p}_b(t_0)\big).\)</span></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Math/" class="print-no-link">#Math</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Rigid Body Simulation Ⅱ</div>
+      <div>http://example.com/2025/09/04/Rigid Body Simulation Ⅲ/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Hollow Emiya</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年9月4日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/09/10/Atmosphere%20%E2%85%A1/" title="Atmosphere Ⅱ">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Atmosphere Ⅱ</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/08/18/Rigid%20Body%20Simulation%20%E2%85%A1/" title="Rigid Body Simulation Ⅱ">
+                        <span class="hidden-mobile">Rigid Body Simulation Ⅱ</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

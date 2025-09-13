@@ -1,0 +1,713 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Hollow Emiya">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="白天和群友吹水，发现自己对于透明测试和透明混合，包括earlyZ和PreZ理解不够，所以记录一下，方便自己复习巩固。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="透明和earlyZ">
+<meta property="og:url" content="http://example.com/2022/05/31/%E9%80%8F%E6%98%8E%E5%92%8CEarly%20Z%E3%80%81Pre%20Z/index.html">
+<meta property="og:site_name" content="Emiya Blog">
+<meta property="og:description" content="白天和群友吹水，发现自己对于透明测试和透明混合，包括earlyZ和PreZ理解不够，所以记录一下，方便自己复习巩固。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/imgs/%E9%80%8F%E6%98%8E%E5%92%8CEarly%20Z%E3%80%81Pre%20Z/%E6%B8%B2%E6%9F%93%E6%B5%81%E7%A8%8B.png">
+<meta property="og:image" content="http://example.com/imgs/%E9%80%8F%E6%98%8E%E5%92%8CEarly%20Z%E3%80%81Pre%20Z/BT.jpg">
+<meta property="og:image" content="http://example.com/imgs/%E9%80%8F%E6%98%8E%E5%92%8CEarly%20Z%E3%80%81Pre%20Z/TB.jpg">
+<meta property="og:image" content="http://example.com/2022/05/31/%E9%80%8F%E6%98%8E%E5%92%8CEarly%20Z%E3%80%81Pre%20Z/imgs/%E9%80%8F%E6%98%8E%E5%92%8CEarly%20Z%E3%80%81Pre%20Z/qh.jpg">
+<meta property="article:published_time" content="2022-05-31T12:52:39.000Z">
+<meta property="article:modified_time" content="2025-08-19T02:21:06.291Z">
+<meta property="article:author" content="Hollow Emiya">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/imgs/%E9%80%8F%E6%98%8E%E5%92%8CEarly%20Z%E3%80%81Pre%20Z/%E6%B8%B2%E6%9F%93%E6%B5%81%E7%A8%8B.png">
+  
+  
+  
+  <title>透明和earlyZ - Emiya Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null},"woyaola":null,"cnzz":null},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Emiya&#39;s Blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="透明和earlyZ"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-05-31 20:52" pubdate>
+          2022年5月31日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.1k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          18 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">透明和earlyZ</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>白天和群友吹水，发现自己对于透明测试和透明混合，包括earlyZ和PreZ理解不够，所以记录一下，方便自己复习巩固。</p>
+<span id="more"></span>
+<h1 id="透明和early-zpre-z">透明和Early Z、Pre Z</h1>
+<h2 id="early-z">Early Z</h2>
+<p>提到Early
+Z就不得不提深度测试，深度测试简单来说就是解决物体前后遮挡的一直技术。<br />
+具体就不展开了，根据物体的深度信息与深度缓存区的深度信息进行对比，决定该像素是否绘制，如深度更小即该像素更靠前就覆写深度信息。</p>
+<p>深度测试有一个问题就是如果已经绘制的像素被遮挡了，那么我们只能舍弃，但是之前绘制被遮挡像素的工作就白做了，造成了资源的消耗，那么为了解决或者说减少这种问题，就有了提前深度测试Early
+Z，来解决过度不必要的片元着色计算。</p>
+<p><img src="/imgs/透明和Early Z、Pre Z/渲染流程.png" srcset="/img/loading.gif" lazyload alt="来源百人计划"></p>
+<p>Early Z将在片元着色器前一个阶段进行，进行Early
+Z会直接进行深度判断，不进行计算直接进行舍弃(<em>在Early
+Z不仅判断深度通常也会写入深度</em>)，这样就节省了不必要计算量，通常Early
+Z由硬件进行，并且Early Z还可以添加模板测试。</p>
+<h3 id="early-z失效">Early Z失效</h3>
+<ul>
+<li><p>开启Alpha Test 或者手动丢弃片元等操作，如clip<br />
+因为Early
+Z也会写入深度，如果深度较浅的像素在shader中被丢弃了，后续的像素如果深度大于该像素，就都被舍弃了，但是我们在alpha
+test中本应该仍对后续的片元进行透明度测试，所以由于Early
+Z我们没有得到预期的结果。( Alpha Test 中如果透明度 alpha
+越低表示越透明，当达到我们要的阈值就舍弃该片元达到透明的效果 )</p></li>
+<li><p>手动修改GPU插值得到的深度值<br />
+和上述情况类似。</p></li>
+<li><p>开启透明混合(Alpha Blend)<br />
+这里是针对关闭深度写入(<code>ZWrite Off</code>)的Alpha Blend</p></li>
+<li><p>关闭深度测试(Depth Test)<br />
+就是关闭了深度测试，因为Early Z也是一种深度测试，自然无法进行。</p></li>
+</ul>
+<p><strong>如果从远向近渲染Early
+Z就白做了，因为所渲染的片元都可以通过测试，但是后续还是会被舍弃，并没有节省不必要的计算</strong></p>
+<h3 id="高效利用">高效利用</h3>
+<p>可以用CPU对物体从近到远排序就可最大利用，但是如果场景过于复杂性能消耗就很大而且严格的从近道远很难应用批处理这种优化手段。</p>
+<h2 id="z-prepass">Z PrePass</h2>
+<h3 id="使用两个pass">使用两个Pass：</h3>
+<ul>
+<li><p>在第一个Pass(Prepass)仅仅只写入深度，关闭颜色写入，我们就可以得到场景的物体深度信息。</p></li>
+<li><p>在第二个Pass中关闭深度写入，并且深度比较设置为相等，这样基于第一个Pass的深度信息我们就能得到想要的效果。</p></li>
+</ul>
+<h4 id="问题">问题</h4>
+<p>动态批处理问题：因为运用多个pass所以无法运用动态批处理。<br />
+所以会进一步带来Draw Call问题，运用了Z-Prepass会导致Draw
+Call增加，会造成一定的性能损失。</p>
+<h3 id="提前分离prepass">提前分离PrePass</h3>
+<p>仍然使用两个Pass，但是是两个Shader</p>
+<ul>
+<li><p>将原来用以深度信息的Pass(Z-Prepass)单独作为一个Shader，用此Shader对整个场景的Opaque物体进行一次渲染，得到深度信息。</p></li>
+<li><p>而原本的材质只保留第二个Pass，但是依旧需要关闭深度写入，并且将深度比较函数设置为相等。</p></li>
+</ul>
+<p>Z-Prepass也通常用于透明混合，解决了透明物体前后错误的问题，因为透明混合往往要关闭深度写入；但是这样看不到物体背面，如果想要背面，我们可以<strong>先渲染背面剔除正面，再渲染正面剔除背面</strong>，这样就可以正常混合。</p>
+<h3 id="谨慎使用z-prepass">谨慎使用Z-Prepass</h3>
+<p>是否使用Z-Prepass要视我们的场景而定，如果场景overdraw过多又不能很好的进行远近排序，那么Z-Prepass带来的优化效果会比overdraw的消耗小很多，所以使用与否也需要我们来权衡，也是很依赖经验的过程。</p>
+<h2 id="透明">透明</h2>
+<h3 id="两种透明方式">两种透明方式</h3>
+<ul>
+<li><p>透明度测试(alpha test):
+一般会根据alpha通道的值即透明度进行片元的剔除，不满足条件便直接舍弃，通过则按正常片元处理，所以透明度测试**不需要关闭深度写入，由于直接舍弃所以展现出来的效果很极端。</p>
+<figure class="highlight gcode"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs gcode"><span class="hljs-comment">// 剔除片元  </span><br>fixed<span class="hljs-number">4</span> frag<span class="hljs-comment">(v2f i)</span> : SV_Target  <br>&#123;  <br>    fixed<span class="hljs-number">4</span> col = tex<span class="hljs-number">2</span>D<span class="hljs-comment">(_MainTex, i.uv)</span>;  <br>    clip<span class="hljs-comment">(col.a - _CutOff)</span>  <br>&#125;  <br></code></pre></td></tr></table></figure></li>
+<li><p>透明度混合(alpha blend):
+这个是我们在现实世界看到的透明效果，一般会根据片元的透明度，透明度混合需要我们关闭深度写入，因为我们需要根据颜色缓存区中的颜色来进行混合，<strong>如果不关闭深度写入假如在一个透明物体背后有一个不透明物体，就会导致在后面的不透明物体被剔除</strong>，我们想要的本应该能透过透明物体观察到不透明物体。同时如果开启深度写入，透明物体如果有🍌的情况，会造成原本能被看见物体因为object
+level的排序被剔除的问题。</p></li>
+</ul>
+<h4 id="关于透明混合渲染顺序">关于透明混合渲染顺序</h4>
+<p>因为我们在透明混合中关闭了深度写入，破坏了深度缓存工作机制，所以渲染顺序十分重要。在关闭深度写入后对于深度缓存区就是只读的状态，假设我们的场景中有一个透明物体在前、不透明物体之后。</p>
+<div style="margin:;width:30%">
+<img src="/imgs/透明和Early Z、Pre Z/BT.jpg" srcset="/img/loading.gif" lazyload alt="一个透明物体在前、不透明物体之后">
+</div>
+<p>如果先渲染不透明物体，再渲染透明物体，看起来效果很正常。</p>
+<div style="margin:right;width:30%">
+<img src="/imgs/透明和Early Z、Pre Z/TB.jpg" srcset="/img/loading.gif" lazyload alt="先渲染透明物体，再渲染不透明物体">
+</div>
+<p>但是如果先渲染透明物体，再渲染不透明物体我们就会看到场景中不透明物体部分被剔除了。</p>
+<p>所以在应用透明技术时，要格外注意渲染顺序。通常我们的渲染顺序是：<br />
+1、正常渲染所有不透明物体，保持深度测试和深度写入；<br />
+2、把透明物体按从远及近的顺序渲染，<strong>开启深度测试，但是要关闭深度写入</strong>。<br />
+      有个问题是我们怎样界定物体的先后，这个和深度测试需要做区分，深度测试是针对像素的，而我们渲染是一个物体一个物体这样进行绘制的，我们需要的绘制顺序是针对物体而言的。很多时候我们场景中的物体不是有着绝对明确的前后关系，而会有着交错的关系。我们很难确定一个点来明确物体合适的前后关系，解决问题的方法通常是使用分割网格，并且为了减少错误尽量保持模型为凸多边形，并进行合理的子模型划分。</p>
+<div style="margin:auto;width:30%">
+<img src="imgs/透明和Early Z、Pre Z/qh.jpg" srcset="/img/loading.gif" lazyload alt="前后关系">
+</div>
+<h4 id="开启深度写入的半透明">开启深度写入的半透明</h4>
+<p>这种方法往往是针对一个半透明物体内部前后关系错误的问题，就会用到我们介绍的Z-prePass，注意我们现在在渲染透明物体其他不透明物体已经绘制过了，换句话说缓存中已经有颜色我们是做混合，在第一个pass中写入透明物体的深度值，在第二个根据深度信息进行透明混合的渲染，这样就可以得到前后关系正确的半透明效果。(但是看不到透明物体的背面)</p>
+<h4 id="双面透明">双面透明</h4>
+<p>对于透明物体只能观测到正面的问题，我们可以用一个Pass先渲染背面剔除正面，然后再用一个Pass渲染正面剔除背面，这种情况只需关闭深度写入的透明混合即可，不需要上面的Z-prepass，我之前老是有些分不清。</p>
+<p>透明和early
+z就先写到这吧，做一些复习用所以只概述了技术的大体思路，没有贴什么代码和具体细节，其实我GitHub上有，不过懒得贴了(<br />
+关于透明物体顺序问题还有OIT技术。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>透明和earlyZ</div>
+      <div>http://example.com/2022/05/31/透明和Early Z、Pre Z/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Hollow Emiya</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2022年5月31日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2022/06/17/PBR/" title="PBR备忘笔记">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">PBR备忘笔记</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/05/03/C++-sort-%E6%B5%85%E8%AF%86/" title="C++-sort-浅识">
+                        <span class="hidden-mobile">C++-sort-浅识</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

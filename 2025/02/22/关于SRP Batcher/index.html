@@ -1,0 +1,862 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Hollow Emiya">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="关于 SRP Batcher 的理解和内容 关于 SRP Batcher Shader 和 Material 首先我们得对 Shader 和 Material 以及渲染过程有一个基础的了解。  Shader：运行在 GPU 上的一段程序， 将输入的 Mesh 和 Texture 以及 其他 Properties 进行计算，然后输出结果。 当然也有利用 GPU 并行能力计算的 Comp">
+<meta property="og:type" content="article">
+<meta property="og:title" content="关于 SRP Batcher">
+<meta property="og:url" content="http://example.com/2025/02/22/%E5%85%B3%E4%BA%8ESRP%20Batcher/index.html">
+<meta property="og:site_name" content="Emiya Blog">
+<meta property="og:description" content="关于 SRP Batcher 的理解和内容 关于 SRP Batcher Shader 和 Material 首先我们得对 Shader 和 Material 以及渲染过程有一个基础的了解。  Shader：运行在 GPU 上的一段程序， 将输入的 Mesh 和 Texture 以及 其他 Properties 进行计算，然后输出结果。 当然也有利用 GPU 并行能力计算的 Comp">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/imgs/Hexo%E4%B8%BB%E9%A2%98%E5%8F%98%E6%9B%B4/Shiki&Tsukihime.png">
+<meta property="article:published_time" content="2025-02-22T06:05:36.000Z">
+<meta property="article:modified_time" content="2025-08-19T02:21:06.288Z">
+<meta property="article:author" content="Hollow Emiya">
+<meta property="article:tag" content="渲染">
+<meta property="article:tag" content="Unity">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/imgs/Hexo%E4%B8%BB%E9%A2%98%E5%8F%98%E6%9B%B4/Shiki&Tsukihime.png">
+  
+  
+  
+  <title>关于 SRP Batcher - Emiya Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null},"woyaola":null,"cnzz":null},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Emiya&#39;s Blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/imgs/Hexo%E4%B8%BB%E9%A2%98%E5%8F%98%E6%9B%B4/Shiki&Tsukihime.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="关于 SRP Batcher"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-02-22 14:05" pubdate>
+          2025年2月22日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.4k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          21 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">关于 SRP Batcher</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>关于 SRP Batcher 的理解和内容</p>
+<h1 id="关于-srp-batcher">关于 SRP Batcher</h1>
+<h2 id="shader-和-material">Shader 和 Material</h2>
+<p>首先我们得对 Shader 和 Material 以及渲染过程有一个基础的了解。</p>
+<ul>
+<li>Shader：运行在 <strong>GPU</strong> 上的一段程序， 将输入的 Mesh 和
+Texture 以及 其他 Properties 进行计算，然后输出结果。
+<font color= #999999>当然也有利用 GPU 并行能力计算的 Computer Shader
+主要是做数据计算和处理，比如计算
+LUT，或者滤波、图像处理等等，这个不是本文重点。</font></li>
+<li>Material：描述(存储) 模型/物体 表面细节信息的资源。 定义外观属性
+Color，Tex，Smoothness……可以看作是对 Shader的实例。</li>
+</ul>
+<p>材质可以看作是一个配置Shader属性数值的面板。通过修改材质球里的属性数值，实际上就是在修改Shader的属性数值。
+当我们创建一个材质时，我们实际上是在创建一个Shader的实例。这个实例包含了Shader的所有属性，并且我们可以为这些属性提供具体的值。
+在Unity中，每个材质都关联了一个Shader。当我们将材质应用到一个物体上时，实际上是在告诉Unity使用这个材质所关联的Shader来渲染这个物体。</p>
+<h2 id="简单的渲染过程">简单的渲染过程</h2>
+<p>就现在的设计，简单来讲渲染物体主要分为四个步骤： 暂时用 DX
+举例吧，我记不得太多了……</p>
+<ol type="1">
+<li><p><strong>初始化</strong>：</p>
+<ul>
+<li><p><strong>创建设备</strong> (ID3D11Device) 和
+<strong>设备上下文</strong>(ID3D11DeviceContext)，以及交换链管理 Front
+Buffer 和 Back Buffer</p>
+<p>创建渲染视图并绑定到输出合并阶段。</p></li>
+</ul></li>
+<li><p><strong>设置渲染状态</strong>：</p>
+<ul>
+<li><strong>定义顶点格式和输入布局</strong>：根据需要渲染的几何体定义顶点结构，并创建相应的输入布局（<code>ID3D11InputLayout</code>）描述顶点数据的格式和语义。</li>
+<li><strong>创建顶点和索引缓冲区</strong>：将几何体的顶点数据存储在顶点缓冲区（<code>ID3D11Buffer</code>）中，如果有重复顶点，可以使用索引缓冲区（<code>ID3D11Buffer</code>）来优化内存使用和渲染效率。</li>
+<li><strong>创建着色器</strong>：编写顶点着色器（Vertex
+Shader）和像素着色器（Pixel
+Shader），并使用<code>D3DCompile</code>函数编译成字节码，然后创建着色器对象（<code>ID3D11VertexShader</code>和<code>ID3D11PixelShader</code>）</li>
+</ul></li>
+<li><p><strong>绘制调用</strong>：</p>
+<ul>
+<li><strong>绑定着色器和常量缓冲区</strong>：将顶点着色器、像素着色器和常量缓冲区绑定到渲染管线的相应阶段。</li>
+<li><strong>设置图元拓扑</strong>：指定要渲染的图元类型，如三角形列表、线列表等。</li>
+<li><strong>设置混合状态、深度/模板状态等</strong>：根据需要设置渲染管线的其他状态，如混合模式、深度测试和模板测试等。</li>
+<li>(可选)进行ClearRenderTargetView</li>
+<li><strong>绘制几何体</strong>：使用<code>DrawIndexed</code>或<code>Draw</code>函数绘制几何体，根据索引缓冲区（如果有）或顶点缓冲区中的数据生成图元，</li>
+<li>重复渲染过程。</li>
+</ul></li>
+<li><p><strong>结果展示</strong>：</p>
+<p>前后帧交替显示渲染结果</p></li>
+</ol>
+<h3 id="一点关于dx的概念不是很重要">一点关于dx的概念，不是很重要……</h3>
+<ul>
+<li><p><code>ID3D11Device</code>接口，它用于创建资源和枚举显示适配器的功能，用以应用程序直接与图形硬件进行交互。</p></li>
+<li><p>设备上下文<a href="#fn1" class="footnote-ref" id="fnref1"
+role="doc-noteref"><sup>1</sup></a>是设备的一个接口，用于设置管道状态、将资源绑定到图形管线和生成渲染命令。
+设备上下文在<code>ID3D11DeviceContext</code>接口中实现，它提供了对图形管线的直接控制，允许应用程序执行各种渲染操作。</p>
+<ul>
+<li><strong>即时上下文（Immediate
+Context）</strong>：即时上下文直接与图形硬件进行交互，它允许应用程序立即执行渲染命令。每个设备都有一个且只有一个即时上下文。</li>
+<li><strong>延迟上下文（Deferred
+Context）</strong>：延迟上下文将渲染命令记录到命令列表中，它主要用于多线程渲染。延迟上下文可以由工作线程使用，而即时上下文通常由主线程使用</li>
+</ul></li>
+</ul>
+<h3 id="draw-call">Draw Call</h3>
+<p><strong>Draw Call</strong> 是 CPU 调用图形 API（如 OpenGL 或
+DirectX）命令 GPU 进行渲染的操作。具体来说，Draw Call 是 CPU 向 GPU
+发送的绘制命令，告诉 GPU
+如何渲染场景的一部分，包括使用哪些顶点、纹理、着色器等。</p>
+<h3 id="draw-call-的工作原理">Draw Call 的工作原理</h3>
+<ol type="1">
+<li><strong>命令缓冲区</strong>：为了实现 CPU 和 GPU
+的并行工作，需要一个命令缓冲区（Command
+Buffer），它包含一个命令队列。CPU 向其中添加命令，GPU
+从中读取命令并执行。</li>
+<li><strong>Draw Call 命令</strong>：Draw Call 是 <strong>Command Buffer
+的一种命令</strong>，用于告诉 GPU 进行绘制操作。除了 Draw Call，Command
+Buffer 中还有其他命令，如改变渲染状态等。</li>
+<li><strong>CPU 和 GPU 的交互</strong>：CPU 通过图形 API
+向命令缓冲区添加命令，GPU 从中读取命令并执行。当 CPU
+需要渲染一个对象时，它会向命令缓冲区添加一个 Draw Call 命令，GPU
+完成上一个渲染任务后，会从命令缓冲区中取出这个命令并执行。</li>
+</ol>
+<h3 id="为什么-draw-call-多了会影响帧率">为什么 Draw Call
+多了会影响帧率？</h3>
+<ol type="1">
+<li><strong>CPU 的准备工作</strong>：在每次调用 Draw Call 之前，CPU
+需要向 GPU 发送很多内容，包括数据、状态和命令等。CPU
+需要完成很多准备工作，如数据准备，资源绑定，命令提交，检查渲染状态等。</li>
+<li><strong>GPU 的渲染能力</strong>：GPU
+的渲染能力很强，渲染速度往往快于 CPU 提交命令的速度。如果 Draw Call
+的数量太多，CPU 就会把大量时间花费在提交 Draw Call 命令上，造成 CPU
+的过载。 可以粗浅地理解为 DrawIndexed 或Draw函数就是一次 Draw Call</li>
+<li><strong>性能瓶颈</strong>：由于 CPU 的准备工作和 GPU
+的渲染能力不匹配，过多的 Draw Call 会导致 CPU
+成为性能瓶颈，影响帧率。</li>
+</ol>
+<h3 id="如何减少-draw-call">如何减少 Draw Call？</h3>
+<ol type="1">
+<li><strong>批处理（Batching）</strong>：将多个小的 Draw Call
+合并成一个大的 Draw Call，减少 CPU 提交 Draw Call 的次数和时间。
+<ul>
+<li><strong>静态批处理</strong>：适合静态物体，如不会移动的大地、石头等。将这些物体标记为静态，引擎会自动合并网格，减少
+Draw Call。</li>
+<li><strong>动态批处理</strong>：适合动态物体，引擎每帧都会重新合并网格，但限制较多，如顶点数和着色器复杂度等。</li>
+</ul></li>
+<li><strong>减少材质使用</strong>：相同的材质会方便合并网格，减少 Draw
+Call。</li>
+<li><strong>GPU 实例化（GPU Instancing）</strong>：将 mesh 信息存储在
+GPU 内存缓冲区中，并进行渲染而无需额外的 Draw Call。</li>
+<li><strong>减少渲染状态切换</strong>：改变渲染状态比渲染模型更耗时，尽量减少渲染状态切换。</li>
+</ol>
+<h4 id="渲染状态">渲染状态</h4>
+<p><strong>改变渲染状态</strong>是指在图形渲染过程中，通过设置或修改渲染器（如Direct3D或OpenGL）的各种参数，来控制渲染行为和效果的过程。这些参数通常被称为渲染状态，它们定义了渲染器在处理图形数据时的行为方式。</p>
+<h5 id="渲染状态的类型">渲染状态的类型</h5>
+<p>渲染状态有很多种，常见的包括：</p>
+<ol type="1">
+<li><strong>填充模式（Fill
+Mode）</strong>：决定多边形是被填充还是只绘制轮廓。例如，线框模式（Wireframe）只绘制多边形的边框，而实心模式（Solid）会填充整个多边形。</li>
+<li><strong>剔除模式（Cull
+Mode）</strong>：决定是否剔除（不渲染）某些面。例如，可以设置为剔除背面（Backface
+Culling），只渲染正面的三角形。</li>
+<li><strong>深度测试（Depth
+Test）</strong>：决定是否根据深度值（Z值）来决定是否更新像素的颜色。如果开启深度测试，只有当新像素的深度值小于当前像素的深度值时，才会更新像素的颜色。</li>
+<li><strong>混合模式（Blend
+Mode）</strong>：决定如何将新像素的颜色与现有像素的颜色进行混合。例如，可以设置为Alpha混合，根据新像素的Alpha值来决定如何混合颜色。</li>
+<li><strong>模板测试（Stencil
+Test）</strong>：决定是否根据模板缓冲区中的值来决定是否更新像素的颜色。模板缓冲区可以用于实现各种高级渲染效果，如阴影、轮廓等。</li>
+<li><strong>光照模式（Lighting
+Mode）</strong>：决定是否使用光照计算，以及如何计算光照。</li>
+<li><strong>纹理过滤器（Texture
+Filter）</strong>：决定如何对纹理进行采样和过滤，以获得更好的图像质量。例如，可以设置为线性过滤（Linear
+Filtering）或各向异性过滤（Anisotropic Filtering）</li>
+</ol>
+<h2 id="unity-and-material">Unity And Material</h2>
+<p><img src="/imgs/关于SRP Batcher/OldMaterial.jpg" srcset="/img/loading.gif" lazyload> CPU 收集 Material
+信息，设置 CBUFFER</p>
+<h2 id="srp-batcher">SRP Batcher</h2>
+<p><img src="/imgs/关于SRP Batcher/SRPPipeline.jpg" srcset="/img/loading.gif" lazyload>
+在渲染循环里把材质信息保留在 GPU 内存中，只有材质内容改变才会重新 setup
+material data。 在此流程中，CPU
+仅负责处理内置引擎属性（如<em>对象矩阵变换</em>）。所有材质的 CBUFFER
+均以持久化形式驻留在 GPU 内存中，随时可供调用。</p>
+<ol type="1">
+<li><strong>材质数据持久化存储于 GPU
+内存</strong>，若材质内容未发生变更，则无需重复配置和上传缓冲区至
+GPU，显著减少数据传输开销。</li>
+<li><strong>专用代码管理全局「按对象」GPU
+常量缓冲区</strong>，通过独立优化的代码路径，高效更新 GPU
+中存储大规模对象相关数据（如内置属性）的 CBUFFER，进一步降低 CPU-GPU
+通信负载。</li>
+</ol>
+<p><img src="/imgs/关于SRP Batcher/SRPPipeline2.jpg" srcset="/img/loading.gif" lazyload> 左图为标准的
+SRP（可编程渲染管线）渲染循环，右图为 SRP Batcher 的渲染循环。在 SRP
+Batcher 的机制中，一个“批次”仅由连续的
+<code>Bind</code>（绑定资源）、<code>Draw</code>（绘制）、<code>Bind</code>、<code>Draw</code>...
+等 GPU 命令序列构成。</p>
+<p><strong>SRP Batcher 的核心优化逻辑</strong>：</p>
+<ul>
+<li><strong>不减少 DrawCall 数量</strong> SRP Batcher 并不会直接降低
+DrawCall 的总数，其优化重点在于 <strong>减少 DrawCall 之间的 GPU
+资源设置开销</strong>。</li>
+<li><strong>通过持久化与批次合并降低开销</strong> 借助材质数据在 GPU
+内存中的持久化存储，以及针对同着色器变体的批次合并机制，大幅减少重复的资源绑定与状态切换操作，从而提升整体渲染效率。</li>
+</ul>
+<h3 id="补充">补充</h3>
+<h4 id="per-object-变量">“Per Object” 变量</h4>
+<p><img src="/imgs/关于SRP Batcher/SRPPerObject.jpg" srcset="/img/loading.gif" lazyload></p>
+<h2 id="关于">关于</h2>
+<ul>
+<li></li>
+</ul>
+<section id="footnotes" class="footnotes footnotes-end-of-document"
+role="doc-endnotes">
+<hr />
+<ol>
+<li id="fn1"><p><a
+target="_blank" rel="noopener" href="https://learn.microsoft.com/zh-cn/windows/win32/direct3d11/overviews-direct3d-11-devices-intro">Direct3D
+11 中的设备简介 - Win32 apps | Microsoft Learn</a><a href="#fnref1"
+class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E6%B8%B2%E6%9F%93/" class="print-no-link">#渲染</a>
+      
+        <a href="/tags/Unity/" class="print-no-link">#Unity</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>关于 SRP Batcher</div>
+      <div>http://example.com/2025/02/22/关于SRP Batcher/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Hollow Emiya</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年2月22日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/02/23/GPU%20Driven%20And%20Hierarchical%20Z-Buffer/" title="GPU Driven And Hierarchical Z-Bufferr">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">GPU Driven And Hierarchical Z-Bufferr</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/05/01/%E5%88%80%E5%85%89%E7%89%B9%E6%95%88/" title="刀光特效果">
+                        <span class="hidden-mobile">刀光特效果</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
