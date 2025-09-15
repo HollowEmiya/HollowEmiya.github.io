@@ -28,7 +28,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://example.com/imgs/Atmosphere%20%E2%85%A1/Transmittance.svg">
 <meta property="article:published_time" content="2025-09-10T12:34:32.533Z">
-<meta property="article:modified_time" content="2025-09-13T02:29:54.517Z">
+<meta property="article:modified_time" content="2025-09-15T02:18:49.022Z">
 <meta property="article:author" content="Hollow Emiya">
 <meta property="article:tag" content="Math">
 <meta name="twitter:card" content="summary_large_image">
@@ -229,7 +229,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          412 字
+          870 字
         
       </span>
     
@@ -240,7 +240,7 @@
         
         
         
-          4 分钟
+          8 分钟
         
       </span>
     
@@ -286,7 +286,46 @@
 <span id="more"></span></p>
 <h1 id="atmosphere-ⅱ">Atmosphere Ⅱ</h1>
 <h2 id="transmittance">Transmittance</h2>
-<p><img src="/imgs/Atmosphere Ⅱ/Transmittance.svg" srcset="/img/loading.gif" lazyload></p>
+<p>当光在大气中从点 <span class="math inline">\(p\)</span> 传播至点
+<span class="math inline">\(q\)</span>
+时，由于空气分子和气溶胶粒子的作用，光被部分吸收并发生散射偏离初始的传播方向。因此，到达
+<span class="math inline">\(q\)</span> 点的光只是从 <span
+class="math inline">\(p\)</span>
+点出发的一部分，这一比例和波长相关，被称为 <a
+target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Transmittance">transmittance</a><font color=#A0A0A0>(透射率)</font>。接下来我们会描述如何计算，在预计算Texture中存储，并如何读取回来。</p>
+<h3 id="computation">Computation</h3>
+<p>对于在大气中共线的三点 <span
+class="math inline">\(p,q,r\)</span>，按照这个顺序，<span
+class="math inline">\(p,r\)</span> 之间的透射率等于 <span
+class="math inline">\(p,q\)</span> 之间的透射率乘上 <span
+class="math inline">\(q,r\)</span>
+之间的透射率。<font color=#ADADAD>这里的 <span
+class="math inline">\(p,q,r\)</span> 和下图无关。</font><br />
+特别的，<span class="math inline">\(p,q\)</span> 间的透射率为点 <span
+class="math inline">\(p\)</span> 和射线<span
+class="math inline">\([p,q)\)</span> 与大气顶部或底部最近交点 <span
+class="math inline">\(i\)</span> 之间的透射率，除以 <span
+class="math inline">\(q,i\)</span>
+间的透射率，或者，如果射线和地面相交则透射率就为
+0：<font color=#ADADAD>(下图就是和大气顶部相交，如果q点下移，就是和大气底部相交，所谓和地面相交，就是qp两点连线和地面相交……)</font><br />
+<img src="/imgs/Atmosphere%20Ⅱ/Transmittance.svg" srcset="/img/loading.gif" lazyload /><br />
+并且 <span class="math inline">\(p,q\)</span> 和 <span
+class="math inline">\(q,p\)</span>
+之间的透射率是相同的，只和两点的位置有关和方向无关。因此，想要计算任意两点的透射率，只需要知道大气中一点
+<span class="math inline">\(p\)</span> 和大气顶部边界上点 <span
+class="math inline">\(i\)</span>
+之间的透射率。这个透射率只依赖两个参数，半径 <span
+class="math inline">\(r=\lvert op\rvert\)</span> 和“观测天顶角”的余弦
+<span class="math inline">\(\mu=op\cdot pi/\lvert op\rvert\lvert
+pi\rvert=\cos(\theta)\)</span>。为了计算该透射率，我们要知道 <span
+class="math inline">\(\lvert pi\rvert\)</span> 的长度，并且需要知道线段
+<span class="math inline">\([p,i]\)</span> 是否和地面相交。</p>
+<h4 id="distance-to-the-top-atmosphere-boundary">Distance to the top
+atmosphere boundary</h4>
+<p>一点从 <span class="math inline">\(p\)</span> 出发沿着 <span
+class="math inline">\([p,i)\)</span> 方向距离为 <span
+class="math inline">\(d\)</span>，其坐标可以描述为：<span
+class="math inline">\([d\sqrt{1-\mu^2},r+d\mu]^T\)</span></p>
 <h2 id="latex-picture">Latex Picture</h2>
 <ul>
 <li>figure 1<br />
@@ -368,8 +407,8 @@ target="_blank" rel="noopener" href="https://ebruneton.github.io/precomputed_atm
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2025/09/04/Rigid%20Body%20Simulation%20%E2%85%A2/" title="Rigid Body Simulation Ⅱ">
-                        <span class="hidden-mobile">Rigid Body Simulation Ⅱ</span>
+                      <a href="/2025/09/04/Rigid%20Body%20Simulation%20%E2%85%A2/" title="Rigid Body Simulation Ⅲ">
+                        <span class="hidden-mobile">Rigid Body Simulation Ⅲ</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>

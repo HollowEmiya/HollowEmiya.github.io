@@ -19,12 +19,12 @@
   <meta name="author" content="Hollow Emiya">
   <meta name="keywords" content="">
   
-    <meta name="description" content="Rigid Body Simulation Ⅰ Part I. Unconstrained Rigid Body Dynamics 1. Simulation Basics 模拟刚体的运动与模拟单个粒子的运动几乎是一样的，所以让我们先从粒子模拟开始。我们模拟一个粒子的方法如下。我们用函数 \(x(t)\) 来表示在时间 \(t\) 时该粒子在世界空间（即在模拟过程中所有粒子或物体所在空">
+    <meta name="description" content="刚体模拟内容Ⅰ">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Rigid Body Simulation Ⅰ">
 <meta property="og:url" content="http://example.com/2025/08/11/Rigid%20Body%20Simulation%20%E2%85%A0/index.html">
 <meta property="og:site_name" content="Emiya Blog">
-<meta property="og:description" content="Rigid Body Simulation Ⅰ Part I. Unconstrained Rigid Body Dynamics 1. Simulation Basics 模拟刚体的运动与模拟单个粒子的运动几乎是一样的，所以让我们先从粒子模拟开始。我们模拟一个粒子的方法如下。我们用函数 \(x(t)\) 来表示在时间 \(t\) 时该粒子在世界空间（即在模拟过程中所有粒子或物体所在空">
+<meta property="og:description" content="刚体模拟内容Ⅰ">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://example.com/imgs/Rigid%20Body%20Simulation%20%E2%85%A0/Figure2.png">
 <meta property="og:image" content="http://example.com/imgs/Rigid%20Body%20Simulation%20%E2%85%A0/Figure3.png">
@@ -37,7 +37,7 @@
 <meta property="og:image" content="http://example.com/imgs/Rigid%20Body%20Simulation%20%E2%85%A0/Figure11.png">
 <meta property="og:image" content="http://example.com/imgs/Rigid%20Body%20Simulation%20%E2%85%A0/Figure12.png">
 <meta property="article:published_time" content="2025-08-11T09:42:17.872Z">
-<meta property="article:modified_time" content="2025-09-08T08:29:22.665Z">
+<meta property="article:modified_time" content="2025-09-15T02:37:33.268Z">
 <meta property="article:author" content="Hollow Emiya">
 <meta property="article:tag" content="Math">
 <meta name="twitter:card" content="summary_large_image">
@@ -291,7 +291,8 @@
             
               <div class="markdown-body">
                 
-                <h1 id="rigid-body-simulation-ⅰ">Rigid Body Simulation Ⅰ</h1>
+                <p>刚体模拟内容Ⅰ <span id="more"></span></p>
+<h1 id="rigid-body-simulation-ⅰ">Rigid Body Simulation Ⅰ</h1>
 <h2 id="part-i.-unconstrained-rigid-body-dynamics">Part I. Unconstrained
 Rigid Body Dynamics</h2>
 <h3 id="simulation-basics">1. Simulation Basics</h3>
@@ -528,111 +529,113 @@ a=\omega(t)\times (b+a)\tag{2-6}
 <p><span class="math display">\[
 \dot r(t)=\omega(t)\times r(t)\tag{2-7}
 \]</span></p>
-我们知道时刻 <span class="math inline">\(t\)</span> 刚体在世界空间的 x
-轴是 旋转矩阵的第一列，其导数就是该向量的变化率，利用刚才的式子： <span
-class="math display">\[
+<p>我们知道时刻 <span class="math inline">\(t\)</span> 刚体在世界空间的
+x 轴是 旋转矩阵的第一列，其导数就是该向量的变化率，利用刚才的式子：
+<span class="math display">\[
 \omega(t)\times
 \begin{pmatrix}
 r_{xx}\\
 r_{xy}\\
 r_{xz}
 \end{pmatrix}
-\]</span> 对于其他轴向也有： $$ R=
-<span class="math display">\[\begin{pmatrix}
-
+\]</span> 对于其他轴向也有： <span class="math display">\[
+\begin{aligned}
+\dot R=\begin{pmatrix}
 \omega(t)\times\begin{pmatrix}
 r_{xx}\\
 r_{xy}\\
 r_{xz}
-\end{pmatrix}
-\;\;
+\end{pmatrix},
 \omega(t)\times\begin{pmatrix}
 r_{yx}\\
 r_{yy}\\
 r_{yz}
-\end{pmatrix}
-\;\;
+\end{pmatrix},
 \omega(t)\times\begin{pmatrix}
 r_{zx}\\
 r_{zy}\\
 r_{zz}
 \end{pmatrix}
-
-\end{pmatrix}\tag{2-8}\]</span>
-<span class="math display">\[
-这样写很麻烦，我们可以简化，因 a，b 都是三维向量，则 $a\times b$
-亦是：  
-\]</span> ab=
-<span class="math display">\[\begin{pmatrix}
+\end{pmatrix}
+\end{aligned}\tag{2-8}
+\]</span></p>
+<p>这样写很麻烦，我们可以简化，因 a，b 都是三维向量，则 <span
+class="math inline">\(a\times b\)</span> 亦是：</p>
+<p><span class="math display">\[
+a\times b=\begin{pmatrix}
 a_yb_z-b_ya_z\\
 a_zb_x-b_za_x\\
 a_xb_y-b_xa_y
-\end{pmatrix}\]</span>
+\end{pmatrix}
+\]</span> 我们定义一个矩阵 <span class="math inline">\(a^*\)</span>:
 <span class="math display">\[
-我们定义一个矩阵 $a^*$:   
-\]</span> { a^*=
-<span class="math display">\[\begin{pmatrix}
+{
+a^*=\begin{pmatrix}
 &amp;0 &amp;-a_z &amp;a_y\\
 &amp;a_z &amp;0 &amp;-a_x\\
 &amp;0 &amp;-a_z &amp;a_y
-\end{pmatrix}\]</span>
-} <span class="math display">\[
-\]</span> { a^*b=
-<span class="math display">\[\begin{pmatrix}
+\end{pmatrix}
+}
+\]</span></p>
+<p><span class="math display">\[
+{
+a^*b=\begin{pmatrix}
 a_yb_z-b_ya_z\\
 a_zb_x-b_za_x\\
 a_xb_y-b_xa_y
-\end{pmatrix}\]</span>
-=ab } <span class="math display">\[
-\]</span> (t)=
-<span class="math display">\[\begin{pmatrix}
+\end{pmatrix}=a\times b\tag{2-9}
+}
+\]</span></p>
+<p><span class="math display">\[
+\dot{R}(t)=
+\begin{pmatrix}
 \omega(t)^*
 \begin{pmatrix}
 r_{xx}\\
 r_{xy}\\
 r_{xz}
 \end{pmatrix}
-
 &amp;\omega(t)^*
 \begin{pmatrix}
 r_{yx}\\
 r_{yy}\\
 r_{yz}
 \end{pmatrix}
-
 &amp;\omega(t)^*
 \begin{pmatrix}
 r_{zx}\\
 r_{zy}\\
 r_{zz}
 \end{pmatrix}
-\end{pmatrix}\tag{2-10}\]</span>
-<p>$$</p>
-$$ (t)= (t)^*
-<span class="math display">\[\begin{pmatrix}
-
+\end{pmatrix}\tag{2-10}
+\]</span></p>
+<p><span class="math display">\[
+\dot{R}(t)=
+\omega(t)^*
+\begin{pmatrix}
 \begin{pmatrix}
 r_{xx}\\
 r_{xy}\\
 r_{xz}
 \end{pmatrix}
-
 &amp;
 \begin{pmatrix}
 r_{yx}\\
 r_{yy}\\
 r_{yz}
 \end{pmatrix}
-
 &amp;
 \begin{pmatrix}
 r_{zx}\\
 r_{zy}\\
 r_{zz}
 \end{pmatrix}
-\end{pmatrix}\tag{2-11}\]</span>
+\end{pmatrix}\tag{2-11}
+\]</span></p>
 <p><span class="math display">\[
-\]</span> (t)= (t)^*{R}(t) $$</p>
+\dot{R}(t)=
+\omega(t)^*{R}(t)\tag{2-12}
+\]</span></p>
 <h4 id="mass-of-a-body">2.4 Mass of a Body</h4>
 <p>为了做一些推导，我们需要对刚体进行一些理论上的积分，我们暂时认为刚体是由很多微小粒子组成的，编号为1
 到 N，第 i 个粒子的质量为 <span class="math inline">\(m_i\)</span>
@@ -801,32 +804,36 @@ m_i(r_{iy}^{&#39;2}+r_{iz}^{&#39;2})
 在<strong>实际实现</strong>中，我们会将<strong>有限求和</strong>替换为对刚体体积的<strong>积分</strong>（在世界坐标系中进行）。质量项
 <span class="math inline">\(m_i\)</span>
 会被<strong>密度函数</strong>取代。</p>
-乍看之下，似乎每当刚体的朝向 <span class="math inline">\(R(t)\)</span>
+<p>乍看之下，似乎每当刚体的朝向 <span
+class="math inline">\(R(t)\)</span>
 变化时，都需要重新计算积分来求解惯性张量 <span
 class="math inline">\(I(t)\)</span>。除非刚体形状极其简单（例如球形或立方体，这类形状的积分可解析求解），否则在仿真过程中执行这种计算会<strong>代价过高</strong>。<br />
 幸运的是，通过使用物体坐标系，我们可以基于<strong>预计算积分</strong>（在体坐标系中完成），低成本地计算任意朝向
 <span class="math inline">\(R(t)\)</span>
 下的惯性张量。（该积分通常在仿真启动前完成，应被视为描述刚体物理属性的输入参数之一。）使用式子
 <span
-class="math inline">\(r_i^{&#39;T}r_i^{&#39;}=r_{ix}^{&#39;2}+r_{iy}^{&#39;2}+r_{iz}^{&#39;2}\)</span>，可以重写<br />
-$$ I(t)=m_ir_i<sup>{'T}r_i</sup>{'}
-<span class="math display">\[\begin{pmatrix}
+class="math inline">\(r_i^{&#39;T}r_i^{&#39;}=r_{ix}^{&#39;2}+r_{iy}^{&#39;2}+r_{iz}^{&#39;2}\)</span>，可以重写
+<span class="math display">\[
+I(t)=\sum m_ir_i^{&#39;T}r_i^{&#39;}
+\begin{pmatrix}
 1&amp;0&amp;0\\
 0&amp;1&amp;0\\
 0&amp;0&amp;1
-\end{pmatrix}\]</span>
-<ul>
-<li>\begin{pmatrix} m_ir_{ix}^{'2} &amp;
-m_ir_{ix}<sup>{'}r_{iy}</sup>{'} &amp;
-m_ir_{ix}<sup>{'}r_{iz}</sup>{'}\</li>
-</ul>
-<p>m_ir_{iy}<sup>{'}r_{ix}</sup>{'} &amp; m_ir_{iy}^{'2} &amp;
-m_ir_{iy}<sup>{'}r_{iz}</sup>{'}\</p>
-<p>m_ir_{iz}<sup>{'}r_{ix}</sup>{'} &amp;
-m_ir_{iz}<sup>{'}r_{iy}</sup>{'} &amp; m_ir_{iz}^{'2} \end{pmatrix}
-$$</p>
-$$
-<span class="math display">\[\begin{aligned}
+\end{pmatrix}-
+\begin{pmatrix}
+m_ir_{ix}^{&#39;2}
+&amp; m_ir_{ix}^{&#39;}r_{iy}^{&#39;}
+&amp; m_ir_{ix}^{&#39;}r_{iz}^{&#39;}\\
+m_ir_{iy}^{&#39;}r_{ix}^{&#39;}
+&amp; m_ir_{iy}^{&#39;2}
+&amp; m_ir_{iy}^{&#39;}r_{iz}^{&#39;}\\
+m_ir_{iz}^{&#39;}r_{ix}^{&#39;}
+&amp; m_ir_{iz}^{&#39;}r_{iy}^{&#39;}
+&amp; m_ir_{iz}^{&#39;2}
+\end{pmatrix}\tag{2-33}
+\]</span></p>
+<p><span class="math display">\[
+\begin{aligned}
 r_i^{&#39;}r_i^{&#39;T}&amp;=
 \begin{pmatrix}
 r_{ix}^{&#39;}\\
@@ -843,20 +850,17 @@ r_{iz}^{&#39;}
 r_{ix}^{&#39;2}
 &amp; r_{ix}^{&#39;}r_{iy}^{&#39;}
 &amp; r_{ix}^{&#39;}r_{iz}^{&#39;}\\
-
 r_{iy}^{&#39;}r_{ix}^{&#39;}
 &amp; r_{iy}^{&#39;2}
 &amp; r_{iy}^{&#39;}r_{iz}^{&#39;}\\
-
 r_{iz}^{&#39;}r_{ix}^{&#39;}
 &amp; r_{iz}^{&#39;}r_{iy}^{&#39;}
 &amp; r_{iz}^{&#39;2}
 \end{pmatrix}
-\end{aligned}\tag{2-34}\]</span>
-<p>$$</p>
+\end{aligned}\tag{2-34}
+\]</span></p>
 <p>设 <span class="math inline">\(\textbf{1}\)</span> 是一个 3x3
-的单位矩阵：<br />
-<span class="math display">\[
+的单位矩阵： <span class="math display">\[
 I(t)=\sum
 m_i(r_i^{&#39;T}r_i^{&#39;}\textbf{1}-r_i^{&#39;}r_i^{&#39;T})\tag{2-35}
 \]</span> 因为 <span
@@ -874,8 +878,7 @@ m_i\Big(r_{0i}^TR(t)^TR(t)r_{0i}\textbf{1}-R(t)r_{0i}r_{0i}^TR(t)^T\Big)\\
 &amp;=\sum m_i(r_{0i}^Tr_{0i}\textbf{1}-R(t)r_{0i}r_{0i}^TR(t)^T)
 \end{aligned}\tag{2-36}
 \]</span> 由于 <span class="math inline">\(r_{0i}^Tr_{0i}\)</span>
-是标量，所以可以有：<br />
-<span class="math display">\[
+是标量，所以可以有： <span class="math display">\[
 \begin{aligned}
 I(t)&amp;=\sum m_i(r_{0i}^Tr_{0i}\textbf{1}-R(t)r_{0i}r_{0i}^TR(t)^T)\\
 &amp;=\sum
@@ -883,8 +886,7 @@ m_i(R(t)r_{0i}^Tr_{0i}R(t)^T\textbf{1}-R(t)r_{0i}r_{0i}^TR(t)^T)\\
 &amp;=R(t)\bigg(\sum
 m_i\Big((r_{0i}^Tr_{0i})\textbf{1}-r_{0i}r_{0i}^T)\Big)\bigg)R(t)^T
 \end{aligned}\tag{2-37}
-\]</span> 定义 <span class="math inline">\(I_{body}\)</span>
-矩阵：<br />
+\]</span> 定义 <span class="math inline">\(I_{body}\)</span> 矩阵：
 <span class="math display">\[
 I_{body}=\sum m_i((r_{0i}^Tr_{0i}\textbf{1}-r_{0i}r_{0i}^T))\tag{2-38}
 \]</span></p>
@@ -913,8 +915,8 @@ class="math inline">\(R(t)^T=R(t)^{-1},\Big(R(t)\Big)^T=R(t).\)</span>
 <h4 id="rigid-body-equations-of-motion">2.11 Rigid Body Equations of
 Motion</h4>
 <p>对于一个刚体我们定义 <span
-class="math inline">\(\textbf{Y}(t)\)</span>:<br />
-<span class="math display">\[
+class="math inline">\(\textbf{Y}(t)\)</span>: <span
+class="math display">\[
 \textbf{Y}(t)=
 \begin{pmatrix}
 x(t)\\
@@ -931,15 +933,15 @@ class="math inline">\(I_{body}\)</span>
 在任意给定时刻，辅助量 <span
 class="math inline">\(I(t)\)</span>（世界坐标系惯性张量）、<span
 class="math inline">\(\omega (t)\)</span>（角速度）与 <span
-class="math inline">\(v(t)\)</span>（线速度）需通过计算得到:<br />
-<span class="math display">\[
+class="math inline">\(v(t)\)</span>（线速度）需通过计算得到: <span
+class="math display">\[
 \begin{aligned}
 &amp; v(t)=\frac{P(t)}{M}\\
 &amp; I(t)=R(t)I_{body}R(t)^T\\
 &amp; \omega(t)=I(t)^{-1}L(t)
 \end{aligned}\tag{2-42}
 \]</span> 导数 <span
-class="math inline">\(\frac{\mathrm{d}}{\mathrm{d}t}\textbf{Y}(t)\)</span>:<br />
+class="math inline">\(\frac{\mathrm{d}}{\mathrm{d}t}\textbf{Y}(t)\)</span>:
 <span class="math display">\[
 \begin{aligned}
 \frac{\mathrm{d}}{\mathrm{d}t}\textbf{Y}(t)=
@@ -1032,32 +1034,30 @@ class="math inline">\(q(t)\)</span> 相乘的简写。<br />
 <span class="math inline">\(\dot R(t)=\omega(t)^*R(t)\)</span><br />
 使用四元数我们需要重新设计 RigidBody：</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">class</span> <span class="hljs-title class_">RigidBody</span><br>&#123;<br>    <span class="hljs-comment">// constant quantities</span><br>    <span class="hljs-type">double</span> mass;<br>    matrix Ibody;<br>    matrix IbodyInv;<br>    <br>    <span class="hljs-comment">// state variables</span><br>    triple x;<br>    quaternion q;<br>    triple P;<br>    triple L;<br>    <br>    <span class="hljs-comment">// derived quantities</span><br>    matrix Iinv;<br>    matrix R;<br>    triple v;<br>    triple omega;<br>    <br>    <span class="hljs-comment">// computed quantities</span><br>    triple force;<br>    triple torque;<br>&#125;<br><br>rb-&gt;R = <span class="hljs-built_in">quaternion_to_matrix</span>(<span class="hljs-built_in">normalize</span>(rb-&gt;q));<br></code></pre></td></tr></table></figure>
-函数 <code>normalize</code> 返回被 <span
+<p>函数 <code>normalize</code> 返回被 <span
 class="math inline">\(q\)</span> 除以 长度
 的归一化结果。单位长度的四元数再传给 <code>quaternion_to_matrix</code>
 ，返回 3x3 矩阵，如 <span class="math inline">\(q=[s,v]\)</span>
 则返回的矩阵为<br />
-$$
-<span class="math display">\[\begin{pmatrix}
+<span class="math display">\[
+\begin{pmatrix}
 1-2v_y^2-2v_z^2
 &amp; 2v_xv_y-2sv_z
 &amp; 2v_xv_z+2sv_y\\
-
 2v_xv_y+2sv_z
 &amp; 1-2v_x^2-2v_z^2
 &amp; 2v_yv_z-2sv_x\\
-
 2v_xv_z-2sv_y
 &amp; 2v_yv_z+2sv_x
 &amp; 1-2v_x^2-2v_y^2
-\end{pmatrix}\]</span>
-<p>$$ 从旋转矩阵到四元数<br />
+\end{pmatrix}
+\]</span> 从旋转矩阵到四元数<br />
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-function">quaternion <span class="hljs-title">matrix_to_quaternion</span><span class="hljs-params">(<span class="hljs-type">const</span> matrix &amp;m)</span></span><br><span class="hljs-function"></span>&#123;<br>    quaternion q;<br>    <span class="hljs-type">double</span> tr,s;<br>    <br>    tr = m[<span class="hljs-number">0</span>,<span class="hljs-number">0</span>] + m[<span class="hljs-number">1</span>,<span class="hljs-number">1</span>]+m[<span class="hljs-number">2</span>,<span class="hljs-number">2</span>];<br>    <span class="hljs-keyword">if</span>(tr &gt;= <span class="hljs-number">0</span>)<br>    &#123;<br>        s = <span class="hljs-built_in">sqrt</span>(tr + <span class="hljs-number">1</span>);<br>        q.r = <span class="hljs-number">0.5</span> * s;<br>        s = <span class="hljs-number">0.5</span> / s;<br>        q.i = (m[<span class="hljs-number">2</span>,<span class="hljs-number">1</span>] - m[<span class="hljs-number">1</span>,<span class="hljs-number">2</span>]) * s;<br>        q.j = (m[<span class="hljs-number">0</span>,<span class="hljs-number">2</span>] - m[<span class="hljs-number">2</span>,<span class="hljs-number">0</span>]) * s;<br>        q.k = (m[<span class="hljs-number">1</span>,<span class="hljs-number">0</span>] - m[<span class="hljs-number">0</span>,<span class="hljs-number">1</span>]) * s;<br>    &#125;<br>    <span class="hljs-keyword">else</span><br>    &#123;<br>        <span class="hljs-type">int</span> i = <span class="hljs-number">0</span>;<br>        <span class="hljs-keyword">if</span>(m[<span class="hljs-number">1</span>,<span class="hljs-number">1</span>] &gt; m[<span class="hljs-number">0</span>,<span class="hljs-number">0</span>])<br>            i = <span class="hljs-number">1</span>;<br>        <span class="hljs-keyword">if</span>(m[<span class="hljs-number">2</span>,<span class="hljs-number">2</span>] &gt; m[i,i])<br>            i = <span class="hljs-number">2</span>;<br>        <br>        <span class="hljs-keyword">switch</span>(i)<br>        &#123;<br>            <span class="hljs-keyword">case</span> <span class="hljs-number">0</span>:<br>                s = <span class="hljs-built_in">sqrt</span>((m[<span class="hljs-number">0</span>,<span class="hljs-number">0</span>]-(m[<span class="hljs-number">1</span>,<span class="hljs-number">1</span>] + m[<span class="hljs-number">2</span>,<span class="hljs-number">2</span>])) + <span class="hljs-number">1</span>);<br>                q.i = <span class="hljs-number">0.5</span> * s;<br>                s = <span class="hljs-number">0.5</span> / s;<br>                q.j = (m[<span class="hljs-number">0</span>,<span class="hljs-number">1</span>] + m[<span class="hljs-number">1</span>,<span class="hljs-number">0</span>]) * s;<br>				q.k = (m[<span class="hljs-number">2</span>,<span class="hljs-number">0</span>] + m[<span class="hljs-number">0</span>,<span class="hljs-number">2</span>]) * s;<br>				q.r = (m[<span class="hljs-number">2</span>,<span class="hljs-number">1</span>] - m[<span class="hljs-number">1</span>,<span class="hljs-number">2</span>]) * s;<br>                <span class="hljs-keyword">break</span>;<br>            <span class="hljs-keyword">case</span> <span class="hljs-number">1</span>:<br>				s = <span class="hljs-built_in">sqrt</span>((m[<span class="hljs-number">1</span>,<span class="hljs-number">1</span>] - (m[<span class="hljs-number">2</span>,<span class="hljs-number">2</span>] + m[<span class="hljs-number">0</span>,<span class="hljs-number">0</span>])) + <span class="hljs-number">1</span>);<br>				q.j = <span class="hljs-number">0.5</span> * s;<br>				s = <span class="hljs-number">0.5</span> / s;<br>				q.k = (m[<span class="hljs-number">1</span>,<span class="hljs-number">2</span>] + m[<span class="hljs-number">2</span>,<span class="hljs-number">1</span>]) * s;<br>				q.i = (m[<span class="hljs-number">0</span>,<span class="hljs-number">1</span>] + m[<span class="hljs-number">1</span>,<span class="hljs-number">0</span>]) * s;<br>				q.r = (m[<span class="hljs-number">0</span>,<span class="hljs-number">2</span>] - m[<span class="hljs-number">2</span>,<span class="hljs-number">0</span>]) * s;<br>				<span class="hljs-keyword">break</span>;<br>			<span class="hljs-keyword">case</span> <span class="hljs-number">2</span>:<br>				s = <span class="hljs-built_in">sqrt</span>((m[<span class="hljs-number">2</span>,<span class="hljs-number">2</span>] - (m[<span class="hljs-number">0</span>,<span class="hljs-number">0</span>] + m[<span class="hljs-number">1</span>,<span class="hljs-number">1</span>])) + <span class="hljs-number">1</span>);<br>                q.k = <span class="hljs-number">0.5</span> * s;<br>                s = <span class="hljs-number">0.5</span> / s;<br>                q.i = (m[<span class="hljs-number">2</span>,<span class="hljs-number">0</span>] + m[<span class="hljs-number">0</span>,<span class="hljs-number">2</span>]) * s;<br>                q.j = (m[<span class="hljs-number">1</span>,<span class="hljs-number">2</span>] + m[<span class="hljs-number">2</span>,<span class="hljs-number">1</span>]) * s;<br>                q.r = (m[<span class="hljs-number">1</span>,<span class="hljs-number">0</span>] - m[<span class="hljs-number">0</span>,<span class="hljs-number">1</span>]) * s;<br>        &#125;<br>    &#125;<br>    <span class="hljs-keyword">return</span> q;<br>&#125;<br></code></pre></td></tr></table></figure></p>
 <p>矩阵m的结构使m[0,0], m[0,1]和m[0,2]构成m的第一行（而不是列）。<br />
 例程Array_to_Bodies和Bodies_to_Array根本不需要任何更改，但请注意常量STATE_SIZE从18更改为13，因为四元数需要的元素比旋转矩阵少5个。我们只需要在ddt_State_to_Array中进行其他更改</p>
 <h3 id="examples">5. Examples</h3>
 <h4 id="inertia-tensor-of-a-block">5.1 Inertia Tensor of a Block</h4>
-<img src="/imgs/Rigid%20Body%20Simulation%20Ⅰ/Figure7.png" srcset="/img/loading.gif" lazyload /><br />
+<p><img src="/imgs/Rigid%20Body%20Simulation%20Ⅰ/Figure7.png" srcset="/img/loading.gif" lazyload /><br />
 计算图中 <span class="math inline">\(x_0\times y_0\times z_0\)</span>
 的长方形的惯性张量 <span class="math inline">\(I_{body}\)</span>
 我们将质心设为原点，因此长方体的 x 轴 <span
@@ -1089,25 +1089,23 @@ I_{xy}&amp;=\int_{-\frac{x_0}{2}}^{\frac{x_0}{2}}
 &amp;=0
 \end{aligned}\tag{5-2}
 \]</span> 有<br />
-$$
-<span class="math display">\[\begin{aligned}
+<span class="math display">\[
+\begin{aligned}
 I_{body}=
 \frac{M}{12}
 \begin{pmatrix}
 y_0^2+z_0^2
 &amp; 0
 &amp; 0\\
-
 0
 &amp; x_0^2+z_0^2
 &amp; 0\\
-
 0
 &amp; 0
 &amp; x_0^2+y_0^2
 \end{pmatrix}
-\end{aligned}\tag{5-3}\]</span>
-<p>$$</p>
+\end{aligned}\tag{5-3}
+\]</span></p>
 <h4 id="a-uniform-force-field">5.2 A Uniform Force Field</h4>
 <p>假设一个均匀的力作用在物体的每一个粒子上。例如，我们通常将引力场描述为对刚体的每个粒子施加一个力，其中
 <span class="math inline">\(g\)</span>
@@ -1125,7 +1123,7 @@ class="math inline">\(M\)</span> 是物体质量，<span
 class="math inline">\(g\)</span> 是重力加速度)。</p>
 <h4 id="rotation-free-movement-of-a-body">5.3 Rotation Free Movement of
 a Body</h4>
-让我考虑一下图中所示的两个力<br />
+<p>让我考虑一下图中所示的两个力<br />
 <img src="/imgs/Rigid%20Body%20Simulation%20Ⅰ/Figure8.png" srcset="/img/loading.gif" lazyload /> 外力 <span
 class="math inline">\(F=(0,0,f)\)</span>分别作用在 <span
 class="math inline">\(x(t)+(-3,0,-2)\;,\;x(t)+(3,0,-2)\)</span><br />
@@ -1133,8 +1131,8 @@ class="math inline">\(x(t)+(-3,0,-2)\;,\;x(t)+(3,0,-2)\)</span><br />
 合力为 <span class="math inline">\((0,0,2f)\)</span>，加速度 <span
 class="math inline">\(\frac{2f}{M}\)</span> 沿着 z 轴<br />
 有两力矩<br />
-$$
-<span class="math display">\[\begin{aligned}
+<span class="math display">\[
+\begin{aligned}
 &amp;(x(t)+
 \begin{pmatrix}
 -3\\0\\-2
@@ -1142,7 +1140,6 @@ $$
 \begin{pmatrix}
 -3\\0\\-2
 \end{pmatrix}\times F\\
-
 &amp;(x(t)+
 \begin{pmatrix}
 3\\0\\-2
@@ -1150,7 +1147,6 @@ $$
 \begin{pmatrix}
 3\\0\\-2
 \end{pmatrix}\times F\\
-
 &amp;\tau=
 \begin{pmatrix}
 -3\\0\\-2
@@ -1169,8 +1165,8 @@ $$
 0\\0\\f
 \end{pmatrix}
 =\textbf{0}
-\end{aligned}\]</span>
-<p>$$</p>
+\end{aligned}
+\]</span></p>
 <h4 id="translation-free-movement-of-a-body">5.4 Translation Free
 Movement of a Body</h4>
 <p>现在假设外力 <span
@@ -1183,6 +1179,7 @@ class="math inline">\(F_1+F_2=0\)</span>​，所以没有质心加速度。<br 
 <img src="/imgs/Rigid%20Body%20Simulation%20Ⅰ/Figure9.png" srcset="/img/loading.gif" lazyload />
 另一方面，扭矩合是<br />
 <span class="math display">\[
+\begin{aligned}
 &amp;(x(t)+
 \begin{pmatrix}
 -3\\0\\-2
@@ -1218,6 +1215,7 @@ class="math inline">\(F_1+F_2=0\)</span>​，所以没有质心加速度。<br 
 \begin{pmatrix}
 0\\6f\\0
 \end{pmatrix}
+\end{aligned}
 \]</span> 因此，合扭矩为<span
 class="math inline">\((0,6f,0)\)</span>，与y轴平行。最终的结果是，作用在物体上的力使物体沿
 y轴 呈角加速。</p>

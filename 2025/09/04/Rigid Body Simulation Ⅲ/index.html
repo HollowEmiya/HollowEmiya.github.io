@@ -19,16 +19,16 @@
   <meta name="author" content="Hollow Emiya">
   <meta name="keywords" content="">
   
-    <meta name="description" content="Rigid Body Simulation Ⅲ Appendix Appendix A Motion Equation Derivations 在这部分，我们将补充在第2节中缺失的内容，关于方程 \(\dot{P}(t)&#x3D;F(t),\dot{L}(t)&#x3D;\tau(t),L(t)&#x3D;I(t)\omega(t)\)。这里的推导方法并非标准方法，是由 Andy Witkin 提出的。本附录推导(">
+    <meta name="description" content="刚体模拟附录部分。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Rigid Body Simulation Ⅱ">
+<meta property="og:title" content="Rigid Body Simulation Ⅲ">
 <meta property="og:url" content="http://example.com/2025/09/04/Rigid%20Body%20Simulation%20%E2%85%A2/index.html">
 <meta property="og:site_name" content="Emiya Blog">
-<meta property="og:description" content="Rigid Body Simulation Ⅲ Appendix Appendix A Motion Equation Derivations 在这部分，我们将补充在第2节中缺失的内容，关于方程 \(\dot{P}(t)&#x3D;F(t),\dot{L}(t)&#x3D;\tau(t),L(t)&#x3D;I(t)\omega(t)\)。这里的推导方法并非标准方法，是由 Andy Witkin 提出的。本附录推导(">
+<meta property="og:description" content="刚体模拟附录部分。">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://example.com/imgs/Rigid%20Body%20Simulation%20%E2%85%A1/figure26.png">
 <meta property="article:published_time" content="2025-09-04T02:39:34.560Z">
-<meta property="article:modified_time" content="2025-09-10T08:26:17.215Z">
+<meta property="article:modified_time" content="2025-09-15T02:39:10.030Z">
 <meta property="article:author" content="Hollow Emiya">
 <meta property="article:tag" content="Math">
 <meta name="twitter:card" content="summary_large_image">
@@ -36,7 +36,7 @@
   
   
   
-  <title>Rigid Body Simulation Ⅱ - Emiya Blog</title>
+  <title>Rigid Body Simulation Ⅲ - Emiya Blog</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -206,7 +206,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="Rigid Body Simulation Ⅱ"></span>
+            <span id="subtitle" data-typed-text="Rigid Body Simulation Ⅲ"></span>
           
         </div>
 
@@ -240,7 +240,7 @@
         
         
         
-          38 分钟
+          39 分钟
         
       </span>
     
@@ -277,12 +277,14 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">Rigid Body Simulation Ⅱ</h1>
+            <h1 id="seo-header">Rigid Body Simulation Ⅲ</h1>
             
             
               <div class="markdown-body">
                 
-                <h1 id="rigid-body-simulation-ⅲ">Rigid Body Simulation Ⅲ</h1>
+                <p>刚体模拟附录部分。<br />
+<span id="more"></span></p>
+<h1 id="rigid-body-simulation-ⅲ">Rigid Body Simulation Ⅲ</h1>
 <h2 id="appendix">Appendix</h2>
 <h3 id="appendix-a-motion-equation-derivations">Appendix A Motion
 Equation Derivations</h3>
@@ -330,8 +332,8 @@ a\)</span>，则有：<br />
 <span class="math display">\[
 \sum a_i^*=(\sum a_i)^*.\tag{A-5}
 \]</span></p>
-回想一下，我们可以把速度 <span class="math inline">\(\dot{r}_i\)</span>
-写作 <span
+<p>回想一下，我们可以把速度 <span
+class="math inline">\(\dot{r}_i\)</span> 写作 <span
 class="math inline">\(\dot{r}_i=v+\omega\times(r_i-x)\)</span> 这里
 <span class="math inline">\(r_i\)</span> 是粒子位置， <span
 class="math inline">\(x\)</span> 是质心位置，<span
@@ -384,28 +386,25 @@ F_i\)</span>，使用等式 A-11 来对所有粒子求合，<br />
 \sum
 m_i(\dot{v}-\dot{r}_i&#39;^*\omega-r_i&#39;^*\dot\omega)-F_i-F_{ci}=\textbf0\tag{A-12}
 \]</span> 拆分这个大的求合运算为多个小的求合：<br />
-$$
-<span class="math display">\[\begin{aligned}
+<span class="math display">\[
+\begin{aligned}
 \sum
 m_i(\dot{v}-\dot{r}_i&#39;^*\omega-r_i&#39;^*\dot\omega)-F_i-F_{ci}&amp;=\\
-
 \sum m_i\dot{v}-
 \sum m_i\dot{r}_i&#39;^*\omega-
 \sum m_ir_i&#39;^*\dot\omega -
 \sum F_i-\sum F_{ci} &amp;=\\
-
 \sum m_i\dot{v}-
 (\sum m_i\dot{r}_i&#39;)^*\omega-
 (\sum m_ir_i&#39;)^*\dot\omega-
 \sum F_i-\sum F_{ci}&amp;=\\
-
 \sum m_i\dot{v}-
 (\frac{\mathrm{d}}{\mathrm{d}t}\sum m_ir_i&#39;)^*\omega-
 (\sum m_ir_i&#39;)^*\dot\omega-
 \sum F_i-\sum F_{ci}
 &amp;=\textbf0
-\end{aligned}\tag{A-13}\]</span>
-<p>$$</p>
+\end{aligned}\tag{A-13}
+\]</span></p>
 <p>因为我们在以质心为原点的坐标系中，通过 2.6 节的等式 (2-20) 我们能知道
 <span class="math inline">\(\sum
 m_ir_i&#39;=\textbf0\)</span>，这也就是说 <span
@@ -891,7 +890,7 @@ class="math inline">\(2\dot{\hat{n}}_i(t_0)\cdot\big(\dot{p}_a(t_0)-\dot{p}_b(t_
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>Rigid Body Simulation Ⅱ</div>
+      <div>Rigid Body Simulation Ⅲ</div>
       <div>http://example.com/2025/09/04/Rigid Body Simulation Ⅲ/</div>
     </div>
     <div class="license-meta">
